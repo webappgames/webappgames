@@ -1,0 +1,1 @@
+Project created via. https://github.com/wmonk/create-react-app-typescript
