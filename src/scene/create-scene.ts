@@ -1,7 +1,15 @@
 import * as BABYLON from 'babylonjs';
 import createStairs from './create-stairs';
 
-export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.Engine, updateScore:(score:number)=>void): BABYLON.Scene {
+
+function getMaterial(name:string,scene:BABYLON.Scene){
+    const material = new BABYLON.StandardMaterial("texture3", scene);
+    material.diffuseTexture = new BABYLON.Texture(`/assets/testures/${name}.jpg`, scene);
+    return material;
+}
+
+
+export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.Engine): BABYLON.Scene {
     const scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color4(1, 1, 1, 0);
 
@@ -10,6 +18,7 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
 
     camera.attachControl(canvas, true);
     camera.angularSensibility = 2000;
+    camera.inertia = 0.7;
     camera.speed = 1;
     camera.keysUp.push(87);    //W
     camera.keysDown.push(83)   //D
@@ -21,7 +30,7 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
     scene.collisionsEnabled = true;
     camera.checkCollisions = true;
     camera.applyGravity = true;
-    camera.ellipsoid = new BABYLON.Vector3(1, 2, 1);
+    camera.ellipsoid = new BABYLON.Vector3(2, 3, 2);
 
 
     const light1 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
@@ -37,61 +46,42 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
     const groundMesh = BABYLON.Mesh.CreateGround("ground", 10000, 10000, 2, scene);
     groundMesh.position.y = -0.5;
     groundMesh.checkCollisions = true;
-    const groundMterial = new BABYLON.StandardMaterial("ground-material", scene);
-    groundMterial.diffuseColor = BABYLON.Color3.FromHexString('#bbffbe');
-    groundMesh.material = groundMterial;
+
+    const groundMaterial = new BABYLON.StandardMaterial("texture3", scene);
+    groundMaterial.diffuseTexture = new BABYLON.Texture("/assets/testures/grass.jpg", scene);
+    //groundMaterial.diffuseTexture.uScale = 50;
+    //groundMaterial.diffuseTexture.vScale = 50;
+    //const groundMaterial = new BABYLON.StandardMaterial("ground-material", scene);
+    //groundMaterial.diffuseColor = BABYLON.Color3.FromHexString('#bbffbe');
+    groundMesh.material = groundMaterial;
 
     const stairsMesh = createStairs(scene, 50);
     stairsMesh.position.y = -0.5;
+
+
 
     const building = BABYLON.Mesh.CreateBox("box", 50, scene);
     building.position.y = -0.5;
     building.position.x = 75;
     building.checkCollisions = true;
+    building.material = getMaterial('stone-plain',scene);
 
 
-    let itemMeshes: BABYLON.Mesh[] = [];
-    for (let i = 0; i < 30; i++) {
-        const itemMesh = BABYLON.Mesh.CreateBox("box", 1, scene);
-        const material = new BABYLON.StandardMaterial("icemanmaterail", scene);
-        material.diffuseTexture = new BABYLON.Texture("/assets/textures/square-200-eleph.png", scene);
-        material.diffuseTexture.hasAlpha = true;
-        material.backFaceCulling = false;
-        itemMesh.material = material;
-        itemMesh.position.x = building.position.x + (Math.random() - 0.5) * 50;
-        itemMesh.position.z = building.position.z + (Math.random() - 0.5) * 50;
-        itemMesh.position.y = 25.0001;
-        itemMesh.rotation.y = Math.random() * Math.PI * 2;
-        itemMesh.checkCollisions = true;
-        itemMeshes.push(itemMesh);
-    }
 
-    const startTime = (new Date()).getTime();
-
-    function update() {
-
-        const nowtTime = (new Date()).getTime();
-        const duration = nowtTime - startTime;
-
-        itemMeshes.forEach((mesh) => {
-            mesh.rotation.y = Math.PI * 2 * (1 / 1000) * duration;
-        });
-
-        requestAnimationFrame(update);
-    }
-
-    requestAnimationFrame(update);
+    const building2 = BABYLON.Mesh.CreateBox("box", 10, scene);
+    building2.position.y = -0.5;
+    building2.position.x = 50;
+    building2.position.z = 60;
+    building2.checkCollisions = true;
+    building2.material = getMaterial('stone-plain',scene);
 
 
-    let score = 0;
+
     camera.onCollide = function (collidedMesh: any) {
-
-        if (itemMeshes.indexOf(collidedMesh) !== -1) {
-            score++;
-            updateScore(score);
-            collidedMesh.dispose();
-        }
     };
+
+
+
 
 
     return scene;

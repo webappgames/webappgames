@@ -5,11 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 registerServiceWorker();
 
 const canvasElement = document.getElementById("scene") as any;
-const scoreElement = document.getElementById("score") as HTMLDivElement;
-function updateScore(score:number){
-    //console.log(scoreElement);
-    scoreElement.innerText = score.toString();
-}
+
 
 canvasElement.onclick = function() {
     canvasElement.requestPointerLock();
@@ -17,7 +13,7 @@ canvasElement.onclick = function() {
 }
 
 const engine = new BABYLON.Engine(canvasElement, true);
-const scene = createScene(canvasElement, engine, updateScore);
+const scene = createScene(canvasElement, engine);
 
 engine.runRenderLoop(function () {
     scene.render();
