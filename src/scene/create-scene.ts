@@ -1,5 +1,6 @@
 import * as BABYLON from 'babylonjs';
 import createStairs from './create-stairs';
+import injectObjectPicking from './inject-object-picking';
 
 
 function getMaterial(name:string,scene:BABYLON.Scene){
@@ -80,61 +81,7 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
     }
 
 
-
-
-
-
-
-    /*const itemMesh = BABYLON.Mesh.CreateBox("box", 2, scene);
-    itemMesh.checkCollisions = false;
-    itemMesh.material = getMaterial('wood-boards',scene);*/
-
-    let itemMesh:BABYLON.AbstractMesh|null = null;
-    let rotation:number;
-
-
-
-    scene.registerBeforeRender(()=>{
-
-        if(itemMesh) {
-            var pickInfo = scene.pick(canvas.width / 2, canvas.height / 2, (mesh)=>{
-                return mesh !== itemMesh;
-            });
-            if (pickInfo.hit) {
-                const point = pickInfo.pickedPoint;
-                itemMesh.position = point;
-                itemMesh.rotation.y = camera.rotation.y+rotation;
-            }
-        }
-    });
-
-
-    function onPointerDown() {
-
-        var pickInfo = scene.pick(canvas.width / 2, canvas.height / 2, (mesh)=>{
-            return mesh !== groundMesh;
-        });
-        if (pickInfo.hit) {
-            itemMesh = pickInfo.pickedMesh;
-            rotation = pickInfo.pickedMesh.rotation.y;
-        }
-    }
-    /*function onPointerMove() {
-        //todo
-    }*/
-    function onPointerUp() {
-        itemMesh = null;
-    }
-
-    canvas.addEventListener("pointerdown", onPointerDown, false);
-    canvas.addEventListener("pointerup", onPointerUp, false);
-
-    scene.onDispose = function () {
-        canvas.removeEventListener("pointerdown", onPointerDown);
-        canvas.removeEventListener("pointerup", onPointerUp);
-        //canvas.removeEventListener("pointermove", onPointerMove);
-    }
-
+    injectObjectPicking(scene,groundMesh);
 
 
     camera.onCollide = function (collidedMesh: any) {
