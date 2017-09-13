@@ -11,22 +11,6 @@ export default function injectObjectPicking(scene:BABYLON.Scene,groundMesh:BABYL
     let rotation:number;
 
 
-
-    scene.registerBeforeRender(()=>{
-
-        if(itemMesh) {
-            var pickInfo = scene.pick(canvas.width / 2, canvas.height / 2, (mesh)=>{
-                return mesh !== itemMesh;
-            });
-            if (pickInfo.hit) {
-                const point = pickInfo.pickedPoint;
-                itemMesh.position = point;
-                itemMesh.rotation.y = camera.rotation.y+rotation;
-            }
-        }
-    });
-
-
     function onPointerDown() {
 
         var pickInfo = scene.pick(canvas.width / 2, canvas.height / 2, (mesh)=>{
@@ -37,20 +21,38 @@ export default function injectObjectPicking(scene:BABYLON.Scene,groundMesh:BABYL
             rotation = pickInfo.pickedMesh.rotation.y;
         }
     }
-    /*function onPointerMove() {
-     //todo
-     }*/
+
+
+
+
+
+    function onPointerMove() {
+        if(itemMesh) {
+            var pickInfo = scene.pick(canvas.width / 2, canvas.height / 2, (mesh)=>{
+                return mesh !== itemMesh;
+            });
+            if (pickInfo.hit) {
+                const point = pickInfo.pickedPoint;
+                itemMesh.position = point;
+                itemMesh.rotation.y = camera.rotation.y+rotation;
+            }
+        }
+    }
+
+
+
     function onPointerUp() {
         itemMesh = null;
     }
 
     canvas.addEventListener("pointerdown", onPointerDown, false);
+    canvas.addEventListener("pointermove", onPointerMove, false);
     canvas.addEventListener("pointerup", onPointerUp, false);
 
     scene.onDispose = function () {
         canvas.removeEventListener("pointerdown", onPointerDown);
+        canvas.removeEventListener("pointermove", onPointerMove);
         canvas.removeEventListener("pointerup", onPointerUp);
-        //canvas.removeEventListener("pointermove", onPointerMove);
     }
 
 
