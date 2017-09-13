@@ -19,6 +19,7 @@ export default function injectObjectPicking(scene:BABYLON.Scene,groundMesh:BABYL
         if (pickInfo.hit) {
             itemMesh = pickInfo.pickedMesh;
             rotation = pickInfo.pickedMesh.rotation.y;
+            itemMesh.material.alpha = 0.5;
         }
     }
 
@@ -42,6 +43,7 @@ export default function injectObjectPicking(scene:BABYLON.Scene,groundMesh:BABYL
 
 
     function onPointerUp() {
+        itemMesh.material.alpha = 0;
         itemMesh = null;
     }
 
