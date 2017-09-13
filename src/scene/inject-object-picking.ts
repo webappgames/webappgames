@@ -1,10 +1,12 @@
 import * as BABYLON from 'babylonjs';
 
 //todo not groundMesh but pickable objects
-export default function injectObjectPicking(scene:BABYLON.Scene,groundMesh:BABYLON.AbstractMesh){
+export default function injectObjectPicking(scene:BABYLON.Scene,canvas:HTMLCanvasElement,groundMesh:BABYLON.AbstractMesh){
 
-    const canvas = scene.getEngine().getRenderingCanvas();
-    const camera = scene.activeCamera;
+    //const boundingRect = scene.getEngine().getRenderingCanvasClientRect();
+    //const canvas = scene.getEngine().getRenderingCanvas();
+    const camera = scene.activeCamera as BABYLON.FreeCamera;
+
 
 
     let itemMesh:BABYLON.AbstractMesh|null = null;
@@ -43,8 +45,10 @@ export default function injectObjectPicking(scene:BABYLON.Scene,groundMesh:BABYL
 
 
     function onPointerUp() {
-        itemMesh.material.alpha = 0;
-        itemMesh = null;
+        if(itemMesh) {
+            itemMesh.material.alpha = 1;
+            itemMesh = null;
+        }
     }
 
     canvas.addEventListener("pointerdown", onPointerDown, false);

@@ -81,7 +81,7 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
     }
 
 
-    injectObjectPicking(scene,groundMesh);
+    injectObjectPicking(scene,canvas,groundMesh);
 
 
     camera.onCollide = function (collidedMesh: any) {
