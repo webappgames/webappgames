@@ -7,10 +7,9 @@ registerServiceWorker();
 const canvasElement = document.getElementById("scene") as any;
 
 
-canvasElement.onclick = function() {
-    canvasElement.requestPointerLock();
-    //document.requestFullscreen();
-}
+
+
+
 
 const engine = new BABYLON.Engine(canvasElement, true);
 const scene = createScene(canvasElement, engine);

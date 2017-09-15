@@ -1,7 +1,7 @@
 import * as BABYLON from 'babylonjs';
 //import createStairs from './create-stairs';
 import injectObjectPicking from './inject-object-picking';
-
+import setControlls from './set-controlls';
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
     const material = new BABYLON.StandardMaterial("texture3", scene);
@@ -15,7 +15,7 @@ function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
 }
 
 
-export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.Engine): BABYLON.Scene {
+export default function createScene(canvasElement: HTMLCanvasElement, engine: BABYLON.Engine): BABYLON.Scene {
     const scene = new BABYLON.Scene(engine);
 
 
@@ -75,11 +75,11 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
 
 
     camera.parent = playerMesh;
+    setControlls(canvasElement,(alpha,beta)=>{
+        playerMesh.rotation.x += alpha;
+        playerMesh.rotation.y += beta;
 
-
-
-
-
+    });
 
 
 
@@ -145,7 +145,7 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
     }
 
 
-    injectObjectPicking(scene,canvas,groundMesh);
+    injectObjectPicking(scene,canvasElement,groundMesh);
 
 
     camera.onCollide = function (collidedMesh: any) {
