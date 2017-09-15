@@ -1,16 +1,16 @@
 import * as BABYLON from 'babylonjs';
-import createStairs from './create-stairs';
+//import createStairs from './create-stairs';
 import injectObjectPicking from './inject-object-picking';
 
 
-function getMaterial(name:string,scene:BABYLON.Scene){
+function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
     const material = new BABYLON.StandardMaterial("texture3", scene);
     const texture = new BABYLON.Texture(`/assets/testures/${name}.jpg`, scene);
-    texture.uScale=10;
-    texture.vScale=10;
+    texture.uScale=textureScale;
+    texture.vScale=textureScale;
     material.diffuseTexture = texture;
-    material.specularColor = BABYLON.Color3.FromHexString('#ff0000');
-    material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
+    //material.specularColor = BABYLON.Color3.FromHexString('#ff0000');
+    //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
     return material;
 }
 
@@ -21,32 +21,26 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
 
     scene.clearColor = new BABYLON.Color4(1, 1, 1, 0);
 
-    const camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(-50, 6, -70), scene);
+
+
+    const camera = new BABYLON.FreeCamera("FreeCamera", BABYLON.Vector3.Zero(),  scene);
     camera.fov = 1.2;
 
-    camera.attachControl(canvas, true);
+    /*camera.attachControl(canvas, true);
     camera.angularSensibility = 2000;
     camera.inertia = 0.7;
     camera.speed = 5;
     camera.keysUp.push(87);    //W
     camera.keysDown.push(83)   //D
     camera.keysLeft.push(65);  //A
-    camera.keysRight.push(68); //S
+    camera.keysRight.push(68); //S*/
 
 
-    scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
-    scene.collisionsEnabled = true;
-    camera.checkCollisions = true;
-    camera.applyGravity = true;
-    camera.ellipsoid = new BABYLON.Vector3(2, 3, 2);
-
-
-    const gravityVector = new BABYLON.Vector3(0,-9.81, 0);
-    //const physicsPlugin = new BABYLON.CannonJSPlugin();
-    const physicsPlugin = new BABYLON.OimoJSPlugin()
-    scene.enablePhysics(gravityVector, physicsPlugin);
-    //scene.enablePhysics();
-
+    //scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
+    //scene.collisionsEnabled = true;
+    //camera.checkCollisions = true;
+    //camera.applyGravity = true;
+    //camera.ellipsoid = new BABYLON.Vector3(2, 3, 2);
 
 
 
@@ -60,17 +54,48 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
 
 
 
+
+    const gravityVector = new BABYLON.Vector3(0,-9.81, 0);
+    //const physicsPlugin = new BABYLON.CannonJSPlugin();
+    const physicsPlugin = new BABYLON.OimoJSPlugin()
+    scene.enablePhysics(gravityVector, physicsPlugin);
+    //scene.enablePhysics();
+
+
+
+
+
+    const playerMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
+    playerMesh.position =  new BABYLON.Vector3(-50, 6, -70);
+    playerMesh.material = getMaterial('grass', 1, scene);
+    playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+        mass: 10,
+        restitution: 0.1
+    }, scene);
+
+
+    camera.parent = playerMesh;
+
+
+
+
+
+
+
+
+
+
     const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
     groundMesh.position.y = -0.5;
     groundMesh.checkCollisions = true;
-    groundMesh.material = getMaterial('grass',scene);
+    groundMesh.material = getMaterial('grass',100,scene);
     groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1 }, scene);
 
 
 
 
 
-    const stairsMesh = createStairs(scene, 50);
+    /*const stairsMesh = createStairs(scene, 50);
     stairsMesh.position.y = -0.5;
 
 
@@ -79,11 +104,11 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
     building.position.y = -0.5;
     building.position.x = 75;
     building.checkCollisions = true;
-    building.material = getMaterial('stone-plain',scene);
+    building.material = getMaterial('stone-plain',scene);*/
 
 
 
-    for(let i=0;i<100;i++){
+    /*for(let i=0;i<100;i++){
         const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
         boxMesh.position.y = Math.random()*20;
         boxMesh.position.x = (Math.random()-0.5)*100;
@@ -97,6 +122,26 @@ export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.E
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
+    }*/
+
+    for(let x=0;x<10;x++) {
+        for (let i = 0; i < 10; i++) {
+            const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
+            boxMesh.position.y = i * 4 + 1;
+            boxMesh.position.x = -10;
+            boxMesh.position.z = x*10;
+            //boxMesh.rotation.y = Math.random()*Math.PI*2;
+
+
+            boxMesh.checkCollisions = true;
+            boxMesh.material = getMaterial('stone-plain', 1, scene);
+
+
+            boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+                mass: 10,
+                restitution: 0.1
+            }, scene);
+        }
     }
 
 

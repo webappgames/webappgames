@@ -35,6 +35,8 @@ export default function injectObjectPicking(scene:BABYLON.Scene,canvas:HTMLCanva
                 return mesh !== itemMesh;
             });
             if (pickInfo.hit) {
+
+
                 const point = pickInfo.pickedPoint;
                 itemMesh.position = point;
                 itemMesh.rotation.y = camera.rotation.y+rotation;
