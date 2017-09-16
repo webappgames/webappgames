@@ -1,6 +1,6 @@
 import * as BABYLON from 'babylonjs';
 //import createStairs from './create-stairs';
-import injectObjectPicking from './inject-object-picking';
+//import injectObjectPicking from './inject-object-picking';
 import setControlls from './set-controlls';
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
@@ -44,7 +44,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const light1 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
+    const light1 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(1, -2, 1), scene);
     light1.position = new BABYLON.Vector3(20, 3, 20);
     light1.intensity = 1;
 
@@ -65,12 +65,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const playerMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
+    const playerMesh = BABYLON.Mesh.CreateSphere("box", 3 ,4, scene);
     playerMesh.position =  new BABYLON.Vector3(-50, 6, -70);
-    playerMesh.material = getMaterial('grass', 1, scene);
-    playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+    playerMesh.rotation =  new BABYLON.Vector3(Math.PI/-4, Math.PI/8, 0);
+    //playerMesh.material = getMaterial('grass', 1, scene);
+    playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
         mass: 10,
-        restitution: 0.1
+        restitution: 0.01
     }, scene);
 
 
@@ -89,7 +90,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     groundMesh.position.y = -0.5;
     groundMesh.checkCollisions = true;
     groundMesh.material = getMaterial('grass',100,scene);
-    groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1 }, scene);
+    groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, scene);
 
 
 
@@ -124,29 +125,29 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
     }*/
 
-    for(let x=0;x<10;x++) {
-        for (let i = 0; i < 10; i++) {
-            const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
-            boxMesh.position.y = i * 4 + 1;
-            boxMesh.position.x = -10;
-            boxMesh.position.z = x*10;
-            //boxMesh.rotation.y = Math.random()*Math.PI*2;
+    for(let y=0;y<5;y++) {
+        for (let x = 0; x < 5; x++) {
+            for (let i = 0; i < 15; i++) {
+                const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
+                boxMesh.position.y = i * 4 + 1;
+                boxMesh.position.x = (x-5) * 10;
+                boxMesh.position.z = (y-5) * 10;
+                //boxMesh.rotation.y = Math.random()*Math.PI*2;
 
 
-            boxMesh.checkCollisions = true;
-            boxMesh.material = getMaterial('stone-plain', 1, scene);
+                boxMesh.checkCollisions = true;
+                boxMesh.material = getMaterial('stone-plain', 1, scene);
 
 
-            boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-                mass: 10,
-                restitution: 0.1
-            }, scene);
+                boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+                    mass: 10,
+                    restitution: 0.5
+                }, scene);
+            }
         }
     }
 
-
-    injectObjectPicking(scene,canvasElement,groundMesh);
-
+    //injectObjectPicking(scene,canvasElement,groundMesh);
 
     camera.onCollide = function (collidedMesh: any) {
     };
