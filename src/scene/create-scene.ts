@@ -5,7 +5,7 @@ import setControlls from './set-controlls';
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
     const material = new BABYLON.StandardMaterial("texture3", scene);
-    const texture = new BABYLON.Texture(`/assets/testures/${name}.jpg`, scene);
+    const texture = new BABYLON.Texture(`/assets/textures/${name}.jpg`, scene);
     texture.uScale=textureScale;
     texture.vScale=textureScale;
     material.diffuseTexture = texture;
@@ -55,7 +55,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const gravityVector = new BABYLON.Vector3(0,-9.81, 0);
+    const gravityVector = new BABYLON.Vector3(0,-100, 0);
     //const physicsPlugin = new BABYLON.CannonJSPlugin();
     const physicsPlugin = new BABYLON.OimoJSPlugin()
     scene.enablePhysics(gravityVector, physicsPlugin);
@@ -66,8 +66,10 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
     const playerMesh = BABYLON.Mesh.CreateSphere("box", 3 ,4, scene);
-    playerMesh.position =  new BABYLON.Vector3(-50, 6, -70);
-    playerMesh.rotation =  new BABYLON.Vector3(Math.PI/-4, Math.PI/8, 0);
+    //playerMesh.visibility = 0;
+    playerMesh.showBoundingBox = true;
+    playerMesh.position =  new BABYLON.Vector3(-100, 6, -100);
+    playerMesh.rotation =  new BABYLON.Vector3(Math.PI/-4, Math.PI/16, 0);
     //playerMesh.material = getMaterial('grass', 1, scene);
     playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
         mass: 10,
@@ -76,11 +78,16 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
     camera.parent = playerMesh;
-    setControlls(canvasElement,(alpha,beta)=>{
-        playerMesh.rotation.x += alpha;
-        playerMesh.rotation.y += beta;
-
-    });
+    setControlls(
+            canvasElement
+            ,(alpha:number,beta:number)=>{
+                playerMesh.rotation.x += alpha;
+                playerMesh.rotation.y += beta;
+            }
+            ,(vector:BABYLON.Vector3)=>{
+                playerMesh.physicsImpostor.setLinearVelocity(vector);//todo add to current
+            }
+        );
 
 
 
@@ -125,13 +132,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
     }*/
 
-    for(let y=0;y<5;y++) {
-        for (let x = 0; x < 5; x++) {
-            for (let i = 0; i < 15; i++) {
+    for(let y=0;y<3;y++) {
+        for (let x = 0; x < 3; x++) {
+            for (let i = 0; i < 50; i++) {
                 const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
                 boxMesh.position.y = i * 4 + 1;
-                boxMesh.position.x = (x-5) * 10;
-                boxMesh.position.z = (y-5) * 10;
+                boxMesh.position.x = (x-5) * 4;
+                boxMesh.position.z = (y-5) * 4;
                 //boxMesh.rotation.y = Math.random()*Math.PI*2;
 
 
@@ -141,7 +148,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
                 boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
                     mass: 10,
-                    restitution: 0.5
+                    restitution: 0.2
                 }, scene);
             }
         }

@@ -1,4 +1,7 @@
-export default function setControlls(canvasElement:HTMLCanvasElement,rotateCameraBy:(alpha:number,beta:number)=>void){
+import {subscribeToPress} from '../controll/keys';
+import * as BABYLON from 'babylonjs';
+
+export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlayerBy:(alpha:number,beta:number)=>void,addPlayerVelocity:(vector:BABYLON.Vector3)=>void){
 
 
     canvasElement.onclick = function() {
@@ -28,13 +31,19 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotateCamer
     function updatePosition(e:any) {
         const   x = e.movementX,
                 y = e.movementY;
-        rotateCameraBy(
+        rotatePlayerBy(
              y/500
             ,x/500
         );
 
     }
 
+
+    subscribeToPress(32,()=>{
+
+        addPlayerVelocity(new BABYLON.Vector3(0,10,0));
+
+    });
 
 
 
