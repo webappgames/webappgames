@@ -37,7 +37,7 @@ var controls_down = {
 
 
 class Subscriber{
-    constructor(public keyCode:number,public callback:Function){
+    constructor(public keyCodes:number[],public callback:Function){
     }
 }
 
@@ -58,7 +58,7 @@ window.addEventListener('keydown', function (event) {
             keysDown.push(event.keyCode);
 
             subscribers.forEach((subscriber:Subscriber)=>{
-                if(subscriber.keyCode == event.keyCode){
+                if(subscriber.keyCodes.some((keyCode)=>keyCode == event.keyCode)){
                     subscriber.callback.call(null);
                 }
             })
@@ -82,15 +82,15 @@ window.addEventListener('keyup', function (event) {
 });
 
 
-
-export function isDown(keyCode:number):boolean{
+/*
+export function isDown(keyCodes:number[]):boolean{
     return false;//todo
-}
+}*/
 
 //todo unsubscribe
 //todo event type in param
-export function subscribeToPress(keyCode:number,callback:Function){//todo unsubscribe
-    subscribers.push(new Subscriber(keyCode,callback));
+export function subscribeToPress(keyCodes:number[],callback:Function){//todo unsubscribe
+    subscribers.push(new Subscriber(keyCodes,callback));
 }
 
 

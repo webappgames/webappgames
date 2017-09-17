@@ -39,7 +39,7 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
     }
 
 
-    subscribeToPress(32,()=>{
+    subscribeToPress([32],()=>{
 
         addPlayerVelocity(new BABYLON.Vector3(0,10,0));
 
