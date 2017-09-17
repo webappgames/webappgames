@@ -65,14 +65,14 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const playerMesh = BABYLON.Mesh.CreateSphere("box", 3 ,4, scene);
+    const playerMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
     //playerMesh.visibility = 0;
     playerMesh.showBoundingBox = true;
     playerMesh.position =  new BABYLON.Vector3(-100, 6, -100);
     playerMesh.rotation =  new BABYLON.Vector3(Math.PI/-4, Math.PI/16, 0);
     //playerMesh.material = getMaterial('grass', 1, scene);
-    playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
-        mass: 10,
+    playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+        mass: 100,
         restitution: 0.01
     }, scene);
 
@@ -81,11 +81,32 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     setControlls(
             canvasElement
             ,(alpha:number,beta:number)=>{
+
+
                 playerMesh.rotation.x += alpha;
                 playerMesh.rotation.y += beta;
+                playerMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(alpha,beta,0));
+                //console.log(playerMesh.rotation);
+
             }
             ,(vector:BABYLON.Vector3)=>{
+
+                /*const distance = Math.sqrt(Math.pow(vector.x,2)-Math.pow(vector.z,2));
+                const rotation = Math.atan2(vector.z,vector.x)+playerMesh.rotation.y;
+
+
+                const rotatedVector = new BABYLON.Vector3(
+                    Math.cos(rotation)*distance,
+                    vector.y,
+                    Math.sin(rotation)*distance
+                );*/
+
+
                 playerMesh.physicsImpostor.setLinearVelocity(vector);//todo add to current
+
+
+
+
             }
         );
 

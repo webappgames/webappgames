@@ -1,5 +1,6 @@
-import {subscribeToPress} from '../controll/keys';
+import {subscribeKeys,SubscriberModes} from '../controll/keys';
 import * as BABYLON from 'babylonjs';
+import {KEYMAP,PLAYER} from '../config';
 
 export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlayerBy:(alpha:number,beta:number)=>void,addPlayerVelocity:(vector:BABYLON.Vector3)=>void){
 
@@ -39,12 +40,25 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
     }
 
 
-    subscribeToPress([32],()=>{
+    subscribeKeys(KEYMAP.JUMP,SubscriberModes.PRESS,()=>{
 
-        addPlayerVelocity(new BABYLON.Vector3(0,10,0));
+        addPlayerVelocity(new BABYLON.Vector3(0,PLAYER.JUMP,0));
 
     });
 
+
+
+
+    subscribeKeys(KEYMAP.FORWARD,SubscriberModes.FRAME,()=>{
+
+        addPlayerVelocity(new BABYLON.Vector3(PLAYER.SPEED,0,0));
+
+    });
+    subscribeKeys(KEYMAP.BACKWARD,SubscriberModes.FRAME,()=>{
+
+        addPlayerVelocity(new BABYLON.Vector3(-PLAYER.SPEED,0,0));
+
+    });
 
 
 
