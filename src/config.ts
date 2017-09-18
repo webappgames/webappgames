@@ -11,6 +11,7 @@ export const KEYMAP = {
 
 export const PLAYER = {
   SPEED: {
+      TERMINAL:50,
       FORWARD:10,
       BACKWARD:7,
       SIDE:7,

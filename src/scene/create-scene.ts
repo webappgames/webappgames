@@ -2,6 +2,7 @@ import * as BABYLON from 'babylonjs';
 //import createStairs from './create-stairs';
 //import injectObjectPicking from './inject-object-picking';
 import setControlls from './set-controlls';
+import {PLAYER} from '../config';
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
     const material = new BABYLON.StandardMaterial("texture3", scene);
@@ -73,7 +74,8 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     //playerMesh.material = getMaterial('grass', 1, scene);
     playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
         mass: 100,
-        restitution: 0.01
+        restitution: 0.01,
+        friction: 1
     }, scene);
 
 
@@ -111,8 +113,14 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 );
 
 
-                playerMesh.physicsImpostor.setLinearVelocity(rotatedVector);//todo add to current
 
+                const currentVelocity = playerMesh.physicsImpostor.getLinearVelocity();
+                const composedVelocity = currentVelocity.add(rotatedVector);
+                const composedVelocityLength = composedVelocity.length();
+                if(composedVelocityLength>PLAYER.SPEED.TERMINAL){
+                    composedVelocity.scaleInPlace(PLAYER.SPEED.TERMINAL/composedVelocityLength);
+                }
+                playerMesh.physicsImpostor.setLinearVelocity(composedVelocity);
 
 
 
