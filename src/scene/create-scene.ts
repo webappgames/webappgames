@@ -2,6 +2,7 @@ import * as BABYLON from 'babylonjs';
 //import createStairs from './create-stairs';
 //import injectObjectPicking from './inject-object-picking';
 import setControlls from './set-controlls';
+import createSpellParticles from './create-spell-particles';
 import {PLAYER} from '../config';
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
@@ -67,7 +68,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
     const playerMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
-    //playerMesh.visibility = 0;
+    //todo isVisible playerMesh.visibility = 0;
     playerMesh.showBoundingBox = true;
     playerMesh.position =  new BABYLON.Vector3(-100, 6, -100);
     playerMesh.rotation =  new BABYLON.Vector3(0, /*Math.PI/16*/0, 0);
@@ -213,56 +214,33 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
         var pickInfo = scene.pick(canvasElement.width / 2, canvasElement.height / 2, (mesh)=>{
-            return mesh !== playerMesh && mesh !== groundMesh;
+            return mesh !== playerMesh && mesh !== groundMesh && 'physicsImpostor' in mesh;
         });
 
 
 
         if (pickInfo.hit) {
 
-            const cameraDirection = camera.getDirection(new BABYLON.Vector3(1,1,1));
-            //cameraDirection.scale(100)
-            //pickInfo.pickedMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
+
+            //todo not from camera but from two points
+            const cameraDirection = camera.getDirection(new BABYLON.Vector3(1, 1, 1));
             pickInfo.pickedMesh.physicsImpostor.setLinearVelocity(cameraDirection.scale(100));
-            //pickInfo.pickedMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(Math.random()*10,Math.random()*10,Math.random()*10));
+
+
+            const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
+            fountainMesh.isVisible = false;
+            fountainMesh.position = playerMesh.position.clone();
+            createSpellParticles(fountainMesh,scene);
+
+            scene.registerBeforeRender(()=> {
+
+                fountainMesh.position.x += 0.05;
+
+            })
+
 
 
         }
-
-
-
-
-        /*
-        console.log('spell...');
-        const spellMesh = BABYLON.Mesh.CreateSphere("spell", 16, 1, scene);
-        spellMesh.position = playerMesh.position.clone();
-        spellMesh.material = getMaterial('grass', 1, scene);
-
-
-        spellMesh.physicsImpostor = new BABYLON.PhysicsImpostor(spellMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
-            mass: 10,
-            restitution: 0.2
-        }, scene);
-
-
-
-        const cameraDirection = camera.getDirection(new BABYLON.Vector3(1,1,1));
-        //cameraDirection.scaleInPlace(2);
-        spellMesh.position.addInPlace(cameraDirection.scale(3));
-
-        playerMesh.physicsImpostor.setLinearVelocity(cameraDirection.scale(10));
-
-
-
-        /*var pickInfo = scene.pick(canvasElement.width / 2, canvasElement.height / 2, (mesh)=>{
-         return mesh !== groundMesh;
-         });
-         if (pickInfo.hit) {
-         itemMesh = pickInfo.pickedMesh;
-         rotation = pickInfo.pickedMesh.rotation.y;
-         itemMesh.material.alpha = 0.5;
-         }*/
-
 
 
     }
