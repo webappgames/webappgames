@@ -71,4 +71,9 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
     });
 
 
+
+
+
+
+
 }

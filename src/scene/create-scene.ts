@@ -133,7 +133,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
     const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
     groundMesh.position.y = -0.5;
-    groundMesh.checkCollisions = true;
+    //groundMesh.checkCollisions = true;
     groundMesh.material = getMaterial('grass',100,scene);
     groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, scene);
 
@@ -177,10 +177,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 boxMesh.position.y = i * 4 + 1;
                 boxMesh.position.x = (x-5) * 4;
                 boxMesh.position.z = (y-5) * 4;
-                //boxMesh.rotation.y = Math.random()*Math.PI*2;
-
-
-                boxMesh.checkCollisions = true;
+                //boxMesh.checkCollisions = true;
                 boxMesh.material = getMaterial('stone-plain', 1, scene);
 
 
@@ -208,63 +205,74 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    //scene.registerBeforeRender(()=>{camera.cameraDirection.y += 0.01;});
+
+
+
+
+    function onPointerDown() {
+
+
+        var pickInfo = scene.pick(canvasElement.width / 2, canvasElement.height / 2, (mesh)=>{
+            return mesh !== playerMesh && mesh !== groundMesh;
+        });
+
+
+
+        if (pickInfo.hit) {
+
+            const cameraDirection = camera.getDirection(new BABYLON.Vector3(1,1,1));
+            //cameraDirection.scale(100)
+            //pickInfo.pickedMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
+            pickInfo.pickedMesh.physicsImpostor.setLinearVelocity(cameraDirection.scale(100));
+            //pickInfo.pickedMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(Math.random()*10,Math.random()*10,Math.random()*10));
+
+
+        }
+
+
+
+
+        /*
+        console.log('spell...');
+        const spellMesh = BABYLON.Mesh.CreateSphere("spell", 16, 1, scene);
+        spellMesh.position = playerMesh.position.clone();
+        spellMesh.material = getMaterial('grass', 1, scene);
+
+
+        spellMesh.physicsImpostor = new BABYLON.PhysicsImpostor(spellMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
+            mass: 10,
+            restitution: 0.2
+        }, scene);
+
+
+
+        const cameraDirection = camera.getDirection(new BABYLON.Vector3(1,1,1));
+        //cameraDirection.scaleInPlace(2);
+        spellMesh.position.addInPlace(cameraDirection.scale(3));
+
+        playerMesh.physicsImpostor.setLinearVelocity(cameraDirection.scale(10));
+
+
+
+        /*var pickInfo = scene.pick(canvasElement.width / 2, canvasElement.height / 2, (mesh)=>{
+         return mesh !== groundMesh;
+         });
+         if (pickInfo.hit) {
+         itemMesh = pickInfo.pickedMesh;
+         rotation = pickInfo.pickedMesh.rotation.y;
+         itemMesh.material.alpha = 0.5;
+         }*/
+
+
+
+    }
+    canvasElement.addEventListener("pointerdown", onPointerDown, false);
+
+
+
 
 
 
     return scene;
 }
 
-
-
-
-/*
-
-export default function createScene(canvas: HTMLCanvasElement, engine: BABYLON.Engine): BABYLON.Scene {
-
-    // This creates a basic Babylon Scene object (non-mesh)
-    var scene = new BABYLON.Scene(engine);
-
-    // This creates and positions a free camera (non-mesh)
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 50, -100), scene);
-
-    // This targets the camera to scene origin
-    camera.setTarget(BABYLON.Vector3.Zero());
-
-    // This attaches the camera to the canvas
-    camera.attachControl(canvas, true);
-
-    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-
-    // Default intensity is 1. Let's dim the light a small amount
-    light.intensity = 0.7;
-
-    scene.enablePhysics(new BABYLON.Vector3(0,-20, 0), new BABYLON.OimoJSPlugin());
-
-
-    for(let i=0;i<100;i++){
-        var box = BABYLON.Mesh.CreateBox("sphere1", 2, scene);
-        box.position.y =Math.random()*100;
-        box.position.x = (Math.random()-0.5)*20;
-        box.position.z = (Math.random()-0.5)*20;
-
-        box.rotation.x = Math.random()*Math.PI*2;
-        box.rotation.y = Math.random()*Math.PI*2;
-        box.rotation.z = Math.random()*Math.PI*2;
-
-        box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 10, restitution: 0.5 }, scene);
-    }
-
-
-    // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
-    var ground = BABYLON.Mesh.CreateGround("ground1", 1000, 1000, 2, scene);
-
-
-
-
-    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
-
-    return scene;
-
-};/**/
