@@ -42,7 +42,7 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
 
     subscribeKeys(KEYMAP.JUMP,SubscriberModes.PRESS,()=>{
 
-        addPlayerVelocity(new BABYLON.Vector3(0,PLAYER.JUMP,0));
+        addPlayerVelocity(new BABYLON.Vector3(0,PLAYER.SPEED.JUMP,0));
 
     });
 
@@ -51,15 +51,24 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
 
     subscribeKeys(KEYMAP.FORWARD,SubscriberModes.FRAME,()=>{
 
-        addPlayerVelocity(new BABYLON.Vector3(PLAYER.SPEED,0,0));
+        addPlayerVelocity(new BABYLON.Vector3(PLAYER.SPEED.FORWARD,0,0));
 
     });
     subscribeKeys(KEYMAP.BACKWARD,SubscriberModes.FRAME,()=>{
 
-        addPlayerVelocity(new BABYLON.Vector3(-PLAYER.SPEED,0,0));
+        addPlayerVelocity(new BABYLON.Vector3(-PLAYER.SPEED.BACKWARD,0,0));
 
     });
+    subscribeKeys(KEYMAP.LEFT,SubscriberModes.FRAME,()=>{
 
+        addPlayerVelocity(new BABYLON.Vector3(0,0,PLAYER.SPEED.SIDE));
+
+    });
+    subscribeKeys(KEYMAP.RIGHT,SubscriberModes.FRAME,()=>{
+
+        addPlayerVelocity(new BABYLON.Vector3(0,0,-PLAYER.SPEED.SIDE));
+
+    });
 
 
 }

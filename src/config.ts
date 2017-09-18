@@ -10,8 +10,10 @@ export const KEYMAP = {
 
 
 export const PLAYER = {
-  SPEED: 10,
-  JUMP: 50
-
-
+  SPEED: {
+      FORWARD:10,
+      BACKWARD:7,
+      SIDE:7,
+      JUMP:50
+  }
 };
