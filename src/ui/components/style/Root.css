@@ -14,9 +14,10 @@
     position: fixed;
     bottom: 0;
     right: 0;
-    color: white;
 
-    font-size: 3em;
+    text-transform: uppercase;
+
+    font-size: 2em;
 
 
 }
