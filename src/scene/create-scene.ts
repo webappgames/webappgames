@@ -4,6 +4,7 @@ import * as BABYLON from 'babylonjs';
 import setControlls from './set-controlls';
 import createSpellParticles from './create-spell-particles';
 import {PLAYER} from '../config';
+import Bounce from '../spells/Bounce';
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
     const material = new BABYLON.StandardMaterial("texture3", scene);
@@ -137,7 +138,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     const skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
     const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
-    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("/assets/skyboxes/ashcanyon/ashcanyon", scene, ["_ft.jpg", "_up.jpg", "_rt.jpg", "_bk.jpg", "_dn.jpg", "_lf.jpg"]);
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("/assets/skyboxes/TropicalSunnyDay/TropicalSunnyDay", scene, ["_ft.jpg", "_up.jpg", "_rt.jpg", "_bk.jpg", "_dn.jpg", "_lf.jpg"]);
     skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
     skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -301,12 +302,11 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 }else{
 
 
-                    target.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
-
+                    let spell = new Bounce(target);
+                    spell.execute();
+                    //target.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
                     //target.dispose();
                     //target.scaling.scaleInPlace(1.2);
-
-
 
 
 
