@@ -88,6 +88,12 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
             }
             ,(vector:BABYLON.Vector3)=>{
 
+
+                const currentVelocity = playerMesh.physicsImpostor.getLinearVelocity();
+
+                //todo Jumping on flying object
+                const onGround = currentVelocity.y<0.1;//playerMesh.position.y<=2;
+
                 const cameraDirection = camera.getDirection(new BABYLON.Vector3(1,1,1));
                 const cameraRotation = Math.atan2(cameraDirection.z,cameraDirection.x);
 
@@ -98,13 +104,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
                 const rotatedVector = new BABYLON.Vector3(
                     Math.cos(rotation)*distance,
-                    vector.y,
+                    onGround?vector.y:0,
                     Math.sin(rotation)*distance
                 );
 
 
 
-                const currentVelocity = playerMesh.physicsImpostor.getLinearVelocity();
+
                 const composedVelocity = currentVelocity.add(rotatedVector);
                 const composedVelocityLength = composedVelocity.length();
                 if(composedVelocityLength>PLAYER.SPEED.TERMINAL){
