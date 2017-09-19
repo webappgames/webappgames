@@ -222,18 +222,19 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
-    boxMesh.scaling = new BABYLON.Vector3(5,20,2);
-    boxMesh.position = new BABYLON.Vector3(0,40,0);
-    boxMesh.material = getMaterial('stone-plain', 1, scene);
+    for (let i = 0; i < 15; i++) {
+        const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
+        boxMesh.scaling = new BABYLON.Vector3(5, 20, 2);
+        boxMesh.position = new BABYLON.Vector3(0, 40, i*40);
+        boxMesh.material = getMaterial('stone-plain', 1, scene);
 
 
-    boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-        mass: 10,
-        restitution: 0.2
-    }, scene);
+        boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+            mass: 10,
+            restitution: 0.2
+        }, scene);
 
-
+    }
 
 
 
