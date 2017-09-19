@@ -188,7 +188,10 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
     }*/
 
-    for(let y=0;y<3;y++) {
+
+
+
+    /*for(let y=0;y<3;y++) {
         for (let x = 0; x < 3; x++) {
             for (let i = 0; i < 50; i++) {
                 const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
@@ -205,16 +208,31 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 }, scene);
 
 
-                /*boxMesh.physicsImpostor.registerOnPhysicsCollide(groundMesh.physicsImpostor, function(main, collided) {
-                    console.log('boom');
-                    //main.sleep();
-                });*/
 
 
 
             }
         }
-    }
+    }*/
+
+
+
+    const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
+    boxMesh.scaling = new BABYLON.Vector3(5,20,2);
+    boxMesh.position = new BABYLON.Vector3(0,40,0);
+    boxMesh.material = getMaterial('stone-plain', 1, scene);
+
+
+    boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+        mass: 10,
+        restitution: 0.2
+    }, scene);
+
+
+
+
+
+
 
     //injectObjectPicking(scene,canvasElement,groundMesh);
 
@@ -247,11 +265,11 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
             const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
             fountainMesh.isVisible = false;
             fountainMesh.position = playerMesh.position.subtract(new BABYLON.Vector3(0,-2,0));
-            createSpellParticles(fountainMesh,scene);
+            const spellParticles = createSpellParticles(fountainMesh,scene);
 
 
             let lastTick = new Date().getTime();
-            scene.registerBeforeRender(()=> {
+            const tickCallback = ()=> {
 
                 const tickDuration = new Date().getTime() - lastTick;
                 lastTick = new Date().getTime();
@@ -269,12 +287,34 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
                     movementVector.scaleInPlace(tickSpeed/movementVectorLength);
 
+                }else{
+
+
+                    target.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
+
+                    //target.dispose();
+                    //target.scaling.scaleInPlace(1.2);
+
+
+
+
+
+                    scene.unregisterBeforeRender(tickCallback);
+
+
+                    spellParticles.stop();
+                    setTimeout(()=>{
+                        fountainMesh.dispose();
+                    },5000/*todo count this value*/);
+
                 }
 
 
                 fountainMesh.position.addInPlace(movementVector);
 
-            })
+            };
+
+            scene.registerBeforeRender(tickCallback);
 
 
 

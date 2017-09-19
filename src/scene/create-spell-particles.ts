@@ -16,8 +16,8 @@ export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,s
     particleSystem.maxEmitBox = new BABYLON.Vector3(0, 0, 0); // To...
 
     // Colors of all particles
-    particleSystem.color1 = new BABYLON.Color4(0, 0.5, 1, 1.0);
-    particleSystem.color2 = new BABYLON.Color4(.5, 0, 1, 1.0);
+    particleSystem.color1 = new BABYLON.Color4(1, 0, 0, 1.0);
+    particleSystem.color2 = new BABYLON.Color4(0, 1, 0, 1.0);
     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0, 0);
 
     // Size of each particle (random between...
@@ -25,11 +25,11 @@ export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,s
     particleSystem.maxSize = 2;
 
     // Life time of each particle (random between...
-    particleSystem.minLifeTime = 1;
-    particleSystem.maxLifeTime = 3;
+    particleSystem.minLifeTime = 0.1;
+    particleSystem.maxLifeTime = 0.5;
 
     // Emission rate
-    particleSystem.emitRate = 100;
+    particleSystem.emitRate = 1000;
 
     // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
     particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
@@ -48,7 +48,7 @@ export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,s
     // Speed
     particleSystem.minEmitPower = 0;
     particleSystem.maxEmitPower = 1;
-    particleSystem.updateSpeed = 0.005;
+    particleSystem.updateSpeed = 0.1;
 
     // Start the particle system
     particleSystem.start();
