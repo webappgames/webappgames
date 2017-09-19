@@ -60,7 +60,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     playerMesh.rotation =  new BABYLON.Vector3(0, /*Math.PI/16*/0, 0);
     //playerMesh.material = getMaterial('grass', 1, scene);
     playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
-        mass: 100,
+        mass: 1,
         restitution: 0.01,
         friction: 100
     }, scene);
@@ -70,9 +70,9 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     camera.position =  playerMesh.position;
     //todo Is thare better solution for angular friction?
     playerMesh.physicsImpostor.registerBeforePhysicsStep(()=>{
-        const angularVelocity = playerMesh.physicsImpostor.getAngularVelocity();
-        playerMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(.5));
-        //playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+        //const angularVelocity = playerMesh.physicsImpostor.getAngularVelocity();
+        //playerMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(.5));
+        playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
     });
 
 
