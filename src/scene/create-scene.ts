@@ -57,6 +57,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
+
     const gravityVector = new BABYLON.Vector3(0,-100, 0);
     //const physicsPlugin = new BABYLON.CannonJSPlugin();
     const physicsPlugin = new BABYLON.OimoJSPlugin()
@@ -127,6 +128,22 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
             }
         );
+
+
+
+
+
+
+    const skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
+    const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("/assets/skyboxes/TropicalSunnyDay/TropicalSunnyDay", scene, ["_ft.jpg", "_up.jpg", "_rt.jpg", "_bk.jpg", "_dn.jpg", "_lf.jpg"]);
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.disableLighting = true;
+    skybox.material = skyboxMaterial;
+
 
 
 
@@ -222,19 +239,40 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         if (pickInfo.hit) {
 
 
+            const target = pickInfo.pickedMesh;
+
             //todo not from camera but from two points
-            const cameraDirection = camera.getDirection(new BABYLON.Vector3(1, 1, 1));
-            pickInfo.pickedMesh.physicsImpostor.setLinearVelocity(cameraDirection.scale(100));
 
 
             const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
             fountainMesh.isVisible = false;
-            fountainMesh.position = playerMesh.position.clone();
+            fountainMesh.position = playerMesh.position.subtract(new BABYLON.Vector3(0,-2,0));
             createSpellParticles(fountainMesh,scene);
 
+
+            let lastTick = new Date().getTime();
             scene.registerBeforeRender(()=> {
 
-                fountainMesh.position.x += 0.05;
+                const tickDuration = new Date().getTime() - lastTick;
+                lastTick = new Date().getTime();
+
+
+                const speed = 100;//todo const
+
+
+                const tickSpeed = speed*tickDuration/1000;
+
+                const movementVector = target.position.subtract(fountainMesh.position);
+                const movementVectorLength = movementVector.length();
+
+                if(movementVectorLength>tickSpeed){
+
+                    movementVector.scaleInPlace(tickSpeed/movementVectorLength);
+
+                }
+
+
+                fountainMesh.position.addInPlace(movementVector);
 
             })
 
