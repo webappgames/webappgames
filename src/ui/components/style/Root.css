@@ -7,3 +7,16 @@
     height: 20px;
 
 }
+
+
+#current-spell{
+    z-index: 20;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    color: white;
+
+    font-size: 3em;
+
+
+}

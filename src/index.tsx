@@ -24,9 +24,28 @@ window.addEventListener("resize", function () {
 });
 
 
+const uiData = {
+
+    spells: [
+        {
+            //id: 'bounce',
+            name: 'Bounce'
+        },
+        {
+            //id: 'bounce',
+            name: 'Desintegrate'
+        }
+    ],
+    spellCurrent: 0,
+
+
+
+
+};
+
 
 ReactDOM.render(
-    <Root />,
+    <Root data={uiData}/>,
     uiElement
 );
 
