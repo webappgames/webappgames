@@ -29,23 +29,6 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     const camera = new BABYLON.FreeCamera("FreeCamera", BABYLON.Vector3.Zero(),  scene);
     camera.fov = 1.3;
 
-    /*camera.attachControl(canvas, true);
-    camera.angularSensibility = 2000;
-    camera.inertia = 0.7;
-    camera.speed = 5;
-    camera.keysUp.push(87);    //W
-    camera.keysDown.push(83)   //D
-    camera.keysLeft.push(65);  //A
-    camera.keysRight.push(68); //S*/
-
-
-    //scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
-    //scene.collisionsEnabled = true;
-    //camera.checkCollisions = true;
-    //camera.applyGravity = true;
-    //camera.ellipsoid = new BABYLON.Vector3(2, 3, 2);
-
-
 
     const light1 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(1, -2, 1), scene);
     light1.position = new BABYLON.Vector3(20, 3, 20);
@@ -69,34 +52,38 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const playerMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
+    const playerMesh = BABYLON.Mesh.CreateSphere("box", 16,4, scene);
     //todo isVisible playerMesh.visibility = 0;
-    playerMesh.showBoundingBox = true;
+    //playerMesh.showBoundingBox = true;
+    playerMesh.isVisible = false;
     playerMesh.position =  new BABYLON.Vector3(-100, 6, -100);
     playerMesh.rotation =  new BABYLON.Vector3(0, /*Math.PI/16*/0, 0);
     //playerMesh.material = getMaterial('grass', 1, scene);
-    playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+    playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
         mass: 100,
         restitution: 0.01,
-        friction: 1
+        friction: 100
     }, scene);
 
 
-    camera.parent = playerMesh;
+
+    camera.position =  playerMesh.position;
+    //todo Is thare better solution for angular friction?
+    playerMesh.physicsImpostor.registerBeforePhysicsStep(()=>{
+        const angularVelocity = playerMesh.physicsImpostor.getAngularVelocity();
+        playerMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(.5));
+        //playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+    });
+
+
+
+    //camera.parent = playerMesh;
     setControlls(
             canvasElement
             ,(alpha:number,beta:number)=>{
 
                 camera.rotation.x += alpha;
-                //camera.rotation.y += beta;
-                //playerMesh.rotation.x += alpha;
-                playerMesh.rotation.y = beta;
-                //playerMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,beta*100,0));
-
-                //const cameraDirection = camera.getDirection(new BABYLON.Vector3(1,0,1));
-                //const cameraRotation = Math.atan2(cameraDirection.z,cameraDirection.x);
-                //console.log(cameraRotation);
-                //console.log(playerMesh.physicsImpostor.getAngularVelocity());
+                camera.rotation.y += beta;
 
             }
             ,(vector:BABYLON.Vector3)=>{
@@ -135,6 +122,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
+
     const skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
     const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
@@ -160,7 +148,6 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
         ((groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).uOffset = groundMesh.position.x/10;
         ((groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).vOffset = groundMesh.position.z/10;
-
 
 
 
