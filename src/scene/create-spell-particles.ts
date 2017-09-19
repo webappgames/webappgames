@@ -26,7 +26,7 @@ export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,s
 
     // Life time of each particle (random between...
     particleSystem.minLifeTime = 0.1;
-    particleSystem.maxLifeTime = 0.5;
+    particleSystem.maxLifeTime = 2;
 
     // Emission rate
     particleSystem.emitRate = 1000;
