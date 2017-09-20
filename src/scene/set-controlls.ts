@@ -2,7 +2,11 @@ import {subscribeKeys,SubscriberModes} from '../tools/keys';
 import * as BABYLON from 'babylonjs';
 import {KEYMAP,PLAYER} from '../config';
 
-export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlayerBy:(alpha:number,beta:number)=>void,addPlayerVelocity:(vector:BABYLON.Vector3)=>void){
+export default function setControlls(
+    canvasElement:HTMLCanvasElement,
+    rotatePlayerBy:(alpha:number,beta:number)=>void,
+    addPlayerVelocity:(vector:BABYLON.Vector3)=>void
+){
 
     //todo add event listener
     canvasElement.onclick = function() {
@@ -42,6 +46,11 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
 
 
 
+    //todo here should be spell execution
+
+
+
+
     subscribeKeys(KEYMAP.FORWARD,SubscriberModes.FRAME,()=>{
 
         addPlayerVelocity(new BABYLON.Vector3(PLAYER.SPEED.FORWARD,0,0));
@@ -71,13 +80,6 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
         addPlayerVelocity(new BABYLON.Vector3(0,PLAYER.SPEED.JUMP,0));
 
     });
-
-
-
-
-
-
-
 
 
 

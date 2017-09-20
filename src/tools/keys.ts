@@ -22,12 +22,12 @@ const keysDown:number[] = [];
 
 
 
-function executeSubscribers(subscribers:Subscriber[],keyCode:number):boolean{
+function executeSubscribers(subscribers:Subscriber[],keyCode:number,execute=true):boolean{
 
     let anySubsciberExecuted = false;
     subscribers.forEach((subscriber:Subscriber)=>{
         if(subscriber.keyCodes.some((keyCodeOfSubscriber)=>keyCodeOfSubscriber === keyCode)){
-            subscriber.callback.call(null);
+            if(execute)subscriber.callback.call(null);
             anySubsciberExecuted = true;
         }
     })
@@ -47,9 +47,9 @@ window.addEventListener('keydown', function (event) {
 
             //todo inly in debug mode
             if(
-                !executeSubscribers(subscribersPress,event.keyCode) &&
-                !executeSubscribers(subscribersRelease,event.keyCode) &&
-                !executeSubscribers(subscribersFrame,event.keyCode)
+                !executeSubscribers(subscribersPress,event.keyCode,false) &&
+                !executeSubscribers(subscribersRelease,event.keyCode,false) &&
+                !executeSubscribers(subscribersFrame,event.keyCode,false)
             ){
                 log.send('Pressed unknown key.',event.keyCode);
             }

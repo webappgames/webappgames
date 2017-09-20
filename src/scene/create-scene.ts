@@ -1,3 +1,4 @@
+import log from '../tools/log';
 import * as BABYLON from 'babylonjs';
 //import createStairs from './create-stairs';
 //import injectObjectPicking from './inject-object-picking';
@@ -5,6 +6,9 @@ import setControlls from './set-controlls';
 import createSpellParticles from './create-spell-particles';
 import {PLAYER} from '../config';
 import Bounce from '../spells/Bounce';
+import {subscribeKeys,SubscriberModes} from '../tools/keys';
+
+
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
     const material = new BABYLON.StandardMaterial("texture3", scene);
@@ -328,6 +332,18 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
     }
     canvasElement.addEventListener("pointerdown", onPointerDown, false);
+
+
+
+
+
+
+
+    //todo move to set-controlls.ts
+    //75,76
+    subscribeKeys([75],SubscriberModes.PRESS,()=>{
+        log.send('Changing spell.');
+    });
 
 
 
