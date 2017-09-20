@@ -80,7 +80,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
 
         //todo Prevent fell through the ground. - maybe decrease life
-        /*if(playerMesh.position.y>2/*todo count from player size*/){
+        /*if(playerMesh.position.y>2/*todo count from player size* /){
             console.log(playerMesh.position.y);
             playerMesh.position.y = 20;
             playerMesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
