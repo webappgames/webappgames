@@ -1,4 +1,4 @@
-import spells from './spells';
+import spells from './game-spells';
 
 export const spellIds = Object.keys(spells);
 

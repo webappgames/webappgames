@@ -1,9 +1,10 @@
 import * as BABYLON from 'babylonjs';
-import Spell from './Spell';
+import Spell from '../Spell';
 
 export default class Bounce extends Spell{
 
-    public static title = 'bounce';
+    public static title = 'Bounce';
+    public static cathegory = 'Xxxxxx';
 
     execute(){
 
