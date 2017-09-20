@@ -355,7 +355,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         data.currentSpellId = neighbourSpell(data.currentSpellId,1);
 
 
-        log.send('Changing spell.');
+        log.send(`Changing spell to "${data.currentSpellId}".`);
     });
 
 
