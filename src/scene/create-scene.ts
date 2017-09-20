@@ -78,6 +78,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         //const angularVelocity = playerMesh.physicsImpostor.getAngularVelocity();
         //playerMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(.5));
         playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+
+        //Prevent fell through the ground.
+        if(playerMesh.position.y<0){
+            playerMesh.position.y = 0;
+            playerMesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Up());
+        }
+
     });
 
 
