@@ -13,8 +13,14 @@ const uiElement = document.getElementById("ui") as any;
 
 
 
+const data = {
+    currentSpellId: 'bounce',
+};
+
+
+
 const engine = new BABYLON.Engine(canvasElement, true);
-const scene = createScene(canvasElement, engine);
+const scene = createScene(canvasElement, engine, data);
 
 engine.runRenderLoop(function () {
     scene.render();
@@ -24,28 +30,10 @@ window.addEventListener("resize", function () {
 });
 
 
-const uiData = {
-
-    spells: [
-        {
-            //id: 'bounce',
-            name: 'Bounce'
-        },
-        {
-            //id: 'bounce',
-            name: 'Desintegrate'
-        }
-    ],
-    spellCurrent: 0,
-
-
-
-
-};
 
 
 ReactDOM.render(
-    <Root data={uiData}/>,
+    <Root data={data}/>,
     uiElement
 );
 

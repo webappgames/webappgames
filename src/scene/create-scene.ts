@@ -5,7 +5,8 @@ import * as BABYLON from 'babylonjs';
 import setControlls from './set-controlls';
 import createSpellParticles from './create-spell-particles';
 import {PLAYER} from '../config';
-import Bounce from '../spells/Bounce';
+import spellFactory from '../spells/spellFactory';
+import {neighbourSpell} from '../spells/spellTools';
 import {subscribeKeys,SubscriberModes} from '../tools/keys';
 
 
@@ -22,7 +23,7 @@ function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
 }
 
 
-export default function createScene(canvasElement: HTMLCanvasElement, engine: BABYLON.Engine): BABYLON.Scene {
+export default function createScene(canvasElement: HTMLCanvasElement, engine: BABYLON.Engine,data:any): BABYLON.Scene {
     const scene = new BABYLON.Scene(engine);
 
 
@@ -265,12 +266,8 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
         if (pickInfo.hit) {
-
-
             const target = pickInfo.pickedMesh;
-
-            //todo not from camera but from two points
-
+            const spell = spellFactory(data.currentSpellId,target);
 
             const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
             fountainMesh.isVisible = false;
@@ -299,8 +296,6 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
                 }else{
 
-
-                    let spell = new Bounce(target);
                     spell.execute();
                     //target.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
                     //target.dispose();
@@ -342,6 +337,16 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     //todo move to set-controlls.ts
     //75,76
     subscribeKeys([75],SubscriberModes.PRESS,()=>{
+
+        /*if(data.spellCurrent<data.spells.lenght){
+            data.spellCurrent++;
+        }else{
+            data.spellCurrent=0;
+        }*/
+
+        data.currentSpellId = neighbourSpell(data.currentSpellId,1);
+
+
         log.send('Changing spell.');
     });
 

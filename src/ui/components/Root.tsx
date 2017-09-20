@@ -1,16 +1,10 @@
 import * as React from 'react';
+import {getSpellById} from '../../spells/spellTools';
 import './style/Root.css';
 
-
-interface ISpell{
-    name: string
-}
-
 export interface IUIData{
-    spells: ISpell[],
-    spellCurrent: number
+    currentSpellId: string
 }
-
 
 export default function Root(props:{data:IUIData}){
 
@@ -20,7 +14,7 @@ export default function Root(props:{data:IUIData}){
 
 
             <div id="current-spell">
-                {props.data.spells[props.data.spellCurrent].name}
+                {getSpellById(props.data.currentSpellId).title}
             </div>
 
 
