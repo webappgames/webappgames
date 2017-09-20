@@ -18,3 +18,7 @@ export const PLAYER = {
       JUMP:50
   }
 };
+
+
+
+//export const DEBUG = true;

@@ -1,10 +1,10 @@
-import {subscribeKeys,SubscriberModes} from '../controll/keys';
+import {subscribeKeys,SubscriberModes} from '../tools/keys';
 import * as BABYLON from 'babylonjs';
 import {KEYMAP,PLAYER} from '../config';
 
 export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlayerBy:(alpha:number,beta:number)=>void,addPlayerVelocity:(vector:BABYLON.Vector3)=>void){
 
-
+    //todo add event listener
     canvasElement.onclick = function() {
         canvasElement.requestPointerLock();
     };
@@ -19,17 +19,17 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
 
     function lockChangeAlert() {
         if(document.pointerLockElement === canvasElement) {
-            console.log('The pointer lock status is now locked');
-            document.addEventListener("mousemove", updatePosition, false);
+            //The pointer lock status is now locked
+            document.addEventListener("mousemove", updateCameraAngle, false);
         } else {
-            console.log('The pointer lock status is now unlocked');
-            document.removeEventListener("mousemove", updatePosition, false);
+            //The pointer lock status is now unlocked
+            document.removeEventListener("mousemove", updateCameraAngle, false);
         }
     }
 
 
 
-    function updatePosition(e:any) {
+    function updateCameraAngle(e:any) {
         const   x = e.movementX,
                 y = e.movementY;
         rotatePlayerBy(
@@ -38,13 +38,6 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
         );
 
     }
-
-
-    subscribeKeys(KEYMAP.JUMP,SubscriberModes.PRESS,()=>{
-
-        addPlayerVelocity(new BABYLON.Vector3(0,PLAYER.SPEED.JUMP,0));
-
-    });
 
 
 
@@ -69,6 +62,18 @@ export default function setControlls(canvasElement:HTMLCanvasElement,rotatePlaye
         addPlayerVelocity(new BABYLON.Vector3(0,0,-PLAYER.SPEED.SIDE));
 
     });
+
+
+
+
+    subscribeKeys(KEYMAP.JUMP,SubscriberModes.PRESS,()=>{
+
+        addPlayerVelocity(new BABYLON.Vector3(0,PLAYER.SPEED.JUMP,0));
+
+    });
+
+
+
 
 
 

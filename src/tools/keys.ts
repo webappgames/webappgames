@@ -1,3 +1,5 @@
+import log from './log';
+
 class Subscriber{
     constructor(public keyCodes:number[],public callback:Function){
     }
@@ -20,6 +22,20 @@ const keysDown:number[] = [];
 
 
 
+function executeSubscribers(subscribers:Subscriber[],keyCode:number):boolean{
+
+    let anySubsciberExecuted = false;
+    subscribers.forEach((subscriber:Subscriber)=>{
+        if(subscriber.keyCodes.some((keyCodeOfSubscriber)=>keyCodeOfSubscriber === keyCode)){
+            subscriber.callback.call(null);
+            anySubsciberExecuted = true;
+        }
+    })
+
+    return anySubsciberExecuted;
+
+}
+
 
 
 
@@ -27,13 +43,17 @@ const keysDown:number[] = [];
 window.addEventListener('keydown', function (event) {
         if (keysDown.indexOf(event.keyCode) === -1) {
             keysDown.push(event.keyCode);
+            executeSubscribers(subscribersPress,event.keyCode)
 
-            //todo duplicite
-            subscribersPress.forEach((subscriber:Subscriber)=>{
-                if(subscriber.keyCodes.some((keyCode)=>keyCode == event.keyCode)){
-                    subscriber.callback.call(null);
-                }
-            })
+            //todo inly in debug mode
+            if(
+                !executeSubscribers(subscribersPress,event.keyCode) &&
+                !executeSubscribers(subscribersRelease,event.keyCode) &&
+                !executeSubscribers(subscribersFrame,event.keyCode)
+            ){
+                log.send('Pressed unknown key.',event.keyCode);
+            }
+
         }
 });
 
@@ -47,15 +67,7 @@ window.addEventListener('keyup', function (event) {
 
     if (i != -1) {
         keysDown.splice(i, 1);
-
-        //todo duplicite
-        subscribersRelease.forEach((subscriber:Subscriber)=>{
-            if(subscriber.keyCodes.some((keyCode)=>keyCode == event.keyCode)){
-                subscriber.callback.call(null);
-            }
-        })
-
-
+        executeSubscribers(subscribersRelease,event.keyCode);
     }
 
 });
@@ -64,17 +76,7 @@ window.addEventListener('keyup', function (event) {
 
 function frame(){
 
-    keysDown.forEach((keyDownCode)=>{
-
-        //todo duplicite
-        subscribersFrame.forEach((subscriber:Subscriber)=>{
-            if(subscriber.keyCodes.some((keyCode)=>keyCode == keyDownCode)){
-                subscriber.callback.call(null);
-            }
-        });
-
-
-    });
+    keysDown.forEach((keyDownCode)=>executeSubscribers(subscribersFrame,keyDownCode));
 
 
     requestAnimationFrame(frame);
