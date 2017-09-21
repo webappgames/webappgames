@@ -19,6 +19,7 @@ class Data {
     @computed get currentSpellCategory() {
         return getCategoryFromSpellId(this.currentSpellId)
     }
+    @observable aimed = false;
 }
 const data = new Data();
 

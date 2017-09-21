@@ -261,16 +261,31 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
+    function pickFromCenter():BABYLON.PickingInfo{
+        return scene.pick(canvasElement.width / 2, canvasElement.height / 2, (mesh)=>{
+            return mesh !== playerMesh && mesh !== groundMesh && 'physicsImpostor' in mesh;
+        });
+    }
+
+
+
+    scene.registerBeforeRender(()=>{
+
+        const pickInfo = pickFromCenter();
+
+        if (pickInfo.hit) {
+            data.aimed = true;
+        }else{
+            data.aimed = false;
+        }
+
+    });
 
 
 
     function onPointerDown() {
 
-
-        var pickInfo = scene.pick(canvasElement.width / 2, canvasElement.height / 2, (mesh)=>{
-            return mesh !== playerMesh && mesh !== groundMesh && 'physicsImpostor' in mesh;
-        });
-
+        const pickInfo = pickFromCenter();
 
         if (pickInfo.hit) {
             const targetMesh = pickInfo.pickedMesh;

@@ -33,3 +33,18 @@
 #spells ol li.current{
     color: white;
 }
+
+
+
+#counters{
+    z-index: 20;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+#counters .health{
+    color: #ff4149;
+}
+#counters .energy{
+    color: #97eeff;
+}
