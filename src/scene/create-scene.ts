@@ -272,10 +272,10 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         });
 
 
-
         if (pickInfo.hit) {
-            const target = pickInfo.pickedMesh;
-            const spell = spellFactory(data.currentSpellId,target);
+            const targetMesh = pickInfo.pickedMesh;
+            const spell = spellFactory(data.currentSpellId,targetMesh);
+            log.send(`Creating spell "${data.currentSpellId}".`);
 
             const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
             fountainMesh.isVisible = false;
@@ -295,7 +295,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
                 const tickSpeed = speed*tickDuration/1000;
 
-                const movementVector = target.position.subtract(fountainMesh.position);
+                const movementVector = targetMesh.position.subtract(fountainMesh.position);
                 const movementVectorLength = movementVector.length();
 
                 if(movementVectorLength>tickSpeed){
@@ -337,8 +337,10 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     canvasElement.addEventListener("pointerdown", onPointerDown, false);
 
 
-
-
+    function onWheel() {
+        data.currentSpellId = neighbourSpell(data.currentSpellId,1);
+    }
+    canvasElement.addEventListener("wheel", onWheel, false);
 
 
 

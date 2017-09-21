@@ -1,12 +1,13 @@
 import * as React from 'react';
-import {getSpellById} from '../../spells/spellTools';
+import {observer} from 'mobx-react';
+//import {getSpellById} from '../../spells/spellTools';
 import './style/Root.css';
 
 export interface IUIData{
     currentSpellId: string
 }
 
-export default function Root(props:{data:IUIData}){
+export default observer(function Root(props:{data:IUIData}){
 
     return(
         <div>
@@ -14,11 +15,11 @@ export default function Root(props:{data:IUIData}){
 
 
             <div id="current-spell">
-                {getSpellById(props.data.currentSpellId).title}
+                {props.data.currentSpellId}
             </div>
 
 
 
         </div>
     );
-}
+})

@@ -12,11 +12,11 @@ const uiElement = document.getElementById("ui") as any;
 
 
 
-
-const data = {
-    currentSpellId: 'bounce',
-};
-
+import {observable} from "mobx";
+class Data {
+    @observable currentSpellId = 'bounce'
+}
+const data = new Data();
 
 
 const engine = new BABYLON.Engine(canvasElement, true);
