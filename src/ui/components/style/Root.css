@@ -21,3 +21,15 @@
 
 
 }
+
+
+
+#spells{
+    z-index: 20;
+    position: fixed;
+    top: 0;
+    left: 10vw;
+}
+#spells ol li.current{
+    color: white;
+}

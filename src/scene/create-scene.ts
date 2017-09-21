@@ -337,8 +337,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     canvasElement.addEventListener("pointerdown", onPointerDown, false);
 
 
-    function onWheel() {
-        data.currentSpellId = neighbourSpell(data.currentSpellId,1);
+    function onWheel(event:WheelEvent) {
+        if(event.deltaY>0){
+            data.currentSpellId = neighbourSpell(data.currentSpellId,1);
+        }else
+        if(event.deltaY<0){
+            data.currentSpellId = neighbourSpell(data.currentSpellId,-1);
+        }
     }
     canvasElement.addEventListener("wheel", onWheel, false);
 

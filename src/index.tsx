@@ -12,9 +12,13 @@ const uiElement = document.getElementById("ui") as any;
 
 
 
-import {observable} from "mobx";
+import {observable,computed} from "mobx";
+import {getCategoryFromSpellId} from './spells/spellTools';
 class Data {
-    @observable currentSpellId = 'bounce'
+    @observable currentSpellId = 'bounce';
+    @computed get currentSpellCategory() {
+        return getCategoryFromSpellId(this.currentSpellId)
+    }
 }
 const data = new Data();
 
