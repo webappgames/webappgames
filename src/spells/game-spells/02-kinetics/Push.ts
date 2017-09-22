@@ -6,5 +6,9 @@ export default class Xxxx extends Spell{
 
     execute(){
         log.send('Spell!');
+
+        this.targetMesh.physicsImpostor.setLinearVelocity(this.direction.scale(50));
+
+
     }
 }

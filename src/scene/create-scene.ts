@@ -6,7 +6,7 @@ import DataModel from '../data-model';
 import setControlls from './set-controlls';
 import createSpellParticles from './create-spell-particles';
 import {PLAYER} from '../config';
-import spellFactory from '../spells/spellFactory';
+import spellFactory from '../spells/SpellFactory';
 import {neighbourSpell} from '../spells/spellTools';
 import {subscribeKeys,SubscriberModes} from '../tools/keys';
 
@@ -288,9 +288,10 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
         if (pickInfo.hit) {
             const targetMesh = pickInfo.pickedMesh;
-            const spell = spellFactory(
+            const spell = spellFactory.createSpell(
                 dataModel.currentSpellId,
                 targetMesh,
+                pickInfo.pickedPoint,
                 playerMesh
             );
             log.send(`Creating spell "${dataModel.currentSpellId}".`);
@@ -321,6 +322,9 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                     movementVector.scaleInPlace(tickSpeed/movementVectorLength);
 
                 }else{
+
+                    movementVector.scaleInPlace(1/movementVectorLength);
+                    spell.direction = movementVector;
 
                     spell.execute();
                     //targetMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));

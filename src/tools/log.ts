@@ -2,8 +2,8 @@ class Log{
     constructor(){
         console.log('Logging to default console.');
     }
-    send(...objects:any[]){
-        console.log(...objects);
+    send(...messages:any[]){
+        console.log(...messages);
     }
 }
 

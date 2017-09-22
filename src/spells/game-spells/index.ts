@@ -1,6 +1,6 @@
 import teleport from './01-subjective/Teleport';
-import fly from './01-subjective/Fly';
-import noclip from './01-subjective/Noclip';
+//import fly from './01-subjective/Fly';
+//import noclip from './01-subjective/Noclip';
 import bounce from './02-kinetics/Bounce';
 import push from './02-kinetics/Push';
 import pull from './02-kinetics/Pull';
@@ -17,8 +17,8 @@ import desintegrate from './05-transform/Desintegrate';
 export default {
     subjective: {
         teleport,
-        fly,
-        noclip
+        //fly,
+        //noclip
     },
     kinetics: {
         bounce,
