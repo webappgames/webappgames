@@ -1,5 +1,6 @@
 import log from '../tools/log';
 import * as BABYLON from 'babylonjs';
+import DataModel from '../data-model';
 //import createStairs from './create-stairs';
 //import injectObjectPicking from './inject-object-picking';
 import setControlls from './set-controlls';
@@ -8,8 +9,6 @@ import {PLAYER} from '../config';
 import spellFactory from '../spells/spellFactory';
 import {neighbourSpell} from '../spells/spellTools';
 import {subscribeKeys,SubscriberModes} from '../tools/keys';
-
-
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
     const material = new BABYLON.StandardMaterial("texture3", scene);
@@ -23,7 +22,7 @@ function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
 }
 
 
-export default function createScene(canvasElement: HTMLCanvasElement, engine: BABYLON.Engine,data:any): BABYLON.Scene {
+export default function createScene(canvasElement: HTMLCanvasElement, engine: BABYLON.Engine,dataModel:DataModel): BABYLON.Scene {
     const scene = new BABYLON.Scene(engine);
 
 
@@ -274,9 +273,9 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         const pickInfo = pickFromCenter();
 
         if (pickInfo.hit) {
-            data.aimed = true;
+            dataModel.aimed = true;
         }else{
-            data.aimed = false;
+            dataModel.aimed = false;
         }
 
     });
@@ -289,8 +288,8 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
         if (pickInfo.hit) {
             const targetMesh = pickInfo.pickedMesh;
-            const spell = spellFactory(data.currentSpellId,targetMesh);
-            log.send(`Creating spell "${data.currentSpellId}".`);
+            const spell = spellFactory(dataModel.currentSpellId,targetMesh);
+            log.send(`Creating spell "${dataModel.currentSpellId}".`);
 
             const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
             fountainMesh.isVisible = false;
@@ -354,10 +353,10 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
     function onWheel(event:WheelEvent) {
         if(event.deltaY>0){
-            data.currentSpellId = neighbourSpell(data.currentSpellId,1);
+            dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,1);
         }else
         if(event.deltaY<0){
-            data.currentSpellId = neighbourSpell(data.currentSpellId,-1);
+            dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,-1);
         }
     }
     canvasElement.addEventListener("wheel", onWheel, false);
@@ -374,10 +373,10 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
             data.spellCurrent=0;
         }*/
 
-        data.currentSpellId = neighbourSpell(data.currentSpellId,1);
+        dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,1);
 
 
-        log.send(`Changing spell to "${data.currentSpellId}".`);
+        log.send(`Changing spell to "${dataModel.currentSpellId}".`);
     });
 
 

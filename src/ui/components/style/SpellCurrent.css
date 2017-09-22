@@ -1,0 +1,12 @@
+#current-spell{
+    z-index: 20;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+
+    text-transform: uppercase;
+
+    font-size: 2em;
+
+
+}
