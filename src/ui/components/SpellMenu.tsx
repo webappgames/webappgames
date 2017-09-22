@@ -12,13 +12,20 @@ export default observer(({dataModel}:{dataModel:DataModel})=> {
 
             <ol className="spells-categories">
                 {spellCategories.map((category)=>(
-                    <li key={category} className={dataModel.currentSpellCategory===category?'current':''}>{category}</li>
+                    <li key={category} className={dataModel.currentSpellCategory===category?'current':''}>
+                        <img className="icon" src={`/assets/spells/spell.png`}/>
+                        <span className="text">{category}</span>
+                        </li>
                 ))}
             </ol>
 
             <ol className="spells-category-spells">
                 {getSpellIdsFromCategory(dataModel.currentSpellCategory).map((spellId)=>(
-                    <li key={spellId} className={dataModel.currentSpellId===spellId?'current':''}>{spellId}</li>
+                    <li key={spellId} className={dataModel.currentSpellId===spellId?'current':''}>
+                        <img className="icon" src={`/assets/spells/spell.png`}/>
+                        <span className="text">{spellId}</span>
+
+                        </li>
                 ))}
             </ol>
         </div>

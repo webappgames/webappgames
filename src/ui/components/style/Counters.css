@@ -4,9 +4,13 @@
     bottom: 0;
     left: 0;
 }
-#counters .health{
+.health,.energy{
+    display: inline-block;
+    font-size: 1.5em;
+}
+.health{
     color: #ff4149;
 }
-#counters .energy{
+.energy{
     color: #97eeff;
 }

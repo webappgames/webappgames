@@ -2,8 +2,41 @@
     z-index: 20;
     position: fixed;
     top: 0;
-    left: 10vw;
+    left: 0vw;
+    border: 1px dotted red;
 }
-#spells ol li.current{
+#spells ol{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#spells li.current{
     color: white;
+}
+#spells li img.icon{
+    width: 1em;
+    height: 1em;
+}
+
+
+
+
+
+
+ol.spells-categories li{
+    display: inline-block;
+}
+ol.spells-categories .text{
+    display: none;
+}
+ol.spells-categories .current .text{
+    display: inline-block;
+}
+
+
+
+
+
+
+ol.spells-categories{
 }
