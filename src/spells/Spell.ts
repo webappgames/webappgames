@@ -3,7 +3,8 @@ import * as BABYLON from 'babylonjs';
 export default class Spell{
 
     constructor(
-        public target:BABYLON.AbstractMesh
+        public targetMesh:BABYLON.AbstractMesh,
+        public playerMesh:BABYLON.AbstractMesh,
     ){
     }
 

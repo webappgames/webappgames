@@ -5,6 +5,6 @@ export default class Dispose extends Spell{
 
     execute(){
 
-        this.target.dispose();
+        this.targetMesh.dispose();
     }
 }

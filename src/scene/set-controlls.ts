@@ -14,7 +14,7 @@ export default function setControlls(
     };
 
 
-
+    //todo prevent spell creating when locking cursor
     if ("onpointerlockchange" in document) {
         document.addEventListener('pointerlockchange', lockChangeAlert, false);
     } else if ("onmozpointerlockchange" in document) {

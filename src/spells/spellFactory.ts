@@ -3,6 +3,10 @@ import Spell from './Spell';
 //import spells from './spells';
 import {getSpellById} from './spellTools';
 
-export default function spellFactory(spellId:string,target:BABYLON.AbstractMesh):Spell{
-    return new (getSpellById(spellId))(target);
+export default function spellFactory(
+    spellId:string,
+    targetMesh:BABYLON.AbstractMesh,
+    playerMesh:BABYLON.AbstractMesh
+):Spell{
+    return new (getSpellById(spellId))(targetMesh,playerMesh);
 }

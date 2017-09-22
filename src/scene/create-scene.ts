@@ -79,7 +79,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
 
         //todo Prevent fell through the ground. - maybe decrease life
-        /*if(playerMesh.position.y>2/*todo count from player size* /){
+        /*if(playerMesh.position.y>2/*todo count from playerMesh size* /){
             console.log(playerMesh.position.y);
             playerMesh.position.y = 20;
             playerMesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
@@ -288,7 +288,11 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
         if (pickInfo.hit) {
             const targetMesh = pickInfo.pickedMesh;
-            const spell = spellFactory(dataModel.currentSpellId,targetMesh);
+            const spell = spellFactory(
+                dataModel.currentSpellId,
+                targetMesh,
+                playerMesh
+            );
             log.send(`Creating spell "${dataModel.currentSpellId}".`);
 
             const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
@@ -319,9 +323,9 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 }else{
 
                     spell.execute();
-                    //target.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
-                    //target.dispose();
-                    //target.scaling.scaleInPlace(1.2);
+                    //targetMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
+                    //targetMesh.dispose();
+                    //targetMesh.scaling.scaleInPlace(1.2);
 
 
 
