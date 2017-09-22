@@ -16,5 +16,12 @@ export default class Spell{
     execute(){
     }
 
+    //todo in future thare should be more resources than energy
+    countEnergyCost():number{
+        return 0;
+    }
+    countEnergyGain():number{
+        return 0;
+    }
 
 }
