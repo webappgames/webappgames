@@ -312,11 +312,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
                 dataModel.aimed = true;
                 dataModel.aimedEnergyCost = spell.countEnergyCost();
+                dataModel.aimedMessage = spell.message;
 
             }else{
 
                 dataModel.aimed = false;
                 dataModel.aimedEnergyCost = NaN;
+                dataModel.aimedMessage = '';
 
 
             }
@@ -328,6 +330,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         }else{
             dataModel.aimed = false;
             dataModel.aimedEnergyCost = NaN;
+            dataModel.aimedMessage = '';
             //aimedMeshLast = null;
             //spell = null;
         }

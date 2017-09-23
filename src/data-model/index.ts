@@ -13,6 +13,7 @@ export default class DataModel {
 
     @observable aimed = false;
     @observable aimedEnergyCost = NaN;
+    @observable aimedMessage:string = '';
 
 
     @computed get aimStatus():string {

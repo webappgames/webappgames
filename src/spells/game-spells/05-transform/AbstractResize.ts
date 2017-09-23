@@ -5,7 +5,7 @@ export default class AbstractResize extends Spell{
     execute(){
 
 
-        const boxMesh = BABYLON.Mesh.CreateBox("box", 4, this.scene);
+        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
         boxMesh.position = this.targetMesh.position.clone();
         boxMesh.scaling = this.targetMesh.scaling.scale(this.scaling);
         boxMesh.rotation = this.targetMesh.rotation.clone();

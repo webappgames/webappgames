@@ -27,6 +27,14 @@ export default class Plate extends Spell{
         return this.sharedStarage.firstPillarMesh?1000:100;
     }
 
+    get message():string{
+        if (this.sharedStarage.firstPillarMesh) {
+            return('2/2');
+        }else{
+            return('1/2');
+        }
+    }
+
     execute() {
 
         if (!this.sharedStarage.firstPillarMesh) {

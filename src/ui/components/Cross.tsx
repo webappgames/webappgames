@@ -12,8 +12,14 @@ export default observer(({dataModel}:{dataModel:DataModel})=> {
             <img src={`/assets/ui/cross${dataModel.aimStatus}.png`}/>
 
             {dataModel.aimed ?
-                <div className="cost">
-                    {formatNumber(dataModel.aimedEnergyCost, 'ε')}
+                <div>
+                    <div className="cost">
+                        {formatNumber(dataModel.aimedEnergyCost, 'ε')}
+                    </div>
+                    {dataModel.aimedMessage?
+                    <div className="message">
+                        {dataModel.aimedMessage}
+                    </div>:undefined}
                 </div>
             :undefined}
         </div>

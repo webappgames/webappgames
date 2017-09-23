@@ -27,6 +27,10 @@ export default class AbstractSpell{
     execute(){
     }
 
+    get message():string{
+        return '';
+    }
+
     //todo in future thare should be more resources than energy
     countEnergyCost():number{
         return 0;
