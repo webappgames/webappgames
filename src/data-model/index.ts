@@ -2,7 +2,7 @@ import {observable,computed} from "mobx";
 import {getCategoryFromSpellId} from '../spells/spellTools';
 
 export default class DataModel {
-    @observable currentSpellId = 'pillar';
+    @observable currentSpellId = 'desintegrate';
     @computed get currentSpellCategory() {
         return getCategoryFromSpellId(this.currentSpellId)
     }
