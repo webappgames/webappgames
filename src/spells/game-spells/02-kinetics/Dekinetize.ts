@@ -1,10 +1,18 @@
 //import * as BABYLON from 'babylonjs';
 import Spell from '../../AbstractSpell';
-import log from '../../../tools/log';
+
 
 export default class Dekinetize extends Spell{
 
+    get dynamicSpeed():number{
+        return 1000;
+    }
+
     execute(){
-        log.send('AbstractSpell!');
+        const angularVelocity = this.targetMesh.physicsImpostor.getAngularVelocity();
+        const linearVelocity = this.targetMesh.physicsImpostor.getLinearVelocity();
+
+        this.targetMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(-1));
+        this.targetMesh.physicsImpostor.setLinearVelocity(linearVelocity.scale(-1));
     }
 }
