@@ -363,7 +363,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 lastTick = new Date().getTime();
 
 
-                const speed = 100;//todo const
+                const speed = spell.dynamicSpeed;
 
 
                 const tickSpeed = speed*tickDuration/1000;

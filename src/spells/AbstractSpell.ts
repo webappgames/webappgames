@@ -20,6 +20,9 @@ export default class AbstractSpell{
     get dynamicTarget():BABYLON.Vector3{
         return this.targetMesh.position;
     }
+    get dynamicSpeed():number{
+        return 100;
+    }
 
     execute(){
     }
