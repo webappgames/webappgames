@@ -263,7 +263,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
     function pickFromCenter():BABYLON.PickingInfo{
         return scene.pick(canvasElement.width / 2, canvasElement.height / 2, (mesh)=>{
-            return mesh !== playerMesh && mesh !== groundMesh && 'physicsImpostor' in mesh;
+            return mesh !== playerMesh /*&& mesh !== groundMesh*/ && 'physicsImpostor' in mesh;
         });
     }
 
@@ -291,8 +291,20 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 scene
             );
 
-            dataModel.aimed = true;
-            dataModel.aimedEnergyCost = spell.countEnergyCost();
+            if(spell.acceptTargetMesh()){
+
+
+                dataModel.aimed = true;
+                dataModel.aimedEnergyCost = spell.countEnergyCost();
+
+            }else{
+
+                dataModel.aimed = false;
+                dataModel.aimedEnergyCost = NaN;
+
+
+            }
+
 
 
             //}
@@ -311,6 +323,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
     function onPointerDown() {
 
+        //todo only left button
         const pickInfo = pickFromCenter();
 
         if (pickInfo.hit) {
@@ -322,6 +335,11 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 playerMesh,
                 scene
             );
+
+            if(!spell.acceptTargetMesh()){
+                //todo warning to user
+                return;
+            }
 
             const spellEnergyCost = spell.countEnergyCost();
             if(spellEnergyCost>dataModel.energy){
@@ -350,7 +368,17 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
                 const tickSpeed = speed*tickDuration/1000;
 
-                const movementVector = targetMesh.position.subtract(fountainMesh.position);
+                let targetPoint:BABYLON.Vector3;
+                if(spell.target==='MESH'){
+                    targetPoint = targetMesh.position;
+                }else
+                if(spell.target==='POINT'){
+                    targetPoint = pickInfo.pickedPoint;
+                }else{
+                    throw new Error(`Unknown target "${spell.target}".`);
+                }
+
+                const movementVector = targetPoint.subtract(fountainMesh.position);
                 const movementVectorLength = movementVector.length();
 
                 if(movementVectorLength>tickSpeed){

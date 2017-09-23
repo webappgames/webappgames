@@ -7,6 +7,9 @@ import pull from './02-kinetics/Pull';
 import dekinetize from './02-kinetics/Dekinetize';
 import freeze from './02-kinetics/Freeze';
 import duplicate from './03-create/Duplicate';
+import pillar from './03-create/Pillar';
+import prick from './03-create/Prick';
+import plate from './03-create/Plate';
 import bridge from './03-create/Bridge';
 import dispose from './04-hide/Dispose';
 import stash from './04-hide/Stash';
@@ -29,7 +32,10 @@ export default {
     },
     create: {
         duplicate,
-        bridge
+        pillar,
+        prick,
+        plate,
+        bridge,
     },
     hide: {
         dispose,
