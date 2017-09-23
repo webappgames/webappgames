@@ -8,10 +8,11 @@ import dekinetize from './02-kinetics/Dekinetize';
 import freeze from './02-kinetics/Freeze';
 import duplicate from './03-create/Duplicate';
 import pillar from './03-create/Pillar';
-import prick from './03-create/Prick';
+//import prick from './03-create/Prick';
 import plate from './03-create/Plate';
 import bridge from './03-create/Bridge';
 import dispose from './04-hide/Dispose';
+import ghost from './04-hide/Ghost';
 import stash from './04-hide/Stash';
 import reduce from './05-transform/Reduce';
 import grow from './05-transform/Grow';
@@ -33,12 +34,13 @@ export default {
     create: {
         duplicate,
         pillar,
-        prick,
+        //prick,
         plate,
         bridge,
     },
     hide: {
         dispose,
+        ghost,
         stash
     },
     transform: {

@@ -3,7 +3,28 @@ import Spell from '../../AbstractSpell';
 
 export default class Plate extends Spell{
     acceptTargetMesh() {
-        return this.targetMesh.name === 'prick'
+        if(this.targetMesh.name === 'ground'){
+            return false;
+        }
+        if (this.sharedStarage.firstPillarMesh) {
+
+
+            return (
+                Math.abs((this.sharedStarage.firstPillarMesh.position.y + this.sharedStarage.firstPillarMesh.scaling.y / 2)
+                -
+                (this.targetMesh.position.y + this.targetMesh.scaling.y / 2))<=0.5
+            );
+
+
+        }
+
+        return true;
+
+
+    }
+
+    get dynamicSpeed():number{
+        return this.sharedStarage.firstPillarMesh?1000:100;
     }
 
     execute() {
@@ -27,14 +48,14 @@ export default class Plate extends Spell{
 
 
             const boxMesh = BABYLON.Mesh.CreateBox("plate", 1, this.scene);
-            boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, 5, 0));
+            boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, prick1.scaling.y/2+1, 0));
             boxMesh.scaling = new BABYLON.Vector3(width, 1, length+2);
             boxMesh.rotation = new BABYLON.Vector3(0,rotation,0);
             //boxMesh.material = this.targetMesh.material.clone('clonedMaterial');
 
 
             boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-                mass: 100,
+                mass: 10,
                 restitution: 0.2
             }, this.scene);
 

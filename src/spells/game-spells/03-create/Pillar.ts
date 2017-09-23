@@ -5,7 +5,10 @@ export default class Pillar extends Spell{
 
 
     acceptTargetMesh(){
-        return this.targetMesh.name==='ground'
+        return(
+            Math.abs(this.targetMesh.rotation.x)<0.1 &&
+            Math.abs(this.targetMesh.rotation.z)<0.1
+        )
     }
 
     get dynamicTarget():BABYLON.Vector3{

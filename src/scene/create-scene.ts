@@ -57,12 +57,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const playerMesh = BABYLON.Mesh.CreateSphere("box", 16,4, scene);
+    const playerMesh = BABYLON.Mesh.CreateSphere("box", 16,1, scene);
     //todo isVisible playerMesh.visibility = 0;
     //playerMesh.showBoundingBox = true;
     playerMesh.isVisible = false;
     playerMesh.position =  new BABYLON.Vector3(-100, 6, -100);
     playerMesh.rotation =  new BABYLON.Vector3(0, /*Math.PI/16*/0, 0);
+    playerMesh.scaling =  new BABYLON.Vector3(1, 4, 1);
     //playerMesh.material = getMaterial('grass', 1, scene);
     playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(playerMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
         mass: 1,
@@ -236,8 +237,8 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
     for (let i = 0; i < 15; i++) {
-        const boxMesh = BABYLON.Mesh.CreateBox("box", 4, scene);
-        boxMesh.scaling = new BABYLON.Vector3(5, 20, 2);
+        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, scene);
+        boxMesh.scaling = new BABYLON.Vector3(20, 80, 8);
         boxMesh.position = new BABYLON.Vector3(0, 40, i*40);
         boxMesh.material = getMaterial('stone-plain', 1, scene);
 
@@ -248,6 +249,21 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         }, scene);
 
     }
+    for (let i = 0; i < 15; i++) {
+        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, scene);
+        boxMesh.scaling = new BABYLON.Vector3(8, 80, 20);
+        boxMesh.position = new BABYLON.Vector3(i*40, 40 , 40);
+        boxMesh.material = getMaterial('stone-plain', 1, scene);
+
+
+        boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+            mass: 10,
+            restitution: 0.2
+        }, scene);
+
+    }
+
+
 
 
 
