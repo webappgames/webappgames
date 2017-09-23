@@ -11,7 +11,7 @@ export default class AbstractSpell{
         public targetPoint:BABYLON.Vector3,
         public playerMesh:BABYLON.AbstractMesh,
         public scene:BABYLON.Scene,
-        public sharedStarage:{},
+        public sharedStarage:any,
     ){
     }
 
