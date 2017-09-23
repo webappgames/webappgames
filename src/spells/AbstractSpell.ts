@@ -24,6 +24,8 @@ export default class AbstractSpell{
         return 100;
     }
 
+    begin(){
+    }
     execute(){
     }
 

@@ -367,6 +367,8 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
             }
             dataModel.energy -= spellEnergyCost;
 
+            spell.begin();
+
             log.send(`Creating spell "${dataModel.currentSpellId}".`);
 
             const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);

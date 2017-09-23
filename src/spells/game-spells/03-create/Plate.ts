@@ -24,7 +24,7 @@ export default class Plate extends Spell{
     }
 
     get dynamicSpeed():number{
-        return this.sharedStarage.firstPillarMesh?1000:100;
+        return (this.pillar1&&this.pillar2)?100:1000;
     }
 
     get message():string{
@@ -35,28 +35,43 @@ export default class Plate extends Spell{
         }
     }
 
-    execute() {
 
+
+    private pillar1:BABYLON.AbstractMesh|null;
+    private pillar2:BABYLON.AbstractMesh|null;
+
+    begin(){
         if (!this.sharedStarage.firstPillarMesh) {
             this.sharedStarage.firstPillarMesh = this.targetMesh;
 
-        } else {
+        }else{
 
-            const prick1 = this.sharedStarage.firstPillarMesh;
-            const prick2 = this.targetMesh;
-            const point1 = prick1.position;
-            const point2 = prick2.position;
+            this.pillar1 = this.sharedStarage.firstPillarMesh;
+            this.pillar2 = this.targetMesh;
+
+            this.sharedStarage.firstPillarMesh=null;
+        }
+
+    }
+
+    execute() {
+
+        if (this.pillar1&&this.pillar2){
+
+
+            const point1 = this.pillar1.position;
+            const point2 = this.pillar2.position;
 
             const middlePoint = point1.add(point2).scale(1 / 2);
             const pointDiff = point2.subtract(point1);
             const length = pointDiff.length();
 
             const rotation = Math.atan2(pointDiff.x,pointDiff.z);
-            const width = Math.max(prick1.scaling.z,prick2.scaling.z);
+            const width = Math.max(this.pillar1.scaling.z,this.pillar2.scaling.z,this.pillar1.scaling.x,this.pillar2.scaling.x);
 
 
             const boxMesh = BABYLON.Mesh.CreateBox("plate", 1, this.scene);
-            boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, prick1.scaling.y/2+1, 0));
+            boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, this.pillar1.scaling.y/2+1, 0));
             boxMesh.scaling = new BABYLON.Vector3(width, 1, length+2);
             boxMesh.rotation = new BABYLON.Vector3(0,rotation,0);
             //boxMesh.material = this.targetMesh.material.clone('clonedMaterial');
