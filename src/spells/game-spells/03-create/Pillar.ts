@@ -21,7 +21,7 @@ export default class Pillar extends Spell{
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-            mass: 10,
+            mass: 100,
             restitution: 0.2
         }, this.scene);
     }
