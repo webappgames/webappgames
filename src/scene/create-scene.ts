@@ -368,17 +368,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
                 const tickSpeed = speed*tickDuration/1000;
 
-                let targetPoint:BABYLON.Vector3;
-                if(spell.target==='MESH'){
-                    targetPoint = targetMesh.position;
-                }else
-                if(spell.target==='POINT'){
-                    targetPoint = pickInfo.pickedPoint;
-                }else{
-                    throw new Error(`Unknown target "${spell.target}".`);
-                }
-
-                const movementVector = targetPoint.subtract(fountainMesh.position);
+                const movementVector = spell.dynamicTarget.subtract(fountainMesh.position);
                 const movementVectorLength = movementVector.length();
 
                 if(movementVectorLength>tickSpeed){

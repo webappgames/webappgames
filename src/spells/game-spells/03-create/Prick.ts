@@ -3,7 +3,6 @@ import Spell from '../../AbstractSpell';
 
 export default class Prick extends Spell {
 
-    public target = 'MESH';
 
     acceptTargetMesh() {
         return this.targetMesh.name === 'pillar'

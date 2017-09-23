@@ -2,8 +2,6 @@ import * as BABYLON from 'babylonjs';
 
 export default class AbstractSpell{
 
-    public target='MESH';
-
     public direction = BABYLON.Vector3.Zero();
 
     constructor(
@@ -17,6 +15,10 @@ export default class AbstractSpell{
 
     acceptTargetMesh(){
             return this.targetMesh.name!=='ground'
+    }
+
+    get dynamicTarget():BABYLON.Vector3{
+        return this.targetMesh.position;
     }
 
     execute(){

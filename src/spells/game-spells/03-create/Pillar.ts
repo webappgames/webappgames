@@ -3,10 +3,13 @@ import Spell from '../../AbstractSpell';
 
 export default class Pillar extends Spell{
 
-    public target='POINT';
 
     acceptTargetMesh(){
         return this.targetMesh.name==='ground'
+    }
+
+    get dynamicTarget():BABYLON.Vector3{
+        return this.targetPoint;
     }
 
     execute(){
