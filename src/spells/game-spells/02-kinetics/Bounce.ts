@@ -1,5 +1,5 @@
 import * as BABYLON from 'babylonjs';
-import Spell from '../../Spell';
+import Spell from '../../AbstractSpell';
 import {countVolume} from '../../../tools/babylon';
 
 export default class Bounce extends Spell{
@@ -10,6 +10,9 @@ export default class Bounce extends Spell{
     }
 
     countEnergyCost():number{
-        return countVolume(this.targetMesh)*10;
+        return(
+            countVolume(this.targetMesh)
+            *this.targetMesh.position.subtract(this.playerMesh.position).length()/10
+        );
     }
 }

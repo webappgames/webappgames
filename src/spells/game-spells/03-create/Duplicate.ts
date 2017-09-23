@@ -1,10 +1,11 @@
 //import * as BABYLON from 'babylonjs';
-import Spell from '../../Spell';
+import Spell from '../../AbstractSpell';
 import log from '../../../tools/log';
 
-export default class Xxxx extends Spell{
+export default class Duplicate extends Spell{
 
     execute(){
-        log.send('Spell!');
+        log.send('AbstractSpell!');
+        this.targetMesh.clone('box',this.targetMesh.parent);
     }
 }

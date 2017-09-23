@@ -9,6 +9,7 @@ import {PLAYER} from '../config';
 import spellFactory from '../spells/SpellFactory';
 import {neighbourSpell} from '../spells/spellTools';
 import {subscribeKeys,SubscriberModes} from '../tools/keys';
+//import AbstractSpell from "../spells/AbstractSpell";
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
     const material = new BABYLON.StandardMaterial("texture3", scene);
@@ -268,17 +269,43 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
+
+    //todo optimize
+    //let spell:AbstractSpell|null = null;
+    //spellId, distance
+    //let aimedMeshLast:BABYLON.AbstractMesh|null = null;
     scene.registerBeforeRender(()=>{
 
         const pickInfo = pickFromCenter();
 
         if (pickInfo.hit) {
+            //if(pickInfo.pickedMesh!==aimedMeshLast){
+                //aimedMeshLast = pickInfo.pickedMesh;
+
+
+            const spell = spellFactory.createSpell(
+                dataModel.currentSpellId,
+                pickInfo.pickedMesh,
+                pickInfo.pickedPoint,
+                playerMesh,
+                scene
+            );
+
             dataModel.aimed = true;
+            dataModel.aimedEnergyCost = spell.countEnergyCost();
+
+
+            //}
+
         }else{
             dataModel.aimed = false;
+            dataModel.aimedEnergyCost = NaN;
+            //aimedMeshLast = null;
+            //spell = null;
         }
 
     });
+
 
 
 
@@ -292,8 +319,17 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 dataModel.currentSpellId,
                 targetMesh,
                 pickInfo.pickedPoint,
-                playerMesh
+                playerMesh,
+                scene
             );
+
+            const spellEnergyCost = spell.countEnergyCost();
+            if(spellEnergyCost>dataModel.energy){
+                //todo warning to user
+                return;
+            }
+            dataModel.energy -= spellEnergyCost;
+
             log.send(`Creating spell "${dataModel.currentSpellId}".`);
 
             const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);

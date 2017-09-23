@@ -1,10 +1,10 @@
 //import * as BABYLON from 'babylonjs';
-import Spell from '../../Spell';
+import Spell from '../../AbstractSpell';
 import log from '../../../tools/log';
 
-export default class Xxxx extends Spell{
+export default class Stash extends Spell{
 
     execute(){
-        log.send('Spell!');
+        log.send('AbstractSpell!');
     }
 }

@@ -9,9 +9,13 @@ import './style/Cross.css';
 export default observer(({dataModel}:{dataModel:DataModel})=> {
     return (
         <div id="cross" >
-            <img src={`/assets/ui/cross${dataModel.aimed?'-aimed':''}.png`}/>
-            {formatNumber(1000,'ε')}
+            <img src={`/assets/ui/cross${dataModel.aimStatus}.png`}/>
 
+            {dataModel.aimed ?
+                <div className="cost">
+                    {formatNumber(dataModel.aimedEnergyCost, 'ε')}
+                </div>
+            :undefined}
         </div>
     );
 });

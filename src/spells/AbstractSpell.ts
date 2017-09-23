@@ -1,6 +1,6 @@
 import * as BABYLON from 'babylonjs';
 
-export default class Spell{
+export default class AbstractSpell{
 
     public direction = BABYLON.Vector3.Zero();
 
@@ -8,6 +8,7 @@ export default class Spell{
         public targetMesh:BABYLON.AbstractMesh,
         public targetPoint:BABYLON.Vector3,
         public playerMesh:BABYLON.AbstractMesh,
+        public scene:BABYLON.Scene,
         public sharedStarage:{},
     ){
     }
