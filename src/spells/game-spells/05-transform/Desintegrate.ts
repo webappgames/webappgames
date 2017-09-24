@@ -9,9 +9,9 @@ export default class Desintegrate extends Spell{
         this.targetMesh.dispose();
 
 
-        const xParts = 5;
-        const yParts = 5;
-        const zParts = 5;
+        const xParts = 3;
+        const yParts = 3;
+        const zParts = 3;
 
 
 

@@ -1,4 +1,4 @@
-import * as BABYLON from 'babylonjs';
+/*import * as BABYLON from 'babylonjs';
 import Spell from '../../AbstractSpell';
 
 export default class Prick extends Spell {
@@ -44,4 +44,4 @@ export default class Prick extends Spell {
     }
 
 
-}
+}*/

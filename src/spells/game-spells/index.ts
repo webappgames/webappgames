@@ -8,6 +8,7 @@ import dekinetize from './02-kinetics/Dekinetize';
 import freeze from './02-kinetics/Freeze';
 import duplicate from './03-create/Duplicate';
 import pillar from './03-create/Pillar';
+import wall from './03-create/Wall';
 //import prick from './03-create/Prick';
 import plate from './03-create/Plate';
 import bridge from './03-create/Bridge';
@@ -34,6 +35,7 @@ export default {
     create: {
         duplicate,
         pillar,
+        wall,
         //prick,
         plate,
         bridge,
