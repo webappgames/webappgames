@@ -1,17 +1,28 @@
 import * as BABYLON from 'babylonjs';
 
 export default class AbstractSpell{
+    /*
+    TARGETS = 1
+    -----------
 
+
+    TARGETS > 1
+    -----------
+
+    TARGETS = 0
+    -----------
+    Spell that interacts with user or whole environment.
+
+    Imediate, Durable//todo
+    */
+    public TARGETS = 1;
+
+
+
+
+    //todo only with targets
     public direction = BABYLON.Vector3.Zero();
 
-    constructor(
-        public targetMesh:BABYLON.AbstractMesh,
-        public targetPoint:BABYLON.Vector3,
-        public playerMesh:BABYLON.AbstractMesh,
-        public scene:BABYLON.Scene,
-        public sharedStarage:any,
-    ){
-    }
 
     acceptTargetMesh(){
             return this.targetMesh.name!=='ground'
@@ -24,14 +35,24 @@ export default class AbstractSpell{
         return 100;
     }
 
-    begin(){
-    }
-    execute(){
+
+
+
+
+
+
+
+
+    constructor(
+        public targetMeshes:BABYLON.AbstractMesh[],
+        public targetPoints:BABYLON.Vector3[],
+        public playerMesh:BABYLON.AbstractMesh,
+        public scene:BABYLON.Scene,
+    ){
     }
 
-    get message():string{
-        return '';
-    }
+
+
 
     //todo in future thare should be more resources than energy
     countEnergyCost():number{
@@ -40,6 +61,17 @@ export default class AbstractSpell{
     countEnergyGain():number{
         return 0;
     }
+
+
+
+
+
+    begin(){
+    }
+    execute(){
+    }
+
+
 
 
 
