@@ -1,9 +1,11 @@
 import spell from '../AbstractSpellWithEffect';
 import bounce from './02-kinetics/Bounce';
+import plate from './03-create/Plate';
 export default {
     test: {
         spell,
-        bounce
+        bounce,
+        plate,
     }
 };
 /*

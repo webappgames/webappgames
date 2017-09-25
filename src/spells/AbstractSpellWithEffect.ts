@@ -6,16 +6,17 @@ import SpellEffect from '../scene/classes/SpellEffect';
 
 export default class AbstractSpellWithEffect extends AbstractSpell {
 
+    public TARGET_COUNT = 1;
     private spellEffect: SpellEffect;
 
     execute(){
-        if(this.targets.length!==1){
-            throw new Error(`Thare should be exactly 1 target not ${this.targets.length}.`);
+        if(this.targets.length!==this.TARGET_COUNT){
+            throw new Error(`Thare should be exactly ${this.TARGET_COUNT} target not ${this.targets.length}.`);
         }
         //console.log('creating SpellEffect');
         this.spellEffect = new SpellEffect(
             this.playerMesh.position,
-            this.targets[0].pickedMesh.position,
+            this.targets[this.targets.length-1].pickedMesh.position,
             this.finish.bind(this),
             this.scene,
         );

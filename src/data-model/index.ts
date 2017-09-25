@@ -2,7 +2,7 @@ import {observable,computed} from "mobx";
 import {getCategoryFromSpellId} from '../spells/spellTools';
 
 export default class DataModel {
-    @observable currentSpellId = 'bounce';
+    @observable currentSpellId = 'plate';
     @computed get currentSpellCategory() {
         return getCategoryFromSpellId(this.currentSpellId)
     }
@@ -28,3 +28,11 @@ export default class DataModel {
     }
 
 }
+/*
+todo
+    Game{
+        player: DataModel
+        spells: Spell[]
+        scenes: {...meshes....}[]
+    }
+*/

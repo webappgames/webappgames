@@ -396,7 +396,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
             //console.log('onPointerDown',pickInfo);
             spell.addTarget(pickInfo);
-            spell.execute();
+
+            try{
+                spell.execute();
+            }catch(error){
+                console.warn(error);
+            }
+
 
 
             /*
