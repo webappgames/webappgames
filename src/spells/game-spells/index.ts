@@ -1,7 +1,9 @@
 import spell from '../AbstractSpellWithEffect';
+import bounce from './02-kinetics/Bounce';
 export default {
     test: {
-        spell
+        spell,
+        bounce
     }
 };
 /*
