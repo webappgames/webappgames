@@ -357,10 +357,14 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     function createNewSpell():void {
         spell = spellFactory.createSpell(
             dataModel.currentSpellId,
-            (energy: number) => {
-                return true
+            (energyCost: number) => {
+                if(energyCost>dataModel.energy){
+                    return false;
+                }
+                dataModel.energy -= energyCost;
+                return true;
             },
-            (energy: number) => {
+            (energyGain: number) => {
             },
             [],
             playerMesh,
