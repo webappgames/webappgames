@@ -1,3 +1,10 @@
+import spell from '../AbstractSpell';
+export default {
+    test: {
+        spell
+    }
+};
+/*
 import teleport from './01-subjective/Teleport';
 //import fly from './01-subjective/Fly';
 //import noclip from './01-subjective/Noclip';
@@ -50,4 +57,4 @@ export default {
         grow,
         desintegrate
     }
-};
+};*/

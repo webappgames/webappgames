@@ -1,5 +1,5 @@
 //import * as BABYLON from 'babylonjs';
-import Spell from '../../AbstractSpell';
+/*import Spell from '../../AbstractSpell';
 import log from '../../../tools/log';
 
 export default class Teleport extends Spell{
@@ -14,4 +14,4 @@ export default class Teleport extends Spell{
         this.playerMesh.position.z = this.targetMesh.position.z;
         //this.playerMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
     }
-}
+}*/

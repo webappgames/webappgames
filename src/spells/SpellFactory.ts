@@ -1,28 +1,29 @@
 import * as BABYLON from 'babylonjs';
-import Spell from './AbstractSpell';
+import AbstractSpell from './AbstractSpell';
 //import spells from './spells';
 import {getSpellById} from './spellTools';
 
 class SpellFactory{
 
-    constructor(public sharedStarage:{}){
+    constructor(){
     }
 
     createSpell(
         spellId:string,
-        targetMesh:BABYLON.AbstractMesh,
-        targetPoint:BABYLON.Vector3,
+        costCallback:(energy:number)=>boolean,
+        gainCallback:(energy:number)=>void,
+        otherPlayerSpell:AbstractSpell[],
         playerMesh:BABYLON.AbstractMesh,
         scene:BABYLON.Scene,
-    ):Spell{
+    ):AbstractSpell{
         return new (getSpellById(spellId))(
-            targetMesh,
-            targetPoint,
+            costCallback,
+            gainCallback,
+            otherPlayerSpell,
             playerMesh,
-            scene,
-            this.sharedStarage,
+            scene
         );
     }
 }
 
-export default new SpellFactory({});
+export default new SpellFactory();

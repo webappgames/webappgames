@@ -4,8 +4,8 @@ import DataModel from '../data-model';
 //import createStairs from './create-stairs';
 //import injectObjectPicking from './inject-object-picking';
 import setControlls from './set-controlls';
-import createSpellParticles from './create-spell-particles';
 import {PLAYER} from '../config';
+import {default as AbstractSpell, spellPhases} from '../spells/AbstractSpell';
 import spellFactory from '../spells/SpellFactory';
 import {neighbourSpell} from '../spells/spellTools';
 import {subscribeKeys,SubscriberModes} from '../tools/keys';
@@ -271,8 +271,8 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
     //injectObjectPicking(scene,canvasElement,groundMesh);
 
-    camera.onCollide = function (collidedMesh: any) {
-    };
+    /*camera.onCollide = function (collidedMesh: any) {
+    };*/
 
 
 
@@ -290,7 +290,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     //let spell:AbstractSpell|null = null;
     //spellId, distance
     //let aimedMeshLast:BABYLON.AbstractMesh|null = null;
-    scene.registerBeforeRender(()=>{
+    /*scene.registerBeforeRender(()=>{
 
         const pickInfo = pickFromCenter();
 
@@ -335,9 +335,46 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
             //spell = null;
         }
 
+    });*/
+
+
+    const executingSpells:AbstractSpell[] = [];
+    let lastTick = performance.now();
+    scene.registerBeforeRender(()=>{
+        const thisTick = performance.now();
+        const tickDuration = thisTick - lastTick;
+        lastTick = thisTick;
+
+        executingSpells.forEach((spell:AbstractSpell)=>{
+            spell.tick(tickDuration);
+        });
+
     });
 
 
+
+    const spell = spellFactory.createSpell(
+        dataModel.currentSpellId,
+        (energy:number)=>{return true},
+        (energy:number)=>{},
+        [],
+        playerMesh,
+        scene
+    );
+
+    spell.subscribe(()=>{
+        switch(spell.phase){
+            case spellPhases.PREPARED:
+                spell.execute();
+                break;
+            case spellPhases.EXECUTING:
+                executingSpells.push(spell);
+                break;
+            case spellPhases.FINISHED:
+                //todo
+                break;
+        }
+    });
 
 
     function onPointerDown() {
@@ -346,6 +383,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         const pickInfo = pickFromCenter();
 
         if (pickInfo.hit) {
+
+            spell.addTarget(pickInfo);
+
+
+
+
+            /*
             const targetMesh = pickInfo.pickedMesh;
             const spell = spellFactory.createSpell(
                 dataModel.currentSpellId,
@@ -414,7 +458,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                     spellParticles.stop();
                     setTimeout(()=>{
                         fountainMesh.dispose();
-                    },5000/*todo count this value*/);
+                    },5000/*todo count this value* /);
 
                 }
 
@@ -423,7 +467,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
             };
 
-            scene.registerBeforeRender(tickCallback);
+            scene.registerBeforeRender(tickCallback);*/
 
 
 
