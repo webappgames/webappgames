@@ -2,7 +2,7 @@ import * as BABYLON from 'babylonjs';
 
 export enum spellPhases{
     PREPARING,
-    PREPARED,
+    //PREPARED,
     EXECUTING,
     FINISHED
 }
@@ -18,15 +18,15 @@ export default class AbstractSpell{
         public playerMesh:BABYLON.AbstractMesh,
         public scene:BABYLON.Scene,
     ){
-        this._setPhase(spellPhases.PREPARING);
+        //this._setPhase(spellPhases.PREPARING);
     }
 
-    private _phase:spellPhases;
-    private _phaseSubscribers:(()=>void)[];
+    private _phase:spellPhases = spellPhases.PREPARING;
+    private _phaseSubscribers:(()=>void)[] = [];
     private _setPhase(phase:spellPhases){
         this._phase = phase;
         this._phaseSubscribers.forEach((subscriberCallback:()=>void)=>{
-            setImmediate(()=>{subscriberCallback});
+            setImmediate(()=>{subscriberCallback();});
         });
     }
 
@@ -37,31 +37,32 @@ export default class AbstractSpell{
         this._phaseSubscribers.push(subscriberCallback);
     }
 
-    public targets:BABYLON.PickingInfo[];
+    public targets:BABYLON.PickingInfo[] = [];
     addTarget(target:BABYLON.PickingInfo){
         this.targets.push(target);
-        if(this.isPrepared){
-            this._setPhase(spellPhases.PREPARED);
-        }
     }
 
-    //this is overwritten by extended classes
-    public isPrepared=false;
-    public message = '';
+    /*prepared(){
+        if(this.phase === spellPhases.PREPARING){
+            this._setPhase(spellPhases.PREPARED);
+        }else{
+            throw new Error(`Method execute() can be called only in PREPARING state.`);
+        }
+    }*/
 
 
     execute(){
-        if(this.phase === spellPhases.PREPARED){
+        if(this.phase === spellPhases.PREPARING){
             this._setPhase(spellPhases.EXECUTING);
         }else{
-            throw new Error(`Method execute() can be called only in PREPARED state.`);
+            throw new Error(`Method execute() can be called only in PREPARING(${spellPhases.PREPARING}) state not ${this.phase}.`);
         }
     }
 
     tick(tickDuration:number){
         if(this.phase === spellPhases.EXECUTING) {
         }else{
-            throw new Error(`Method tick() can be called only in EXECUTING state.`);
+            throw new Error(`Method tick() can be called only in EXECUTING(${spellPhases.EXECUTING}) state not ${this.phase}.`);
         }
     }
 
@@ -69,7 +70,7 @@ export default class AbstractSpell{
         if(this.phase === spellPhases.EXECUTING) {
             this._setPhase(spellPhases.FINISHED);
         }else{
-            throw new Error(`Method finish() can be called only in EXECUTING state.`);
+            throw new Error(`Method finish() can be called only in EXECUTING(${spellPhases.EXECUTING}) state not ${this.phase}.`);
         }
     }
 }

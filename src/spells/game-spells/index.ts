@@ -1,4 +1,4 @@
-import spell from '../AbstractSpell';
+import spell from '../AbstractSpellWithEffect';
 export default {
     test: {
         spell

@@ -339,14 +339,17 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
     const executingSpells:AbstractSpell[] = [];
-    let lastTick = performance.now();
+    console.log(executingSpells);
+    let lastTick = new Date().getTime();//todo performance.now();
     scene.registerBeforeRender(()=>{
-        const thisTick = performance.now();
+        const thisTick = new Date().getTime();//todo performance.now();
         const tickDuration = thisTick - lastTick;
         lastTick = thisTick;
 
         executingSpells.forEach((spell:AbstractSpell)=>{
-            spell.tick(tickDuration);
+            if(spell.phase===spellPhases.EXECUTING) {
+                spell.tick(tickDuration);
+            }
         });
 
     });
@@ -363,15 +366,13 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     );
 
     spell.subscribe(()=>{
+        console.log('spell.subscribe',spell.phase);
         switch(spell.phase){
-            case spellPhases.PREPARED:
-                spell.execute();
-                break;
             case spellPhases.EXECUTING:
                 executingSpells.push(spell);
                 break;
             case spellPhases.FINISHED:
-                //todo
+                //todo remove from executingSpells
                 break;
         }
     });
@@ -384,8 +385,9 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
         if (pickInfo.hit) {
 
+            console.log('onPointerDown',pickInfo);
             spell.addTarget(pickInfo);
-
+            spell.execute();
 
 
 
