@@ -339,10 +339,9 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
     const executingSpells:AbstractSpell[] = [];
-    console.log(executingSpells);
-    let lastTick = new Date().getTime();//todo performance.now();
+    let lastTick = performance.now();
     scene.registerBeforeRender(()=>{
-        const thisTick = new Date().getTime();//todo performance.now();
+        const thisTick = performance.now();
         const tickDuration = thisTick - lastTick;
         lastTick = thisTick;
 
@@ -354,28 +353,34 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
     });
 
+    let spell:AbstractSpell;
+    function createNewSpell():void {
+        spell = spellFactory.createSpell(
+            dataModel.currentSpellId,
+            (energy: number) => {
+                return true
+            },
+            (energy: number) => {
+            },
+            [],
+            playerMesh,
+            scene
+        );
 
-
-    const spell = spellFactory.createSpell(
-        dataModel.currentSpellId,
-        (energy:number)=>{return true},
-        (energy:number)=>{},
-        [],
-        playerMesh,
-        scene
-    );
-
-    spell.subscribe(()=>{
-        console.log('spell.subscribe',spell.phase);
-        switch(spell.phase){
-            case spellPhases.EXECUTING:
-                executingSpells.push(spell);
-                break;
-            case spellPhases.FINISHED:
-                //todo remove from executingSpells
-                break;
-        }
-    });
+        spell.subscribe(() => {
+            //console.log('spell.subscribe', spell.phase);
+            switch (spell.phase) {
+                case spellPhases.EXECUTING:
+                    executingSpells.push(spell);
+                    createNewSpell();
+                    break;
+                case spellPhases.FINISHED:
+                    //todo remove from executingSpells
+                    break;
+            }
+        });
+    }
+    createNewSpell();
 
 
     function onPointerDown() {
@@ -385,10 +390,9 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
         if (pickInfo.hit) {
 
-            console.log('onPointerDown',pickInfo);
+            //console.log('onPointerDown',pickInfo);
             spell.addTarget(pickInfo);
             spell.execute();
-
 
 
             /*

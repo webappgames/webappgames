@@ -26,7 +26,6 @@ export default class SpellEffect{
     tick(tickDuration:number) {
 
         const tickSpeed = this.speed*tickDuration/1000;
-        console.log(tickSpeed);
 
         //todo optimize by targetPoint setter
         const movementVector = this.targetPoint.subtract(this.fountainMesh.position);
