@@ -18,6 +18,8 @@ export default class Fly extends AbstractSpell{
     tick(tickDuration:number) {
         super.tick(tickDuration);
         this.playerMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,10,0));
+
+        this.costCallback(tickDuration);
     }
 
 
