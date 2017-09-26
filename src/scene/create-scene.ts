@@ -1,4 +1,4 @@
-import log from '../tools/log';
+//import log from '../tools/log';
 import * as BABYLON from 'babylonjs';
 import DataModel from '../data-model';
 //import createStairs from './create-stairs';
@@ -8,7 +8,7 @@ import {PLAYER} from '../config';
 import {default as AbstractSpell, spellPhases} from '../spells/classes/AbstractSpell';
 import spellFactory from '../spells/classes/SpellFactory';
 import {neighbourSpell} from '../spells/tools/index';
-import {subscribeKeys,SubscriberModes} from '../tools/keys';
+//import {subscribeKeys,SubscriberModes} from '../tools/keys';
 //import AbstractSpell from "../spells/AbstractSpell";
 
 function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
@@ -338,14 +338,15 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     });*/
 
 
-    const executingSpells:AbstractSpell[] = [];
+    const allSpells:AbstractSpell[] = [];
     let lastTick = performance.now();
     scene.registerBeforeRender(()=>{
         const thisTick = performance.now();
         const tickDuration = thisTick - lastTick;
         lastTick = thisTick;
 
-        executingSpells.forEach((spell:AbstractSpell)=>{
+        //todo garbage collector
+        allSpells.forEach((spell:AbstractSpell)=>{
             if(spell.phase===spellPhases.EXECUTING) {
                 spell.tick(tickDuration);
             }
@@ -355,153 +356,143 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
     let spell:AbstractSpell;
     function createNewSpell():void {
-        spell = spellFactory.createSpell(
-            dataModel.currentSpellId,
-            (energyCost: number) => {
-                if(energyCost>dataModel.energy){
-                    return false;
-                }
-                dataModel.energy -= energyCost;
-                return true;
-            },
-            (energyGain: number) => {
-            },
-            [],
-            playerMesh,
-            groundMesh,
-            scene
-        );
 
-        spell.subscribe(() => {
-            //console.log('spell.subscribe', spell.phase);
-            switch (spell.phase) {
-                case spellPhases.EXECUTING:
-                    executingSpells.push(spell);
-                    createNewSpell();
-                    break;
-                case spellPhases.FINISHED:
-                    //todo remove from executingSpells
-                    break;
-            }
-        });
+        if(!(spell||{released:true}/*todo better*/).released) {
+            spell.release();
+        }else {
+            spell = spellFactory.createSpell(
+                dataModel.currentSpellId,
+                (energyCost: number) => {
+                    if (energyCost > dataModel.energy) {
+                        return false;
+                    }
+                    dataModel.energy -= energyCost;
+                    return true;
+                },
+                (energyGain: number) => {
+                },
+                [],
+                playerMesh,
+                groundMesh,
+                scene
+            );
+
+            /*spell.subscribe(() => {
+                //console.log('spell.subscribe', spell.phase);
+                switch (spell.phase) {
+                    case spellPhases.EXECUTING:
+                        break;
+                    case spellPhases.FINISHED:
+                        //todo remove from executingSpells
+                        break;
+                }
+            });*/
+
+            spell.subscribeOnRelease(() => {
+                createNewSpell();
+            });
+
+            allSpells.push(spell);
+        }
     }
     createNewSpell();
 
 
     function onPointerDown() {
+        //todo only left button ???maybe on spell?
 
-        //todo only left button
-        const pickInfo = pickFromCenter();
-
-        if (pickInfo.hit) {
-
-            //console.log('onPointerDown',pickInfo);
-            try{
-                spell.addTarget(pickInfo);
-            }catch(error){
-                //todo better
-                alert(error.message);
-            }
-
-
-
-            try{
-                spell.execute();
-            }catch(error){
-                console.warn(error);
-            }
-
-
-
-            /*
-            const targetMesh = pickInfo.pickedMesh;
-            const spell = spellFactory.createSpell(
-                dataModel.currentSpellId,
-                targetMesh,
-                pickInfo.pickedPoint,
-                playerMesh,
-                scene
-            );
-
-            if(!spell.acceptTargetMesh()){
-                //todo warning to user
-                return;
-            }
-
-            const spellEnergyCost = spell.countEnergyCost();
-            if(spellEnergyCost>dataModel.energy){
-                //todo warning to user
-                return;
-            }
-            dataModel.energy -= spellEnergyCost;
-
-            spell.begin();
-
-            log.send(`Creating spell "${dataModel.currentSpellId}".`);
-
-            const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
-            fountainMesh.isVisible = false;
-            fountainMesh.position = playerMesh.position.subtract(new BABYLON.Vector3(0,-2,0));
-            const spellParticles = createSpellParticles(fountainMesh,scene);
-
-
-            let lastTick = new Date().getTime();
-            const tickCallback = ()=> {
-
-                const tickDuration = new Date().getTime() - lastTick;
-                lastTick = new Date().getTime();
-
-
-                const speed = spell.dynamicSpeed;
-
-
-                const tickSpeed = speed*tickDuration/1000;
-
-                const movementVector = spell.dynamicTarget.subtract(fountainMesh.position);
-                const movementVectorLength = movementVector.length();
-
-                if(movementVectorLength>tickSpeed){
-
-                    movementVector.scaleInPlace(tickSpeed/movementVectorLength);
-
-                }else{
-
-                    movementVector.scaleInPlace(1/movementVectorLength);
-                    spell.direction = movementVector;
-
-                    spell.execute();
-                    //targetMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
-                    //targetMesh.dispose();
-                    //targetMesh.scaling.scaleInPlace(1.2);
-
-
-
-                    scene.unregisterBeforeRender(tickCallback);
-
-
-                    spellParticles.stop();
-                    setTimeout(()=>{
-                        fountainMesh.dispose();
-                    },5000/*todo count this value* /);
-
-                }
-
-
-                fountainMesh.position.addInPlace(movementVector);
-
-            };
-
-            scene.registerBeforeRender(tickCallback);*/
-
-
-
+        try {
+            spell.addTarget(pickFromCenter());
+        } catch (error) {
+            //todo better
+            alert(error.message);
         }
 
 
+        /*
+         const targetMesh = pickInfo.pickedMesh;
+         const spell = spellFactory.createSpell(
+         dataModel.currentSpellId,
+         targetMesh,
+         pickInfo.pickedPoint,
+         playerMesh,
+         scene
+         );
+
+         if(!spell.acceptTargetMesh()){
+         //todo warning to user
+         return;
+         }
+
+         const spellEnergyCost = spell.countEnergyCost();
+         if(spellEnergyCost>dataModel.energy){
+         //todo warning to user
+         return;
+         }
+         dataModel.energy -= spellEnergyCost;
+
+         spell.begin();
+
+         log.send(`Creating spell "${dataModel.currentSpellId}".`);
+
+         const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
+         fountainMesh.isVisible = false;
+         fountainMesh.position = playerMesh.position.subtract(new BABYLON.Vector3(0,-2,0));
+         const spellParticles = createSpellParticles(fountainMesh,scene);
+
+
+         let lastTick = new Date().getTime();
+         const tickCallback = ()=> {
+
+         const tickDuration = new Date().getTime() - lastTick;
+         lastTick = new Date().getTime();
+
+
+         const speed = spell.dynamicSpeed;
+
+
+         const tickSpeed = speed*tickDuration/1000;
+
+         const movementVector = spell.dynamicTarget.subtract(fountainMesh.position);
+         const movementVectorLength = movementVector.length();
+
+         if(movementVectorLength>tickSpeed){
+
+         movementVector.scaleInPlace(tickSpeed/movementVectorLength);
+
+         }else{
+
+         movementVector.scaleInPlace(1/movementVectorLength);
+         spell.direction = movementVector;
+
+         spell.execute();
+         //targetMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
+         //targetMesh.dispose();
+         //targetMesh.scaling.scaleInPlace(1.2);
+
+
+
+         scene.unregisterBeforeRender(tickCallback);
+
+
+         spellParticles.stop();
+         setTimeout(()=>{
+         fountainMesh.dispose();
+         },5000/*todo count this value* /);
+
+         }
+
+
+         fountainMesh.position.addInPlace(movementVector);
+
+         };
+
+         scene.registerBeforeRender(tickCallback);*/
     }
     canvasElement.addEventListener("pointerdown", onPointerDown, false);
 
 
+    //todo lodash debounce
     function onWheel(event:WheelEvent) {
         if(event.deltaY>0){
             dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,1);
@@ -513,27 +504,6 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         }
     }
     canvasElement.addEventListener("wheel", onWheel, false);
-
-
-
-    //todo move to set-controlls.ts
-    //75,76
-    subscribeKeys([75],SubscriberModes.PRESS,()=>{
-
-        /*if(data.spellCurrent<data.spells.lenght){
-            data.spellCurrent++;
-        }else{
-            data.spellCurrent=0;
-        }*/
-
-        dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,1);
-
-
-        log.send(`Changing spell to "${dataModel.currentSpellId}".`);
-    });
-
-
-
 
 
 

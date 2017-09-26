@@ -2,12 +2,13 @@ import {observable,computed} from "mobx";
 import {getCategoryFromSpellId} from '../spells/tools/index';
 
 export default class DataModel {
+    //@observable currentSpellId = 'trolololololo';
     @observable currentSpellId = 'fly';
     @computed get currentSpellCategory() {
         return getCategoryFromSpellId(this.currentSpellId)
     }
     @observable health = 1;
-    @observable energy = 1000000;
+    @observable energy = 10000000000;
 
 
 

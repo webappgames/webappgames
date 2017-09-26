@@ -2,7 +2,6 @@ import * as BABYLON from 'babylonjs';
 
 export enum spellPhases{
     PREPARING,
-    //PREPARED,
     EXECUTING,
     FINISHED
 }
@@ -38,22 +37,36 @@ export default class AbstractSpell{
         this._phaseSubscribers.push(subscriberCallback);
     }
 
+    public released = false;//todo get released _released
+    private _releasedSubscribers:(()=>void)[] = [];
+    subscribeOnRelease(subscriberCallback:()=>void){
+        this._releasedSubscribers.push(subscriberCallback);
+    }
+
+
     public targets:BABYLON.PickingInfo[] = [];
     addTarget(target:BABYLON.PickingInfo){
-        if(this.phase === spellPhases.PREPARING) {
-            this.targets.push(target);
-        }else{
+        if(this.phase !== spellPhases.PREPARING) {
             throw new Error(`Target can be added only in PREPARING(${spellPhases.PREPARING}) state.`);
+        }else
+        if(this.released){
+            throw new Error(`Target can not be added to released spell.`);
+        }else{
+
+            this.targets.push(target);
         }
     }
 
-    /*prepared(){
-        if(this.phase === spellPhases.PREPARING){
-            this._setPhase(spellPhases.PREPARED);
+    release(){
+        if(!this.released){
+            this.released=true;
+            this._releasedSubscribers.forEach((subscriberCallback:()=>void)=>{
+                setImmediate(()=>{subscriberCallback();});
+            });
         }else{
-            throw new Error(`Method execute() can be called only in PREPARING state.`);
+            throw new Error(`Spell is already released.`);
         }
-    }*/
+    }
 
 
     execute(){
@@ -74,6 +87,9 @@ export default class AbstractSpell{
     finish(){
         if(this.phase === spellPhases.EXECUTING) {
             this._setPhase(spellPhases.FINISHED);
+            if(!this.released){
+                this.release();
+            }
         }else{
             throw new Error(`Method finish() can be called only in EXECUTING(${spellPhases.EXECUTING}) state not ${this.phase}.`);
         }

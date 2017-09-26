@@ -7,10 +7,12 @@ export default class Fly extends AbstractSpell{
     //todo better addTarget
     addTarget(target:BABYLON.PickingInfo){
         target;//no action
+        if(this.phase===spellPhases.PREPARING){
+            this.execute();
+        }else
         if(this.phase===spellPhases.EXECUTING){
             this.finish();
         }
-
     }
 
     tick(tickDuration:number) {

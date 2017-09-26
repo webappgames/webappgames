@@ -1,4 +1,4 @@
-import spell from '../classes/AbstractSpellWithEffect';
+import spell from '../classes/AbstractSpellOnMeshes';
 import bounce from './02-kinetics/Bounce';
 import plate from './03-create/Plate';
 import fly from './01-subjective/Fly';
