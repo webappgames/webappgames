@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import {spellCategories,getSpellIdsFromCategory} from '../../spells/spellTools';
+import {spellCategories,getSpellIdsFromCategory} from '../../spells/tools/index';
 import DataModel from '../../data-model';
 import './style/SpellMenu.css';
 

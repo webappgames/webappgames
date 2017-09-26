@@ -5,9 +5,9 @@ import DataModel from '../data-model';
 //import injectObjectPicking from './inject-object-picking';
 import setControlls from './set-controlls';
 import {PLAYER} from '../config';
-import {default as AbstractSpell, spellPhases} from '../spells/AbstractSpell';
-import spellFactory from '../spells/SpellFactory';
-import {neighbourSpell} from '../spells/spellTools';
+import {default as AbstractSpell, spellPhases} from '../spells/classes/AbstractSpell';
+import spellFactory from '../spells/classes/SpellFactory';
+import {neighbourSpell} from '../spells/tools/index';
 import {subscribeKeys,SubscriberModes} from '../tools/keys';
 //import AbstractSpell from "../spells/AbstractSpell";
 
@@ -368,6 +368,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
             },
             [],
             playerMesh,
+            groundMesh,
             scene
         );
 
@@ -395,7 +396,14 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         if (pickInfo.hit) {
 
             //console.log('onPointerDown',pickInfo);
-            spell.addTarget(pickInfo);
+            try{
+                spell.addTarget(pickInfo);
+            }catch(error){
+                //todo better
+                alert(error.message);
+            }
+
+
 
             try{
                 spell.execute();
@@ -497,9 +505,11 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     function onWheel(event:WheelEvent) {
         if(event.deltaY>0){
             dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,1);
+            createNewSpell();
         }else
         if(event.deltaY<0){
             dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,-1);
+            createNewSpell();
         }
     }
     canvasElement.addEventListener("wheel", onWheel, false);

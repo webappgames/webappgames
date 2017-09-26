@@ -1,5 +1,5 @@
 import {observable,computed} from "mobx";
-import {getCategoryFromSpellId} from '../spells/spellTools';
+import {getCategoryFromSpellId} from '../spells/tools/index';
 
 export default class DataModel {
     @observable currentSpellId = 'plate';

@@ -1,5 +1,5 @@
 import * as BABYLON from 'babylonjs';
-import Spell from '../../AbstractSpellWithEffect';
+import Spell from '../../classes/AbstractSpellWithEffect';
 import {countVolume} from '../../../tools/babylon';
 
 export default class Bounce extends Spell{

@@ -16,6 +16,7 @@ export default class AbstractSpell{
         public gainCallback:(energy:number)=>void,
         public otherPlayerSpell:AbstractSpell[],
         public playerMesh:BABYLON.AbstractMesh,
+        public groundMesh:BABYLON.AbstractMesh,
         public scene:BABYLON.Scene,
     ){
         //this._setPhase(spellPhases.PREPARING);
@@ -39,7 +40,11 @@ export default class AbstractSpell{
 
     public targets:BABYLON.PickingInfo[] = [];
     addTarget(target:BABYLON.PickingInfo){
-        this.targets.push(target);
+        if(this.phase === spellPhases.PREPARING) {
+            this.targets.push(target);
+        }else{
+            throw new Error(`Target can be added only in PREPARING(${spellPhases.PREPARING}) state.`);
+        }
     }
 
     /*prepared(){

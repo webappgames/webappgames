@@ -1,5 +1,5 @@
 import * as BABYLON from 'babylonjs';
-import Spell from '../../AbstractSpellWithEffect';
+import Spell from '../../classes/AbstractSpellWithEffect';
 
 export default class Plate extends Spell {
     /*todo acceptTargetMesh() {
