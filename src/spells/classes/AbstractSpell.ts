@@ -56,6 +56,9 @@ export default class AbstractSpell{
             this.targets.push(target);
         }
     }
+    get firstTargetMesh():BABYLON.AbstractMesh{
+        return this.targets[0].pickedMesh;
+    }
 
     release(){
         if(!this.released){

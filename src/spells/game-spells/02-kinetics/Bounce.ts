@@ -1,8 +1,8 @@
 import * as BABYLON from 'babylonjs';
-import Spell from '../../classes/AbstractSpellOnMeshes';
+import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 import {countVolume} from '../../../tools/babylon';
 
-export default class Bounce extends Spell{
+export default class Bounce extends AbstractSpellOnMeshes{
 
     execute(){
         const costEnergy = countVolume(this.targets[0].pickedMesh)*this.targets[0].pickedMesh.position.subtract(this.playerMesh.position).length()/10;

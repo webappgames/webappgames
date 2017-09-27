@@ -6,9 +6,16 @@ import SpellEffect from '../../scene/classes/SpellEffect';
 
 export default class AbstractSpellOnMeshes extends AbstractSpell {
 
-    public TARGET_COUNT = 1;
-    public ALLOW_GROUND = false;
-    public SPEED = 100;
+    public TARGET_COUNT = 1;//todo maybe getter
+    public ALLOW_GROUND = false;//todo maybe getter
+
+    get dynamicSpeed(){
+        return 100;
+    }
+
+    get dynamicTarget():BABYLON.Vector3{
+        return this.firstTargetMesh.position;
+    }
 
 
     private spellEffect: SpellEffect;

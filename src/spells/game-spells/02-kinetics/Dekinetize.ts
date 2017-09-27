@@ -1,18 +1,20 @@
 //import * as BABYLON from 'babylonjs';
-import Spell from '../../AbstractSpell';
+import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 
-export default class Dekinetize extends Spell{
+export default class Dekinetize extends AbstractSpellOnMeshes{
 
-    public SPEED = 400;
+    get dynamicSpeed(){
+        return 400;
+    }
 
     finish() {
         super.finish();
 
-        const angularVelocity = this.targetMesh.physicsImpostor.getAngularVelocity();
-        const linearVelocity = this.targetMesh.physicsImpostor.getLinearVelocity();
+        const angularVelocity = this.firstTargetMesh.physicsImpostor.getAngularVelocity();
+        const linearVelocity = this.firstTargetMesh.physicsImpostor.getLinearVelocity();
 
-        this.targetMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(-1));
-        this.targetMesh.physicsImpostor.setLinearVelocity(linearVelocity.scale(-1));
+        this.firstTargetMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(-1));
+        this.firstTargetMesh.physicsImpostor.setLinearVelocity(linearVelocity.scale(-1));
     }
 }

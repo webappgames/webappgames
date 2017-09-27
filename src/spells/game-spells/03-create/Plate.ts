@@ -1,7 +1,7 @@
 import * as BABYLON from 'babylonjs';
-import Spell from '../../classes/AbstractSpellOnMeshes';
+import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
-export default class Plate extends Spell {
+export default class Plate extends AbstractSpellOnMeshes {
     /*todo acceptTargetMesh() {
      if(this.targetMesh.name === 'ground'){
      return false;
