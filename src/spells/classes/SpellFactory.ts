@@ -1,5 +1,6 @@
 import * as BABYLON from 'babylonjs';
 import AbstractSpell from './AbstractSpell';
+import MaterialFactory from '../../scene/classes/MaterialFactory';
 //import spells from './spells';
 import {getSpellById} from '../tools/index';
 
@@ -15,6 +16,7 @@ class SpellFactory{
         otherPlayerSpell:AbstractSpell[],
         playerMesh:BABYLON.AbstractMesh,
         groundMesh:BABYLON.AbstractMesh,
+        materialFactory:MaterialFactory,
         scene:BABYLON.Scene,
     ):AbstractSpell{
         //todo better
@@ -24,6 +26,7 @@ class SpellFactory{
             otherPlayerSpell,
             playerMesh,
             groundMesh,
+            materialFactory,
             scene
         );
     }

@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs';
+import MaterialFactory from '../../scene/classes/MaterialFactory';
 
 export enum spellPhases{
     PREPARING,
@@ -16,6 +17,7 @@ export default class AbstractSpell{
         public otherPlayerSpell:AbstractSpell[],
         public playerMesh:BABYLON.AbstractMesh,
         public groundMesh:BABYLON.AbstractMesh,
+        public materialFactory:MaterialFactory,
         public scene:BABYLON.Scene,
     ){
         //this._setPhase(spellPhases.PREPARING);

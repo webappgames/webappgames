@@ -9,23 +9,15 @@ import {default as AbstractSpell, spellPhases} from '../spells/classes/AbstractS
 import spellFactory from '../spells/classes/SpellFactory';
 import {neighbourSpell} from '../spells/tools/index';
 //import {subscribeKeys,SubscriberModes} from '../tools/keys';
-//import AbstractSpell from "../spells/AbstractSpell";
+import MaterialFactory from "./classes/MaterialFactory";
 
-function getMaterial(name:string,textureScale:number,scene:BABYLON.Scene){
-    const material = new BABYLON.StandardMaterial("texture3", scene);
-    const texture = new BABYLON.Texture(`/assets/textures/${name}.jpg`, scene);
-    texture.uScale=textureScale;
-    texture.vScale=textureScale;
-    material.diffuseTexture = texture;
-    //material.specularColor = BABYLON.Color3.FromHexString('#ff0000');
-    //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
-    return material;
-}
+
 
 
 export default function createScene(canvasElement: HTMLCanvasElement, engine: BABYLON.Engine,dataModel:DataModel): BABYLON.Scene {
     const scene = new BABYLON.Scene(engine);
 
+    const materialFactory = new MaterialFactory(scene);
 
     scene.clearColor = new BABYLON.Color4(1, 1, 1, 0);
 
@@ -161,7 +153,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
     const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
-    groundMesh.material = getMaterial('grass',100,scene);
+    groundMesh.material = materialFactory.getMaterial('grass',100);
     groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, scene);
     scene.registerBeforeRender(()=>{
         groundMesh.position.x = playerMesh.position.x;
@@ -241,7 +233,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         const boxMesh = BABYLON.Mesh.CreateBox("box", 1, scene);
         boxMesh.scaling = new BABYLON.Vector3(20, 80, 8);
         boxMesh.position = new BABYLON.Vector3(0, 40, i*40);
-        boxMesh.material = getMaterial('stone-plain', 1, scene);
+        boxMesh.material = materialFactory.getMaterial('stone-plain');
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
@@ -254,7 +246,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         const boxMesh = BABYLON.Mesh.CreateBox("box", 1, scene);
         boxMesh.scaling = new BABYLON.Vector3(8, 80, 20);
         boxMesh.position = new BABYLON.Vector3(i*40, 40 , 40);
-        boxMesh.material = getMaterial('stone-plain', 1, scene);
+        boxMesh.material = materialFactory.getMaterial('stone-plain');
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
@@ -375,6 +367,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 [],
                 playerMesh,
                 groundMesh,
+                materialFactory,
                 scene
             );
 
