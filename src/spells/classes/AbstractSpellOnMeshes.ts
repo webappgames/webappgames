@@ -8,6 +8,9 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
 
     public TARGET_COUNT = 1;
     public ALLOW_GROUND = false;
+    public SPEED = 100;
+
+
     private spellEffect: SpellEffect;
 
     addTarget(target:BABYLON.PickingInfo){
@@ -42,6 +45,7 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
             this.targets[this.targets.length-1].pickedMesh.position,
             this.finish.bind(this),
             this.scene,
+            this.SPEED
         );
         this.release();
         super.execute();

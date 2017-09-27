@@ -12,7 +12,8 @@ export default class SpellEffect{
         public startPoint:BABYLON.Vector3,
         public targetPoint:BABYLON.Vector3,
         private finishCallback:()=>void,
-        scene:BABYLON.Scene
+        scene:BABYLON.Scene,
+        public speed = 100
     ){
 
         this.fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
@@ -21,7 +22,6 @@ export default class SpellEffect{
         this.spellParticles = createSpellParticles(this.fountainMesh,scene);
     }
 
-    public speed = 100;
 
     tick(tickDuration:number) {
 

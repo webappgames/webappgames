@@ -364,7 +364,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 dataModel.currentSpellId,
                 (energyCost: number) => {
                     if (energyCost > dataModel.energy) {
-                        return false;
+                        throw new Error('Not enough resources.');
                     }
                     dataModel.energy -= energyCost;
                     return true;
