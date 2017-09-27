@@ -4,6 +4,10 @@ import {countVolume} from '../../../tools/babylon';
 
 export default class Bounce extends AbstractSpellOnMeshes{
 
+    get price():number{
+        return 0;
+    }
+
     execute(){
         const costEnergy = countVolume(this.targets[0].pickedMesh)*this.targets[0].pickedMesh.position.subtract(this.playerMesh.position).length()/10;
 

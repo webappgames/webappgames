@@ -3,6 +3,10 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Pillar extends AbstractSpellOnMeshes{
 
+    get price():number{
+        return 0;
+    }
+
     public ALLOW_GROUND = true;
 
     get dynamicTarget():BABYLON.Vector3{

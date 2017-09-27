@@ -3,6 +3,10 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Freeze extends AbstractSpellOnMeshes{
 
+    get price():number{
+        return 0;
+    }
+
     get dynamicSpeed():number{
         return 1000;
     }

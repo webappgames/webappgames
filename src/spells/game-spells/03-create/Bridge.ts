@@ -4,6 +4,10 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Bridge extends AbstractSpellOnMeshes{
 
+    get price():number{
+        return 0;
+    }
+
     finish(){
         super.finish();
         //log.send('AbstractSpell!');

@@ -4,6 +4,10 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Duplicate extends AbstractSpellOnMeshes{
 
+    get price():number{
+        return 0;
+    }
+
     finish(){
         super.finish();
         this.firstTargetMesh.clone('box',this.targetMesh.parent);

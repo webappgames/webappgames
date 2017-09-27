@@ -2,6 +2,11 @@
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Ghost extends AbstractSpellOnMeshes{
+
+    get price():number{
+        return 0;
+    }
+
     finish() {
         super.finish();
         this.firstTargetMesh.physicsImpostor.dispose();

@@ -66,8 +66,13 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
 
     }
 
+    get price():number{
+        return 0;
+    }
+
     finish() {
         super.finish();
+        this.costCallback(this.price);
         //this.spellEffect.stop();
     }
 }

@@ -4,6 +4,10 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Dekinetize extends AbstractSpellOnMeshes{
 
+    get price():number{
+        return 0;
+    }
+
     get dynamicSpeed(){
         return 400;
     }

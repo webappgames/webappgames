@@ -2,6 +2,10 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Pull extends AbstractSpellOnMeshes{
 
+    get price():number{
+        return 0;
+    }
+
     get scale():number{
         return 0;
     }

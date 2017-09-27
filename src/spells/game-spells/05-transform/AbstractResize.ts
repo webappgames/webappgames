@@ -2,6 +2,14 @@ import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class AbstractResize extends AbstractSpellOnMeshes{
+
+    get price():number{
+        return 0;
+    }
+    get scaling():number{
+        return 1;
+    }
+
     finish(){
         super.finish();
 
@@ -21,7 +29,5 @@ export default class AbstractResize extends AbstractSpellOnMeshes{
 
 
     }
-    get scaling():number{
-        return 1;
-    }
+
 }

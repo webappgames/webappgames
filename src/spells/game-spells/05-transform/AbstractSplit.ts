@@ -11,6 +11,9 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
         }
     }
 
+    get price():number{
+        return 0;
+    }
 
     finish(){
         super.finish();

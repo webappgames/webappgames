@@ -2,6 +2,11 @@ import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Wall extends AbstractSpellOnMeshes {
+
+    get price():number{
+        return 0;
+    }
+
     /*acceptTargetMesh() {
      if (this.sharedStarage.firstPoint) {
 

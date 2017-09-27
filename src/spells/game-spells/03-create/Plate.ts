@@ -2,6 +2,12 @@ import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Plate extends AbstractSpellOnMeshes {
+
+    get price():number{
+        return 0;
+    }
+
+
     /*todo acceptTargetMesh() {
      if(this.targetMesh.name === 'ground'){
      return false;
