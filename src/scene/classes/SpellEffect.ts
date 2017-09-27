@@ -22,9 +22,13 @@ export default class SpellEffect{
         this.spellParticles = createSpellParticles(this.fountainMesh,scene);
     }
 
+    public running = true;
+
     public direction:BABYLON.Vector3=BABYLON.Vector3.Zero();
 
     tick(tickDuration:number) {
+
+        if(!this.running)return;
 
         const tickSpeed = this.speed*tickDuration/1000;
 
@@ -37,7 +41,8 @@ export default class SpellEffect{
         } else {
             movementVector.scaleInPlace(1 / movementVectorLength);
             this.direction = movementVector;
-            this.finishCallback();
+            this.running = false
+            setImmediate(this.finishCallback);
             this.stop();
         }
         this.fountainMesh.position.addInPlace(movementVector);

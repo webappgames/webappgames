@@ -9,9 +9,6 @@ export default class Pillar extends AbstractSpellOnMeshes{
 
     public ALLOW_GROUND = true;
 
-    get dynamicTarget():BABYLON.Vector3{
-        return this.targets[0].pickedPoint;
-    }
 
     //todo addTarget errors
 

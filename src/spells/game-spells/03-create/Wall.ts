@@ -22,7 +22,7 @@ export default class Wall extends AbstractSpellOnMeshes {
 
      }*/
 
-
+    public ALLOW_GROUND = true;
     public TARGET_COUNT = 2;
 
     finish() {

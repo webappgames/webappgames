@@ -94,6 +94,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     //camera.parent = playerMesh;
     setControlls(
             canvasElement
+            ,onPointerDown
             ,(alpha:number,beta:number)=>{
 
                 camera.rotation.x += alpha;
@@ -489,7 +490,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
          scene.registerBeforeRender(tickCallback);*/
     }
-    canvasElement.addEventListener("pointerdown", onPointerDown, false);
+    //canvasElement.addEventListener("pointerdown", onPointerDown, false);
 
 
     //todo lodash debounce

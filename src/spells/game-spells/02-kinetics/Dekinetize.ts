@@ -9,7 +9,7 @@ export default class Dekinetize extends AbstractSpellOnMeshes{
     }
 
     get dynamicSpeed(){
-        return 400;
+        return 1000;
     }
 
     finish() {
