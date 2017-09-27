@@ -17,8 +17,10 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
         return this.firstTargetMesh.position;
     }
 
-
     private spellEffect: SpellEffect;
+    get direction():BABYLON.Vector3{
+        return this.spellEffect.direction;
+    }
 
     addTarget(target:BABYLON.PickingInfo){
 
@@ -52,7 +54,7 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
             this.targets[this.targets.length-1].pickedMesh.position,
             this.finish.bind(this),
             this.scene,
-            this.SPEED
+            this.dynamicSpeed
         );
         this.release();
         super.execute();

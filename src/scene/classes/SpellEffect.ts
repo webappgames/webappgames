@@ -22,6 +22,7 @@ export default class SpellEffect{
         this.spellParticles = createSpellParticles(this.fountainMesh,scene);
     }
 
+    public direction:BABYLON.Vector3=BABYLON.Vector3.Zero();
 
     tick(tickDuration:number) {
 
@@ -35,7 +36,7 @@ export default class SpellEffect{
             movementVector.scaleInPlace(tickSpeed / movementVectorLength);
         } else {
             movementVector.scaleInPlace(1 / movementVectorLength);
-            //todo spell.direction = movementVector;
+            this.direction = movementVector;
             this.finishCallback();
             this.stop();
         }
