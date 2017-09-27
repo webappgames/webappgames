@@ -1,20 +1,5 @@
-import spell from '../classes/AbstractSpellOnMeshes';
-import bounce from './02-kinetics/Bounce';
-import plate from './03-create/Plate';
-import fly from './01-subjective/Fly';
-
-export default {
-    test: {
-        spell,
-        bounce,
-        plate,
-        fly,
-    }
-};
-/*
 import teleport from './01-subjective/Teleport';
-//import fly from './01-subjective/Fly';
-//import noclip from './01-subjective/Noclip';
+import fly from './01-subjective/Fly';
 import bounce from './02-kinetics/Bounce';
 import push from './02-kinetics/Push';
 import pull from './02-kinetics/Pull';
@@ -23,21 +8,19 @@ import freeze from './02-kinetics/Freeze';
 import duplicate from './03-create/Duplicate';
 import pillar from './03-create/Pillar';
 import wall from './03-create/Wall';
-//import prick from './03-create/Prick';
 import plate from './03-create/Plate';
 import bridge from './03-create/Bridge';
 import dispose from './04-hide/Dispose';
 import ghost from './04-hide/Ghost';
-import stash from './04-hide/Stash';
 import reduce from './05-transform/Reduce';
 import grow from './05-transform/Grow';
+import chop from './05-transform/Chop';
 import desintegrate from './05-transform/Desintegrate';
 
 export default {
     subjective: {
         teleport,
-        //fly,
-        //noclip
+        fly
     },
     kinetics: {
         bounce,
@@ -57,11 +40,11 @@ export default {
     hide: {
         dispose,
         ghost,
-        stash
     },
     transform: {
         reduce,
         grow,
+        chop,
         desintegrate
     }
-};*/
+};
