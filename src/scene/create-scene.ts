@@ -10,6 +10,7 @@ import spellFactory from '../spells/classes/SpellFactory';
 import {neighbourSpell} from '../spells/tools/index';
 //import {subscribeKeys,SubscriberModes} from '../tools/keys';
 import MaterialFactory from "./classes/MaterialFactory";
+import WorldGenerator from "../generator";
 
 
 
@@ -18,6 +19,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     const scene = new BABYLON.Scene(engine);
 
     const materialFactory = new MaterialFactory(scene);
+    const worldGenerator = new WorldGenerator(materialFactory,scene);
 
     scene.clearColor = new BABYLON.Color4(1, 1, 1, 0);
 
@@ -228,38 +230,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     }*/
 
 
-
-    for (let i = 0; i < 15; i++) {
-        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, scene);
-        boxMesh.scaling = new BABYLON.Vector3(20, 80, 8);
-        boxMesh.position = new BABYLON.Vector3(0, 40, i*40);
-        boxMesh.material = materialFactory.getMaterial('stone-plain');
-
-
-        boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-            mass: 10,
-            restitution: 0.2
-        }, scene);
-
-    }
-    for (let i = 0; i < 15; i++) {
-        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, scene);
-        boxMesh.scaling = new BABYLON.Vector3(8, 80, 20);
-        boxMesh.position = new BABYLON.Vector3(i*40, 40 , 40);
-        boxMesh.material = materialFactory.getMaterial('stone-plain');
-
-
-        boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-            mass: 10,
-            restitution: 0.2
-        }, scene);
-
-    }
-
-
-
-
-
+    worldGenerator.generateWorld();
 
 
     //injectObjectPicking(scene,canvasElement,groundMesh);
