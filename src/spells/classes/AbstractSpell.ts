@@ -16,7 +16,7 @@ export default class AbstractSpell{
         public gainCallback:(energy:number)=>void,
         public otherPlayerSpell:AbstractSpell[],
         public playerMesh:BABYLON.AbstractMesh,
-        public groundMesh:BABYLON.AbstractMesh,
+        //public groundMesh:BABYLON.AbstractMesh,
         public materialFactory:MaterialFactory,
         public scene:BABYLON.Scene,
     ){

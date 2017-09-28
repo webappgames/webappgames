@@ -4,39 +4,78 @@ import MaterialFactory from '../scene/classes/MaterialFactory';
 
 export default class WorldGenerator{
     constructor(
+        private playerMesh:BABYLON.AbstractMesh,
         private materialFactory:MaterialFactory,
         private scene:BABYLON.Scene
     ){}
 
 
+    createMesh0(mesh1:BABYLON.AbstractMesh, scale=1){
+
+        const mesh0 = BABYLON.Mesh.CreateBox("box0", 1, this.scene);
+        mesh0.scaling = mesh1.scaling.clone();
+        mesh0.scaling.x *= scale;
+        mesh0.scaling.y = 1;
+        mesh0.scaling.z *= scale;
+        mesh0.position = mesh1.position.subtract(new BABYLON.Vector3(0,mesh1.scaling.y/2,0));
+        mesh0.material = this.materialFactory.getMaterial('clay-brics');
+
+
+        mesh0.physicsImpostor = new BABYLON.PhysicsImpostor(mesh0, BABYLON.PhysicsImpostor.BoxImpostor, {
+            mass: 0
+        }, this.scene);
+
+
+    }
+
+
     generateWorld(){
 
+        this.createMesh0(this.playerMesh,10);
+
+
         for (let i = 0; i < 15; i++) {
-            const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
-            boxMesh.scaling = new BABYLON.Vector3(20, 80, 8);
-            boxMesh.position = new BABYLON.Vector3(0, 40, i*40);
-            boxMesh.material = this.materialFactory.getMaterial('stone-plain');
 
 
-            boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+            const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+            mesh1.scaling = new BABYLON.Vector3(20, 1, 8);
+            mesh1.position = new BABYLON.Vector3(0, 40, i*40);
+            mesh1.material = this.materialFactory.getMaterial('stone-plain');
+
+
+            mesh1.physicsImpostor = new BABYLON.PhysicsImpostor(mesh1, BABYLON.PhysicsImpostor.BoxImpostor, {
                 mass: 10,
                 restitution: 0.2
             }, this.scene);
 
+
+            this.createMesh0(mesh1);
+
+
         }
-        for (let i = 0; i < 15; i++) {
-            const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
-            boxMesh.scaling = new BABYLON.Vector3(8, 80, 20);
-            boxMesh.position = new BABYLON.Vector3(i*40, 40 , 40);
+
+
+
+
+        /*setInterval(()=>{
+
+
+            const boxMesh = BABYLON.Mesh.CreateSphere("box", 16,1, this.scene);
+            boxMesh.scaling = new BABYLON.Vector3(3,3,3);
+            boxMesh.position = new BABYLON.Vector3(0, 100 , 0);
             boxMesh.material = this.materialFactory.getMaterial('stone-plain');
 
 
-            boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-                mass: 10,
+            boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
+                mass: 1000,
                 restitution: 0.2
             }, this.scene);
+            boxMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,-5,100));
 
-        }
+
+
+        },4000);*/
+
 
 
     }

@@ -19,7 +19,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     const scene = new BABYLON.Scene(engine);
 
     const materialFactory = new MaterialFactory(scene);
-    const worldGenerator = new WorldGenerator(materialFactory,scene);
+
 
     scene.clearColor = new BABYLON.Color4(1, 1, 1, 0);
 
@@ -64,6 +64,9 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         restitution: 0.01,
         friction: 100
     }, scene);
+
+
+    const worldGenerator = new WorldGenerator(playerMesh,materialFactory,scene);
 
 
 
@@ -154,7 +157,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
+    /*const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
     groundMesh.material = materialFactory.getMaterial('grass',100);
     groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, scene);
     scene.registerBeforeRender(()=>{
@@ -166,7 +169,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    });
+    });*/
 
 
 
@@ -337,7 +340,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 },
                 [],
                 playerMesh,
-                groundMesh,
+                //groundMesh,
                 materialFactory,
                 scene
             );

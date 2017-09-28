@@ -35,7 +35,7 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
         if (!target.hit) {
             throw new Error(`This spell do not accept empty hit.`);//todo copywriting
         }else
-        if(!this.ALLOW_GROUND && target.pickedMesh===this.groundMesh){
+        if(!this.ALLOW_GROUND && target.pickedMesh.name==='ground'){
             throw new Error(`This spell do not accept ground to be a target.`);//todo copywriting
         }
         //else

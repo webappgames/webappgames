@@ -15,7 +15,7 @@ class SpellFactory{
         gainCallback:(energy:number)=>void,
         otherPlayerSpell:AbstractSpell[],
         playerMesh:BABYLON.AbstractMesh,
-        groundMesh:BABYLON.AbstractMesh,
+        //groundMesh:BABYLON.AbstractMesh,
         materialFactory:MaterialFactory,
         scene:BABYLON.Scene,
     ):AbstractSpell{
@@ -25,7 +25,7 @@ class SpellFactory{
             gainCallback,
             otherPlayerSpell,
             playerMesh,
-            groundMesh,
+            //groundMesh,
             materialFactory,
             scene
         );
