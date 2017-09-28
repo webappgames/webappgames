@@ -8,13 +8,13 @@ export default class MaterialFactory{
 
 
     getMaterial(
-        name:string,
+        materialName:string,
         textureScale:number=1
     ){
 
 
         const material = new BABYLON.StandardMaterial("name", this.scene);
-        const texture = new BABYLON.Texture(`/assets/textures/${name}.jpg`, this.scene);
+        const texture = new BABYLON.Texture(`/assets/textures/${materialName}.jpg`, this.scene);
         texture.uScale=textureScale;
         texture.vScale=textureScale;
         material.diffuseTexture = texture;
@@ -24,6 +24,48 @@ export default class MaterialFactory{
 
 
     }
+
+
+    applyMaterial(mesh:BABYLON.AbstractMesh,materialName='stone-plain'){
+        mesh.material = this.getMaterial(materialName);
+        mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+            mass: 1,
+            restitution:0.002,
+            //friction:100
+        }, this.scene);
+
+
+        /*mesh.physicsImpostor.registerBeforePhysicsStep(()=>{
+
+            const linearVelocity = mesh.physicsImpostor.getLinearVelocity();
+            const angularVelocity = mesh.physicsImpostor.getAngularVelocity();
+
+
+            //mesh.physicsImpostor.setLinearVelocity(linearVelocity.scale(.5));
+            //mesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(.5));
+
+
+            if(angularVelocity.length()<1){
+                //mesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(-1));
+            }
+
+
+            if(linearVelocity.length()<2){
+                //mesh.physicsImpostor.setLinearVelocity(linearVelocity.scale(-1));
+                mesh.physicsImpostor.setLinearVelocity(linearVelocity.scale(0));
+            }
+
+        });*/
+
+
+
+    }
+
+
+
+
+
+
 
 }
 

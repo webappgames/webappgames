@@ -21,12 +21,25 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     const materialFactory = new MaterialFactory(scene);
 
 
-    scene.clearColor = new BABYLON.Color4(1, 1, 1, 0);
+    scene.clearColor = new BABYLON.Color4(1, 0, 0, 0);
+
+
+    //scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
+    //BABYLON.Scene.FOGMODE_NONE;
+    //BABYLON.Scene.FOGMODE_EXP;
+    //BABYLON.Scene.FOGMODE_EXP2;
+    //BABYLON.Scene.FOGMODE_LINEAR;
+    //scene.fogColor = BABYLON.Color3.FromHexString('#ffffff');
+    //scene.fogDensity = 0.01;
+    //scene.fogStart = 20.0;
+    //scene.fogEnd = 1000;
 
 
 
     const camera = new BABYLON.FreeCamera("FreeCamera", BABYLON.Vector3.Zero(),  scene);
-    camera.fov = 1.3;
+    camera.fov = 1.2;
+
+
 
 
     const light1 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(1, -2, 1), scene);
@@ -55,7 +68,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     //todo isVisible playerMesh.visibility = 0;
     //playerMesh.showBoundingBox = true;
     playerMesh.isVisible = false;
-    playerMesh.position =  new BABYLON.Vector3(-100, 6, -100);
+    playerMesh.position =  new BABYLON.Vector3(0, 0, 0);
     playerMesh.rotation =  new BABYLON.Vector3(0, /*Math.PI/16*/0, 0);
     playerMesh.scaling =  new BABYLON.Vector3(1, 4, 1);
     //playerMesh.material = getMaterial('grass', 1, scene);
@@ -157,7 +170,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    /*const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
+    const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
     groundMesh.material = materialFactory.getMaterial('grass',100);
     groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, scene);
     scene.registerBeforeRender(()=>{
@@ -169,7 +182,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    });*/
+    });
 
 
 
