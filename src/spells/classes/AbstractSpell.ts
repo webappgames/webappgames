@@ -12,7 +12,7 @@ export default class AbstractSpell{
     constructor(
         //public targetMeshes:BABYLON.AbstractMesh[],
         //public targetPoints:BABYLON.Vector3[],
-        public costCallback:(energy:number)=>boolean,
+        public costCallback:(energy:number)=>void,
         public gainCallback:(energy:number)=>void,
         public otherPlayerSpell:AbstractSpell[],
         public playerMesh:BABYLON.AbstractMesh,

@@ -11,7 +11,7 @@ class SpellFactory{
 
     createSpell(
         spellId:string,
-        costCallback:(energy:number)=>boolean,
+        costCallback:(energy:number)=>void,
         gainCallback:(energy:number)=>void,
         otherPlayerSpell:AbstractSpell[],
         playerMesh:BABYLON.AbstractMesh,

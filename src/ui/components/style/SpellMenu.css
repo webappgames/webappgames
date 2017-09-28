@@ -32,7 +32,9 @@ ol.spells-categories .text{
 ol.spells-categories .current .text{
     display: inline-block;
 }
-
+ol.spells-categories .current .order{
+    display: none;
+}
 
 
 

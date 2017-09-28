@@ -343,11 +343,12 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
             spell = spellFactory.createSpell(
                 dataModel.currentSpellId,
                 (energyCost: number) => {
+                    /*todo survival mode
                     if (energyCost > dataModel.energy) {
                         throw new Error('Not enough resources.');
                     }
                     dataModel.energy -= energyCost;
-                    return true;
+                    return true;*/
                 },
                 (energyGain: number) => {
                 },
@@ -389,88 +390,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
             alert(error.message);
         }
 
-
-        /*
-         const targetMesh = pickInfo.pickedMesh;
-         const spell = spellFactory.createSpell(
-         dataModel.currentSpellId,
-         targetMesh,
-         pickInfo.pickedPoint,
-         playerMesh,
-         scene
-         );
-
-         if(!spell.acceptTargetMesh()){
-         //todo warning to user
-         return;
-         }
-
-         const spellEnergyCost = spell.countEnergyCost();
-         if(spellEnergyCost>dataModel.energy){
-         //todo warning to user
-         return;
-         }
-         dataModel.energy -= spellEnergyCost;
-
-         spell.begin();
-
-         log.send(`Creating spell "${dataModel.currentSpellId}".`);
-
-         const fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
-         fountainMesh.isVisible = false;
-         fountainMesh.position = playerMesh.position.subtract(new BABYLON.Vector3(0,-2,0));
-         const spellParticles = createSpellParticles(fountainMesh,scene);
-
-
-         let lastTick = new Date().getTime();
-         const tickCallback = ()=> {
-
-         const tickDuration = new Date().getTime() - lastTick;
-         lastTick = new Date().getTime();
-
-
-         const speed = spell.dynamicSpeed;
-
-
-         const tickSpeed = speed*tickDuration/1000;
-
-         const movementVector = spell.dynamicTarget.subtract(fountainMesh.position);
-         const movementVectorLength = movementVector.length();
-
-         if(movementVectorLength>tickSpeed){
-
-         movementVector.scaleInPlace(tickSpeed/movementVectorLength);
-
-         }else{
-
-         movementVector.scaleInPlace(1/movementVectorLength);
-         spell.direction = movementVector;
-
-         spell.execute();
-         //targetMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
-         //targetMesh.dispose();
-         //targetMesh.scaling.scaleInPlace(1.2);
-
-
-
-         scene.unregisterBeforeRender(tickCallback);
-
-
-         spellParticles.stop();
-         setTimeout(()=>{
-         fountainMesh.dispose();
-         },5000/*todo count this value* /);
-
-         }
-
-
-         fountainMesh.position.addInPlace(movementVector);
-
-         };
-
-         scene.registerBeforeRender(tickCallback);*/
     }
-    //canvasElement.addEventListener("pointerdown", onPointerDown, false);
 
 
     //todo lodash debounce

@@ -36,7 +36,7 @@ export default class WorldGenerator{
 
 
         const towers = 1;
-        const floors = 3;
+        const floors = 6;
         const size = new BABYLON.Vector3(50,10,50);
         const pillsInFloor = 5;
         const pillsThick = 0.2;
