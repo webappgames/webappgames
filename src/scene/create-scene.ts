@@ -386,8 +386,11 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         try {
             spell.addTarget(pickFromCenter());
         } catch (error) {
-            //todo better
-            alert(error.message);
+            //todo catch only SpellError extended from Error
+            dataModel.messages.push({
+               date: new Date(),
+               text:  error.message as string
+            });
         }
 
     }

@@ -8,6 +8,7 @@ import SpellCurrent from './SpellCurrent';
 import SpellMenu from './SpellMenu';
 import Counters from './Counters';
 import Controlls from './Controlls';
+import Messages from './Messages';
 import './style/Root.css';
 
 export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
@@ -19,6 +20,7 @@ export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
             <SpellMenu dataModel={dataModel}/>
             <Counters dataModel={dataModel}/>
             <Controlls dataModel={dataModel} saver={saver}/>
+            <Messages dataModel={dataModel}/>
         </div>
     );
 });

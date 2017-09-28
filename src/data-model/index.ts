@@ -17,6 +17,9 @@ export default class DataModel {
     @observable aimedMessage:string = '';
 
 
+    @observable messages:{date:Date,text:string}[] = [];
+
+
     @computed get aimStatus():string {
         if(!this.aimed){
             return '';
