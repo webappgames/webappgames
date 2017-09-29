@@ -34,8 +34,9 @@ export default class MaterialFactory{
             texture.vScale = textureScale;
             material.diffuseTexture = texture;
 
-            //material.specularColor = BABYLON.Color3.FromHexString('#ff0000');
+            material.specularColor = BABYLON.Color3.FromHexString('#ffeacb');
             //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
+            material.emissiveTexture = texture;
 
             this.materialsCache.push(material);
             return material;
