@@ -9,7 +9,7 @@ import './style/Cross.css';
 export default observer(({dataModel}:{dataModel:DataModel})=> {
     return (
         <div id="cross" >
-            <img src={`/assets/ui/cross${/*dataModel.aimStatus*/'-aimed'}.png`}/>
+            <img src={process.env.PUBLIC_URL +`/assets/ui/cross${/*dataModel.aimStatus*/'-aimed'}.png`}/>
 
             {/*{dataModel.aimed ?
                 <div>
