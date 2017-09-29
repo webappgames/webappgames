@@ -3,7 +3,8 @@
     position: fixed;
     top: 0;
     left: 0vw;
-    //border: 1px dotted red;
+    text-transform: uppercase;
+    /*border: 1px dotted red;*/
 }
 #spells ol{
     list-style: none;

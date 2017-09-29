@@ -35,6 +35,21 @@ export default class WorldGenerator{
         //this.createMesh0(this.playerMesh,10);
 
 
+
+
+
+        const billboard = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+        billboard.scaling = new BABYLON.Vector3(1280/100,750/100, 1);
+        billboard.position = new BABYLON.Vector3(0,0,10).add(new BABYLON.Vector3(0, billboard.scaling.y/2, 0));
+        this.materialFactory.applyMaterial(billboard,"itnetwork_summer_2017");
+
+
+
+
+
+
+
+
         const towers = 1;
         const floors = 6;
         const size = new BABYLON.Vector3(50,10,50);

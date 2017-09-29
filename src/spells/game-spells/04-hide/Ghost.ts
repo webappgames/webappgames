@@ -14,7 +14,8 @@ export default class Ghost extends AbstractSpellOnMeshes{
 
     finish() {
         super.finish();
+        this.firstTargetMesh.material = this.materialFactory.getMaterial('stone-plain-ghost');
         this.firstTargetMesh.physicsImpostor.dispose();
-        this.firstTargetMesh.visibility = 0.7;
+        //this.firstTargetMesh.visibility = 0.7;
     }
 }

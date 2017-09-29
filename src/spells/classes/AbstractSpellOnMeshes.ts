@@ -40,7 +40,6 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
         if(!this.ALLOW_GROUND && target.pickedMesh.name==='ground'){
             throw new Error(`This spell cant be released on ground.`);//todo copywriting
         }
-        console.log(target.pickedMesh.physicsImpostor);
         if(!this.ALLOW_NO_PHISICS_IMPOSTOR && target.pickedMesh.physicsImpostor.isDisposed){
             throw new Error(`Object must have physics.`);
         }

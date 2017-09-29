@@ -9,7 +9,8 @@ export default class MaterialFactory{
 
     getMaterial(
         materialName:string,
-        textureScale:number=1
+        textureScale:number=1,
+        //freezed:boolean=false
     ){
 
 
@@ -18,8 +19,11 @@ export default class MaterialFactory{
         texture.uScale=textureScale;
         texture.vScale=textureScale;
         material.diffuseTexture = texture;
+
         //material.specularColor = BABYLON.Color3.FromHexString('#ff0000');
         //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
+
+
         return material;
 
 
@@ -28,6 +32,11 @@ export default class MaterialFactory{
 
     applyMaterial(mesh:BABYLON.AbstractMesh,materialName='stone-plain'){
         mesh.material = this.getMaterial(materialName);
+        if('physicsImpostor' in mesh) {
+            if (!mesh.physicsImpostor.isDisposed) {
+                mesh.physicsImpostor.dispose();
+            }
+        }
         mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 1,
             restitution:0.002,
