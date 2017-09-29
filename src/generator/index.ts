@@ -31,25 +31,38 @@ export default class WorldGenerator{
 
     generateWorld(){
 
-        this.playerMesh;
+        //this.playerMesh.position = new BABYLON.Vector3(-10,2,100);
         //this.createMesh0(this.playerMesh,10);
+        this.playerMesh.position.x += 5;
+        this.playerMesh.position.z += -10;
 
 
+        //----------------------------------Billboard
+        const width = 1280/100;
+        const height = 750/100;
+        const pillarSize = new BABYLON.Vector3(1,5,1);
+        const center = new BABYLON.Vector3(0,0,10);
+
+        const pillar1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+        //const pillar1 = BABYLON.Mesh.CreateCylinder("cylinder", 3, 3, 3, 20, 1, this.scene);
+        pillar1.scaling = pillarSize;
+        pillar1.position = center.add(new BABYLON.Vector3(0, pillarSize.y/2, 0));
+        this.materialFactory.applyMaterial(pillar1);
 
 
 
         const billboard = BABYLON.Mesh.CreateBox("box", 1, this.scene);
-        billboard.scaling = new BABYLON.Vector3(1280/100,750/100, 1);
-        billboard.position = new BABYLON.Vector3(0,0,10).add(new BABYLON.Vector3(0, billboard.scaling.y/2, 0));
+        billboard.scaling = new BABYLON.Vector3(width,height, 1);
+        billboard.position = center.add(new BABYLON.Vector3(0, billboard.scaling.y/2+pillarSize.y, 0));
         this.materialFactory.applyMaterial(billboard,"itnetwork_summer_2017");
+        //----------------------------------
 
 
 
 
 
 
-
-
+        //----------------------------------Building
         const towers = 1;
         const floors = 6;
         const size = new BABYLON.Vector3(50,10,50);
@@ -80,19 +93,23 @@ export default class WorldGenerator{
                 for (let pillX = 0; pillX < pillsInFloor; pillX++) {
                     for (let pillY = 0; pillY < pillsInFloor; pillY++) {
 
-                        const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
-                        mesh1.scaling = new BABYLON.Vector3(
-                            size.x / pillsInFloor * pillsThick,
-                            9,
-                            size.z / pillsInFloor * pillsThick
-                        );
-                        mesh1.position = center.add(new BABYLON.Vector3(
-                            (pillX / (pillsInFloor - 1) - .5) * size.x * (1 - 1 / pillsInFloor * pillsThick),
-                            floor * 10 + 4.5,
-                            (pillY / (pillsInFloor - 1) - .5) * size.z * (1 - 1 / pillsInFloor * pillsThick)
-                        ));
-                        this.materialFactory.applyMaterial(mesh1);
 
+                        if(floor===2 && pillX===0 && pillY===2){
+                        }else {
+
+                            const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+                            mesh1.scaling = new BABYLON.Vector3(
+                                size.x / pillsInFloor * pillsThick,
+                                9,
+                                size.z / pillsInFloor * pillsThick
+                            );
+                            mesh1.position = center.add(new BABYLON.Vector3(
+                                (pillX / (pillsInFloor - 1) - .5) * size.x * (1 - 1 / pillsInFloor * pillsThick),
+                                floor * 10 + 4.5,
+                                (pillY / (pillsInFloor - 1) - .5) * size.z * (1 - 1 / pillsInFloor * pillsThick)
+                            ));
+                            this.materialFactory.applyMaterial(mesh1);
+                        }
 
                     }
                 }
@@ -107,31 +124,23 @@ export default class WorldGenerator{
 
             }
         }
+        //----------------------------------
 
 
 
 
-
-
-        /*for (let i = 0; i < 15; i++) {
+        //----------------------------------Domino
+        for (let i = 0; i < 7; i++) {
 
 
             const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
-            mesh1.scaling = new BABYLON.Vector3(20, 800, 8);
-            mesh1.position = new BABYLON.Vector3(0, -400, i*40);
-            mesh1.material = this.materialFactory.getMaterial('stone-plain');
+            mesh1.scaling = new BABYLON.Vector3(2, 40, 10);
+            mesh1.position = new BABYLON.Vector3(i*25+50, 15, 100);
+            this.materialFactory.applyMaterial(mesh1);
 
 
-            mesh1.physicsImpostor = new BABYLON.PhysicsImpostor(mesh1, BABYLON.PhysicsImpostor.BoxImpostor, {
-                mass: 10,
-                restitution: 0.2
-            }, this.scene);
-
-
-            this.createMesh0(mesh1,1.1);
-
-
-        }*/
+        }
+        //----------------------------------
 
 
 

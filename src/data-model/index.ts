@@ -5,7 +5,7 @@ interface IMessage{date:Date,text:string}
 
 export default class DataModel {
     //@observable currentSpellId = 'trolololololo';
-    @observable currentSpellId = 'ghost';
+    @observable currentSpellId = 'pull';
     @computed get currentSpellCategory() {
         return getCategoryFromSpellId(this.currentSpellId)
     }

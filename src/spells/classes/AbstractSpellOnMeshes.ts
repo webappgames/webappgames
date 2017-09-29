@@ -72,7 +72,12 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
                     const running = this.spellEffects.some((spellEffect)=>spellEffect.running);
                     //console.log(running);
                     if(!running){
-                        this.finish();
+                        try {
+                            this.finish();
+                        }catch(error){
+                            //todo better
+                            console.warn(error);
+                        }
                     }
                 },
                 this.EFFECT_COLORS,

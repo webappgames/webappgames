@@ -45,18 +45,25 @@ export default class MaterialFactory{
     }
 
 
-    applyMaterial(mesh:BABYLON.AbstractMesh,materialName='stone-plain'){
+    applyMaterial(mesh:BABYLON.AbstractMesh,materialName='stone-plain',impostor=BABYLON.PhysicsImpostor.BoxImpostor){
         mesh.material = this.getMaterial(materialName);
         if('physicsImpostor' in mesh) {
             if (!mesh.physicsImpostor.isDisposed) {
                 mesh.physicsImpostor.dispose();
             }
         }
-        mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {
+
+        const materialPhysicOptions = {
             mass: 100,
             restitution:0.002,
             //friction:100
-        }, this.scene);
+        };
+
+        if(materialName==='itnetwork_summer_2017'){
+            materialPhysicOptions.mass = 1;
+        }
+
+        mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, impostor/*BABYLON.PhysicsImpostor.BoxImpostor*/, materialPhysicOptions, this.scene);
 
 
         /*mesh.physicsImpostor.registerBeforePhysicsStep(()=>{
