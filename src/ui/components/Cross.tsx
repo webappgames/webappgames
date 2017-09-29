@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import DataModel from '../../data-model';
-import {formatNumber} from '../../tools/number';
+//import {formatNumber} from '../../tools/number';
 import './style/Cross.css';
 
 
@@ -9,9 +9,9 @@ import './style/Cross.css';
 export default observer(({dataModel}:{dataModel:DataModel})=> {
     return (
         <div id="cross" >
-            <img src={`/assets/ui/cross${dataModel.aimStatus}.png`}/>
+            <img src={`/assets/ui/cross${/*dataModel.aimStatus*/'-aimed'}.png`}/>
 
-            {dataModel.aimed ?
+            {/*{dataModel.aimed ?
                 <div>
                     <div className="cost">
                         {formatNumber(dataModel.aimedEnergyCost, 'ε')}
@@ -21,7 +21,7 @@ export default observer(({dataModel}:{dataModel:DataModel})=> {
                         {dataModel.aimedMessage}
                     </div>:undefined}
                 </div>
-            :undefined}
+            :undefined}*/}
         </div>
     );
 });

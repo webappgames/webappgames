@@ -14,9 +14,20 @@ export default class DataModel {
 
 
 
-    @observable aimed = false;
-    @observable aimedEnergyCost = NaN;
-    @observable aimedMessage:string = '';
+    /*@observable aimed = false;
+    //@observable aimedEnergyCost = NaN;
+    //@observable aimedMessage:string = '';
+    @computed get aimStatus():string {
+        if(!this.aimed){
+            return '';
+        }else{
+            if(this.aimedEnergyCost<=this.energy)
+                return '-aimed';
+            else
+                return '-aimed-disabled';
+        }
+    }*/
+
 
 
     @observable messages:IMessage[] = [];
@@ -48,16 +59,7 @@ export default class DataModel {
 
 
 
-    @computed get aimStatus():string {
-        if(!this.aimed){
-            return '';
-        }else{
-            if(this.aimedEnergyCost<=this.energy)
-                return '-aimed';
-            else
-                return '-aimed-disabled';
-        }
-    }
+
 
 }
 /*
