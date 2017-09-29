@@ -9,11 +9,11 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
     public TARGET_COUNT = 1;
     public ALLOW_GROUND = false;
     public ALLOW_NO_PHISICS_IMPOSTOR = false;
+    public EFFECT_COLORS = {
+        color1: '#ffffff',
+        color2: '#ffffff'
+    };
 
-    public EFFECT = {
-        color1: '#00FF00',
-        color2: '#ff0000'
-    }
 
     get dynamicSpeed(){
         return 100;
@@ -76,6 +76,7 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
                         this.finish();
                     }
                 },
+                this.EFFECT_COLORS,
                 this.scene,
                 this.dynamicSpeed
             );

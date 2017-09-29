@@ -2,7 +2,7 @@ import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 import {countVolume} from '../../../tools/babylon';
 
-export default class Bounce extends AbstractSpellOnMeshes{
+export default class Spin extends AbstractSpellOnMeshes{
 
     public EFFECT_COLORS = {
         color1: '#0700ff',
@@ -21,7 +21,7 @@ export default class Bounce extends AbstractSpellOnMeshes{
     }
     finish(){
         super.finish();
-        this.targets[0].pickedMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
+        this.targets[0].pickedMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,10,0));
     }
 
 }

@@ -1,7 +1,11 @@
 import * as BABYLON from 'babylonjs';
 
+interface IColors{
+    color1:string;
+    color2:string;
+}
 
-export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,scene:BABYLON.Scene):BABYLON.ParticleSystem{
+export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,colors:IColors,scene:BABYLON.Scene):BABYLON.ParticleSystem{
 
 
     // Create a particle system
@@ -16,8 +20,8 @@ export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,s
     particleSystem.maxEmitBox = new BABYLON.Vector3(0, 0, 0); // To...
 
     // Colors of all particles
-    particleSystem.color1 = new BABYLON.Color4(1, 0, 0, 1.0);
-    particleSystem.color2 = new BABYLON.Color4(0, 1, 0, 1.0);
+    particleSystem.color1 = BABYLON.Color4.FromHexString(colors.color1+'FF');
+    particleSystem.color2 = BABYLON.Color4.FromHexString(colors.color2+'FF');
     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0, 0);
 
     // Size of each particle (random between...

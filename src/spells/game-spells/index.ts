@@ -1,15 +1,16 @@
 import teleport from './01-subjective/Teleport';
 import fly from './01-subjective/Fly';
-import bounce from './02-kinetics/Bounce';
 import push from './02-kinetics/Push';
 import pull from './02-kinetics/Pull';
-import dekinetize from './02-kinetics/Dekinetize';
-import freeze from './02-kinetics/Freeze';
+import bounce from './02-kinetics/Bounce';
+import spin from './02-kinetics/Spin';
+//import dekinetize from './02-kinetics/Dekinetize';
 import duplicate from './03-create/Duplicate';
 import pillar from './03-create/Pillar';
 import wall from './03-create/Wall';
 import plate from './03-create/Plate';
-import bridge from './03-create/Bridge';
+//import bridge from './03-create/Bridge';
+import freeze from './04-hide/Freeze';
 import dispose from './04-hide/Dispose';
 import ghost from './04-hide/Ghost';
 import revive from './04-hide/Revive';
@@ -24,11 +25,11 @@ export default {
         fly
     },
     kinetics: {
-        bounce,
         push,
         pull,
-        dekinetize,
-        freeze
+        bounce,
+        spin,
+        //dekinetize,
     },
     create: {
         duplicate,
@@ -36,9 +37,10 @@ export default {
         wall,
         //prick,
         plate,
-        bridge,
+        //bridge,
     },
     hide: {
+        freeze,
         dispose,
         ghost,
         revive,

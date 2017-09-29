@@ -3,6 +3,11 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class AbstractSplit extends AbstractSpellOnMeshes{
 
+    public EFFECT_COLORS = {
+        color1: '#45ff00',
+        color2: '#8000ff'
+    };
+
     get splitParts():{x:number,y:number,z:number}{
         return {
             x:1,

@@ -3,6 +3,11 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class AbstractResize extends AbstractSpellOnMeshes{
 
+    public EFFECT_COLORS = {
+        color1: '#45ff00',
+        color2: '#8000ff'
+    };
+
     get price():number{
         return 0;
     }

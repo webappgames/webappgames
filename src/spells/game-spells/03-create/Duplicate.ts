@@ -4,6 +4,11 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Duplicate extends AbstractSpellOnMeshes{
 
+    public EFFECT_COLORS = {
+        color1: '#fff400',
+        color2: '#ff3b00'
+    };
+
     get price():number{
         return 0;
     }
