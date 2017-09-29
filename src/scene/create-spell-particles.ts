@@ -12,7 +12,7 @@ export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,c
     var particleSystem = new BABYLON.ParticleSystem("particles", 1000, scene);
 
     //Texture of each particle
-    particleSystem.particleTexture = new BABYLON.Texture("/assets/particles/flare.png", scene);
+    particleSystem.particleTexture = new BABYLON.Texture(process.env.PUBLIC_URL +"/assets/particles/flare.png", scene);
 
     // Where the particles come from
     particleSystem.emitter = fountainMesh; // the starting object, the emitter
