@@ -68,7 +68,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     //todo isVisible playerMesh.visibility = 0;
     //playerMesh.showBoundingBox = true;
     playerMesh.isVisible = false;
-    playerMesh.position =  new BABYLON.Vector3(0, 0, 0);
+    playerMesh.position =  new BABYLON.Vector3(0, 2, 0);
     playerMesh.rotation =  new BABYLON.Vector3(0, /*Math.PI/16*/0, 0);
     playerMesh.scaling =  new BABYLON.Vector3(1, 4, 1);
     //playerMesh.material = getMaterial('grass', 1, scene);
@@ -89,6 +89,14 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
         //const angularVelocity = playerMesh.physicsImpostor.getAngularVelocity();
         //playerMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(.5));
         playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+
+
+        /*console.log(playerMesh.position.y);
+        if(playerMesh.position.y<10){
+            //playerMesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+            playerMesh.position.y = 10;
+        }*/
+
 
         //todo Prevent fell through the ground. - maybe decrease life
         /*if(playerMesh.position.y>2/*todo count from playerMesh size* /){
@@ -117,7 +125,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
                 const currentVelocity = playerMesh.physicsImpostor.getLinearVelocity();
 
                 //todo Jumping on flying object
-                const onGround = currentVelocity.y<0.1;//playerMesh.position.y<=2;
+                const onGround = currentVelocity.y<1;//playerMesh.position.y<=2;
 
                 const cameraDirection = camera.getDirection(new BABYLON.Vector3(1,1,1));
                 const cameraRotation = Math.atan2(cameraDirection.z,cameraDirection.x);
@@ -137,11 +145,19 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
                 const composedVelocity = currentVelocity.add(rotatedVector);
-                const composedVelocityLength = composedVelocity.length();
-                if(composedVelocityLength>PLAYER.SPEED.TERMINAL){
-                    composedVelocity.scaleInPlace(PLAYER.SPEED.TERMINAL/composedVelocityLength);
+                PLAYER;
+
+                const jumpVelocity = new BABYLON.Vector3(0,composedVelocity.y,0);
+                const surfaceVelocity = new BABYLON.Vector3(composedVelocity.x,0,composedVelocity.z);
+
+                const surfaceVelocityLength = surfaceVelocity.length();
+                if(surfaceVelocityLength>PLAYER.SPEED.TERMINAL){
+                    surfaceVelocity.scaleInPlace(PLAYER.SPEED.TERMINAL/surfaceVelocityLength);
                 }
-                playerMesh.physicsImpostor.setLinearVelocity(composedVelocity);
+
+                const composedVelocityTerminated = surfaceVelocity.add(jumpVelocity);
+
+                playerMesh.physicsImpostor.setLinearVelocity(composedVelocityTerminated);
 
 
 

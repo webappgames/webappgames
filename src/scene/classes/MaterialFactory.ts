@@ -38,7 +38,7 @@ export default class MaterialFactory{
             }
         }
         mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-            mass: 1,
+            mass: 100,
             restitution:0.002,
             //friction:100
         }, this.scene);
