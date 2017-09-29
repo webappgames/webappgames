@@ -13,15 +13,16 @@ export default class Spin extends AbstractSpellOnMeshes{
         return 0;
     }
 
-    execute(){
+    /*execute(){
         const costEnergy = countVolume(this.targets[0].pickedMesh)*this.targets[0].pickedMesh.position.subtract(this.playerMesh.position).length()/10;
 
         this.costCallback(costEnergy);
         super.execute();
-    }
+    }*/
     finish(){
         super.finish();
-        this.targets[0].pickedMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,10,0));
+        const volume = countVolume(this.targets[0].pickedMesh);
+        this.targets[0].pickedMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1000/volume,0));
     }
 
 }
