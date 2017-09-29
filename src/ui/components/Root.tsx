@@ -9,7 +9,7 @@ import SpellMenu from './SpellMenu';
 import Counters from './Counters';
 import Controlls from './Controlls';
 import Messages from './Messages';
-import './style/Root.css';
+import './style/Root+index.css';
 
 export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
     log.send('Rendring UI.');

@@ -1,7 +1,9 @@
 //import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
-export default class Ghost extends AbstractSpellOnMeshes{
+export default class Revive extends AbstractSpellOnMeshes{
+
+    public ALLOW_NO_PHISICS_IMPOSTOR = true;
 
     get price():number{
         return 0;
@@ -9,7 +11,7 @@ export default class Ghost extends AbstractSpellOnMeshes{
 
     finish() {
         super.finish();
-        this.firstTargetMesh.physicsImpostor.dispose();
-        this.firstTargetMesh.visibility = 0.7;
+        //this.firstTargetMesh.physicsImpostor.
+        this.firstTargetMesh.visibility = 1;
     }
 }

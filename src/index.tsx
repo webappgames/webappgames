@@ -1,4 +1,3 @@
-import './index.css';
 import * as BABYLON from 'babylonjs';
 import createScene from './scene/create-scene';
 import * as React from 'react';

@@ -26,7 +26,7 @@ export default observer(({dataModel}:{dataModel:DataModel})=> {
                 {getSpellIdsFromCategory(dataModel.currentSpellCategory).map((spellId,iterator)=>(
                     <li key={spellId} className={dataModel.currentSpellId===spellId?'current':''}>
                         {/*<img className="icon" src={`/assets/spells/spell.png`}/>*/}
-                        {`${iterator+1})`}
+                        {`${iterator+1}) `}
                         <span className="text">{spellId}</span>
 
                         </li>

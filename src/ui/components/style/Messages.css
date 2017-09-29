@@ -2,13 +2,17 @@
     z-index: 20;
     position: fixed;
     bottom: 0;
-    left: calc( 50vw - 100px );
+    left: 20vw;
+    right: 20vw;
 
 }
 
 .message{
     padding: 5px;
-    background-color: red;
-    color: white;
+    margin: 3px;
+    border-radius: 3px;
+    text-align: center;
+    background-color: #95761d;
+    color: #ffffff;
 
 }

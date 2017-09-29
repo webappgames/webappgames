@@ -12,6 +12,7 @@ import plate from './03-create/Plate';
 import bridge from './03-create/Bridge';
 import dispose from './04-hide/Dispose';
 import ghost from './04-hide/Ghost';
+import revive from './04-hide/Revive';
 import reduce from './05-transform/Reduce';
 import grow from './05-transform/Grow';
 import chop from './05-transform/Chop';
@@ -40,6 +41,7 @@ export default {
     hide: {
         dispose,
         ghost,
+        revive,
     },
     transform: {
         reduce,

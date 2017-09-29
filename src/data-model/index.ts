@@ -1,9 +1,11 @@
 import {observable,computed} from "mobx";
 import {getCategoryFromSpellId} from '../spells/tools/index';
 
+interface IMessage{date:Date,text:string}
+
 export default class DataModel {
     //@observable currentSpellId = 'trolololololo';
-    @observable currentSpellId = 'fly';
+    @observable currentSpellId = 'ghost';
     @computed get currentSpellCategory() {
         return getCategoryFromSpellId(this.currentSpellId)
     }
@@ -17,7 +19,33 @@ export default class DataModel {
     @observable aimedMessage:string = '';
 
 
-    @observable messages:{date:Date,text:string}[] = [];
+    @observable messages:IMessage[] = [];
+    private messagesTimeout:any;
+    sendMessage(text:string){
+        this.messages=[{
+            text,
+            date: new Date()
+        }];
+
+
+        clearTimeout(this.messagesTimeout);
+        this.messagesTimeout = setTimeout(()=>this.filterMessages(),2000);
+    }
+
+
+    private filterMessages(){
+
+        this.messages=[];
+        /*const date = new Date();
+
+        this.messages = this.messages.filter((message)=>{
+            return (message.date.getTime()>date.getTime()-2000)
+        });*/
+
+    }
+
+
+
 
 
     @computed get aimStatus():string {

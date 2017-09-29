@@ -8,6 +8,8 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
 
     public TARGET_COUNT = 1;
     public ALLOW_GROUND = false;
+    public ALLOW_NO_PHISICS_IMPOSTOR = false;
+
     public EFFECT = {
         color1: '#00FF00',
         color2: '#ff0000'
@@ -33,10 +35,14 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
     addTarget(target:BABYLON.PickingInfo){
 
         if (!target.hit) {
-            throw new Error(`This spell do not accept empty hit.`);//todo copywriting
+            throw new Error(`You must select an object.`);//todo copywriting
         }else
         if(!this.ALLOW_GROUND && target.pickedMesh.name==='ground'){
-            throw new Error(`This spell do not accept ground to be a target.`);//todo copywriting
+            throw new Error(`This spell cant be released on ground.`);//todo copywriting
+        }
+        console.log(target.pickedMesh.physicsImpostor);
+        if(!this.ALLOW_NO_PHISICS_IMPOSTOR && target.pickedMesh.physicsImpostor.isDisposed){
+            throw new Error(`Object must have physics.`);
         }
         //else
         //if(this.targets.length===this.TARGET_COUNT){
