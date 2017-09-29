@@ -1,10 +1,17 @@
+import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
 
 export default class MaterialFactory{
 
+
+    private materialsCache:BABYLON.StandardMaterial[];
+
+
     constructor(
         private scene:BABYLON.Scene
-    ){}
+    ){
+        this.materialsCache = [];
+    }
 
 
     getMaterial(
@@ -14,17 +21,25 @@ export default class MaterialFactory{
     ){
 
 
-        const material = new BABYLON.StandardMaterial("name", this.scene);
-        const texture = new BABYLON.Texture(`/assets/textures/${materialName}.jpg`, this.scene);
-        texture.uScale=textureScale;
-        texture.vScale=textureScale;
-        material.diffuseTexture = texture;
+        const cashedMaterial = this.materialsCache.find((material)=>material.name === materialName)||null;
 
-        //material.specularColor = BABYLON.Color3.FromHexString('#ff0000');
-        //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
+        if(cashedMaterial){
+            return cashedMaterial;
+        }else {
+            log.send(`Creating material "${materialName}".`);
 
+            const material = new BABYLON.StandardMaterial(materialName, this.scene);
+            const texture = new BABYLON.Texture(`/assets/textures/${materialName}.jpg`, this.scene);
+            texture.uScale = textureScale;
+            texture.vScale = textureScale;
+            material.diffuseTexture = texture;
 
-        return material;
+            //material.specularColor = BABYLON.Color3.FromHexString('#ff0000');
+            //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
+
+            this.materialsCache.push(material);
+            return material;
+        }
 
 
     }
