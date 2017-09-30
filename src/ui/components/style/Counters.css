@@ -1,0 +1,17 @@
+#counters{
+    display: none;
+    z-index: 20;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+.health,.energy{
+    display: inline-block;
+    font-size: 1.5em;
+}
+.health{
+    color: #ff4149;
+}
+.energy{
+    color: #97eeff;
+}

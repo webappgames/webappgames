@@ -4,17 +4,26 @@ import {KEYMAP,PLAYER} from '../config';
 
 export default function setControlls(
     canvasElement:HTMLCanvasElement,
+    onClick:(event:PointerEvent)=>void,
     rotatePlayerBy:(alpha:number,beta:number)=>void,
     addPlayerVelocity:(vector:BABYLON.Vector3)=>void
 ){
 
     //todo add event listener
-    canvasElement.onclick = function() {
-        canvasElement.requestPointerLock();
-    };
+    canvasElement.addEventListener("pointerdown",
+        (event)=>{
+            if(document.pointerLockElement !== canvasElement) {
+                canvasElement.requestPointerLock();
+            }else{
+                onClick(event);
+            }
+
+        }
+        , false);
 
 
 
+    //todo prevent spell creating when locking cursor
     if ("onpointerlockchange" in document) {
         document.addEventListener('pointerlockchange', lockChangeAlert, false);
     } else if ("onmozpointerlockchange" in document) {

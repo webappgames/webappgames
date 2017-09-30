@@ -1,10 +1,12 @@
-//import * as BABYLON from 'babylonjs';
-import Spell from '../../Spell';
-import log from '../../../tools/log';
+import AbstractSplit from './AbstractSplit';
 
-export default class Xxxx extends Spell{
-
-    execute(){
-        log.send('Spell!');
+export default class Desintegrate extends AbstractSplit{
+    get splitParts():{x:number,y:number,z:number}{
+        //todo
+        return {
+            x:3,
+            y:3,
+            z:3
+        }
     }
 }

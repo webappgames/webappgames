@@ -1,10 +1,7 @@
-//import * as BABYLON from 'babylonjs';
-import Spell from '../../Spell';
-import log from '../../../tools/log';
+import AbstractResize from './AbstractResize';
 
-export default class Xxxx extends Spell{
-
-    execute(){
-        log.send('Spell!');
+export default class Reduce extends AbstractResize{
+    get scaling():number{
+        return 1/1.2;
     }
 }

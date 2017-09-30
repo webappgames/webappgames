@@ -1,10 +1,20 @@
 //import * as BABYLON from 'babylonjs';
-import Spell from '../../Spell';
-import log from '../../../tools/log';
+import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
+//import log from '../../../tools/log';
 
-export default class Xxxx extends Spell{
+export default class Bridge extends AbstractSpellOnMeshes{
 
-    execute(){
-        log.send('Spell!');
+    public EFFECT_COLORS = {
+        color1: '#fff400',
+        color2: '#ff3b00'
+    };
+
+    get price():number{
+        return 0;
+    }
+
+    finish(){
+        super.finish();
+        //log.send('AbstractSpell!');
     }
 }

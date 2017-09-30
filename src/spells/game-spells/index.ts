@@ -1,43 +1,54 @@
 import teleport from './01-subjective/Teleport';
 import fly from './01-subjective/Fly';
-import noclip from './01-subjective/Noclip';
-import bounce from './02-kinetics/Bounce';
 import push from './02-kinetics/Push';
 import pull from './02-kinetics/Pull';
-import dekinetize from './02-kinetics/Dekinetize';
-import freeze from './02-kinetics/Freeze';
+import bounce from './02-kinetics/Bounce';
+import spin from './02-kinetics/Spin';
+//import dekinetize from './02-kinetics/Dekinetize';
 import duplicate from './03-create/Duplicate';
-import bridge from './03-create/Bridge';
+import pillar from './03-create/Pillar';
+import wall from './03-create/Wall';
+import plate from './03-create/Plate';
+//import bridge from './03-create/Bridge';
+import freeze from './04-hide/Freeze';
 import dispose from './04-hide/Dispose';
-import stash from './04-hide/Stash';
+import ghost from './04-hide/Ghost';
+import revive from './04-hide/Revive';
 import reduce from './05-transform/Reduce';
 import grow from './05-transform/Grow';
+import chop from './05-transform/Chop';
 import desintegrate from './05-transform/Desintegrate';
 
 export default {
     subjective: {
         teleport,
-        fly,
-        noclip
+        fly
     },
     kinetics: {
-        bounce,
         push,
         pull,
-        dekinetize,
-        freeze
+        bounce,
+        spin,
+        //dekinetize,
     },
     create: {
         duplicate,
-        bridge
+        pillar,
+        wall,
+        //prick,
+        plate,
+        //bridge,
     },
     hide: {
+        freeze,
         dispose,
-        stash
+        ghost,
+        revive,
     },
     transform: {
         reduce,
         grow,
+        chop,
         desintegrate
     }
 };

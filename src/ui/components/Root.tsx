@@ -1,24 +1,26 @@
 import * as React from 'react';
-import {getSpellById} from '../../spells/spellTools';
-import './style/Root.css';
+import {observer} from 'mobx-react';
+import log from '../../tools/log';
+import DataModel from '../../data-model';
+import Saver from '../../saver';
+import Cross from './Cross';
+import SpellCurrent from './SpellCurrent';
+import SpellMenu from './SpellMenu';
+import Counters from './Counters';
+import Controlls from './Controlls';
+import Messages from './Messages';
+import './style/Root+index.css';
 
-export interface IUIData{
-    currentSpellId: string
-}
-
-export default function Root(props:{data:IUIData}){
-
+export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
+    log.send('Rendring UI.');
     return(
         <div>
-            <img id="cross" src="/assets/ui/cross.png"/>
-
-
-            <div id="current-spell">
-                {getSpellById(props.data.currentSpellId).title}
-            </div>
-
-
-
+            <Cross dataModel={dataModel}/>{/*todo maybe use provider*/}
+            <SpellCurrent dataModel={dataModel}/>
+            <SpellMenu dataModel={dataModel}/>
+            <Counters dataModel={dataModel}/>
+            <Controlls dataModel={dataModel} saver={saver}/>
+            <Messages dataModel={dataModel}/>
         </div>
     );
-}
+});

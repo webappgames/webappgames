@@ -3306,7 +3306,7 @@ OIMO.LimitMotor = function (axis, fixed) {
     //else this.lowerLimit = 1;
     //  The upper limit. Set lower > upper to disable.
     this.upperLimit = 0;
-    // The target motor speed.
+    // The targetMesh motor speed.
     this.motorSpeed = 0;
     // The maximum motor force or torque. Set 0 to disable.
     this.maxMotorForce = 0;
@@ -4762,7 +4762,7 @@ OIMO.Rotational3Constraint.prototype = {
         rvn2 += dMotorImpulse1 * this.k10 + dMotorImpulse2 * this.kv11 + dMotorImpulse3 * this.k12;
         rvn3 += dMotorImpulse1 * this.k20 + dMotorImpulse2 * this.k21 + dMotorImpulse3 * this.kv22;
 
-        // subtract target velocity and applied impulse
+        // subtract targetMesh velocity and applied impulse
         rvn1 -= this.limitVelocity1 + this.limitImpulse1 * this.cfm1;
         rvn2 -= this.limitVelocity2 + this.limitImpulse2 * this.cfm2;
         rvn3 -= this.limitVelocity3 + this.limitImpulse3 * this.cfm3;
@@ -5661,7 +5661,7 @@ OIMO.Translational3Constraint.prototype = {
         rvn2 += dMotorImpulse1 * this.k10 + dMotorImpulse2 * this.kv11 + dMotorImpulse3 * this.k12;
         rvn3 += dMotorImpulse1 * this.k20 + dMotorImpulse2 * this.k21 + dMotorImpulse3 * this.kv22;
 
-        // subtract target velocity and applied impulse
+        // subtract targetMesh velocity and applied impulse
         rvn1 -= this.limitVelocity1 + this.limitImpulse1 * this.cfm1;
         rvn2 -= this.limitVelocity2 + this.limitImpulse2 * this.cfm2;
         rvn3 -= this.limitVelocity3 + this.limitImpulse3 * this.cfm3;
@@ -8271,7 +8271,7 @@ OIMO.BoxBoxCollisionDetector.prototype.detectCollision = function (shape1, shape
         return;
     }
     // now detect face-face collision...
-    // target quad
+    // targetMesh quad
     var q1x;
     var q1y;
     var q1z;

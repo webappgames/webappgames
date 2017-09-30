@@ -1,10 +1,23 @@
 //import * as BABYLON from 'babylonjs';
-import Spell from '../../Spell';
+import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
-export default class Dispose extends Spell{
+export default class Dispose extends AbstractSpellOnMeshes{
 
-    execute(){
+    public ALLOW_NO_PHISICS_IMPOSTOR = true;
 
-        this.target.dispose();
+    public EFFECT_COLORS = {
+        color1: '#45ff00',
+        color2: '#13ffed'
+    };
+
+
+    get price():number{
+        return 0;
+    }
+
+
+    finish() {
+        super.finish();
+        this.firstTargetMesh.dispose();
     }
 }
