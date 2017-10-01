@@ -1,0 +1,80 @@
+Pro soutěž jsem napsal fyzikální kouzelnický sandbox. Jedná se o hru na webu, kterou si můžete zahrát hned bez jakékoliv instalace na https://hejny.github.io/webappgames/.
+
+.<>
+[* webappgames/wallpaper-1.png .(Kolaps budovy) *]
+
+Koncept hry
+#######
+
+- **3D first person** hra.
+- Kostičkový **Sandbox** s otevřeným světem.
+- Věci v tomto světě můžeš měnit pomocí **kouzel**.
+- Kostičky jen tak "nevysí" ve vzduch. Na pozadí běží **Fyzikální** engine, který zboří vše, co nestojí pevně.
+
+Další důležitou věcí, která ještě není implementovaná, je to. Aby hra využívala všech výhod webu. Viz. moje série "Vytvoř si vlastní webovou hru":https://www.itnetwork.cz/vytvor-si-vlastni-webovou-hru/.
+
+
+Ovládání
+########
+
+Hra se dá zatím hrát pouze s klávesnicí a myší. Nejdříve si musiš "zamknout myš". To uděláš tak, že po spuštění klikneš úplně kamkoliv do scény. Prohlížeč se tě následně zeptá, zda chceš zamknout myš.
+
+- Chodíš pomocí kláves **[W][A][S][D]** nebo pomocí **šipek**.
+- Kouzla vybíráš **kolečkem myši**.
+- A kouzlíš pomocí **kliknutí myší**.
+
+
+Kouzla
+######
+
+Jsou rozdělena do 5ti kategorií:
+- **Subjective** - Manipulují přímo s hráčem.
+- **Kinetics** - Mění objektu jeho kinetickou energii.
+- **Create** - Vytváření nových objektů
+- **Hide** - Ničení či jiné měnění objektů
+- **Transform** - Přeměňování
+
+
+Technologie
+###########
+
+- **"TypeScript":https://www.typescriptlang.org/** nadstavba nad JavaScriptem
+- **"Babylon.js":https://www.babylonjs.com/** 3D engine
+- **"Oimo.js":https://github.com/lo-th/Oimo.js/** fyzikální engine
+- **"Hand.js":https://github.com/deltakosh/handjs** polyfill pro pointer události
+- **"React":https://reactjs.org/** knihovna pro vykreslování uživatelského rozhraní
+- **"MobX":https://github.com/mobxjs/mobx** knihovna pro držení stavu aplikace
+
+
+Kam dál?
+########
+
+Celá hra rozhodně není dokončená, jedná se spíše o koncept na kterém bych v budoucnu mohl postavit reálnou hru pro hráče. Mám pár věcí, která bych rád udělal. Budu velmi rád za nápady, připomínky a rady.
+
+Blízká budoucnost
+*****************
+Tohle jsou spíše nedodělky a bugy, které jsem prostě nestihl odladit před 1.10.2017.
+
+- **Ukládání hry** do LocalStorage či do cloudu.
+- **Survival mód**
+
+Do Vánoc
+*****************
+- Lepší **generátor** prostředí hry
+- Pohodlnější **stavění vlastních budov**
+- Možnost ovládat i na **dotykových obrazovkách**
+
+Dlouhodobější vize
+*****************
+- Vytvořit nad tímto sandboxem nějaký **Příběh**.
+- **Multiplayer**
+
+
+Odkazy
+###### 
+
+**Zdrojové kódy:**
+https://github.com/hejny/webappgames
+
+**Zahraj si přímo na webu:**
+https://hejny.github.io/webappgames/
