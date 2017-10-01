@@ -57,6 +57,7 @@ Tohle jsou spíše nedodělky a bugy, které jsem prostě nestihl odladit před 
 
 - **Ukládání hry** do LocalStorage či do cloudu.
 - **Survival mód**
+- **Zvuky**
 
 Do Vánoc
 *****************
@@ -71,7 +72,8 @@ Dlouhodobější vize
 
 
 Odkazy
-###### 
+######
+Hru lze stáhnout i přímo pod článkem. Jde však pouze o mrtvou kopii, pokud chceš vidět aktuální verzi, použij následující odkazy.
 
 **Zdrojové kódy:**
 https://github.com/hejny/webappgames
