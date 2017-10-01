@@ -82,29 +82,23 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     const worldGenerator = new WorldGenerator(playerMesh,materialFactory,scene);
 
 
-
-    camera.position =  playerMesh.position;
     //todo Is thare better solution for angular friction?
-    playerMesh.physicsImpostor.registerBeforePhysicsStep(()=>{
-        //const angularVelocity = playerMesh.physicsImpostor.getAngularVelocity();
-        //playerMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(.5));
+    playerMesh.physicsImpostor.registerAfterPhysicsStep(()=>{
+        camera.position =  playerMesh.position;
         playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+    });
 
 
-        /*console.log(playerMesh.position.y);
-        if(playerMesh.position.y<10){
-            //playerMesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-            playerMesh.position.y = 10;
-        }*/
-
-
-        //todo Prevent fell through the ground. - maybe decrease life
-        /*if(playerMesh.position.y>2/*todo count from playerMesh size* /){
-            console.log(playerMesh.position.y);
-            playerMesh.position.y = 20;
-            playerMesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-        }*/
-
+    playerMesh.physicsImpostor.registerAfterPhysicsStep(()=> {
+        if (playerMesh.position.y < 2) {
+            playerMesh.physicsImpostor.sleep();
+            playerMesh.position = new BABYLON.Vector3(
+                playerMesh.position.x,
+                2,
+                playerMesh.position.z
+            );
+            //todo why not playerMesh.physicsImpostor.wakeUp();
+        }
     });
 
 
