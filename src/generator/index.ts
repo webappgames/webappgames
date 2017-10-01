@@ -81,7 +81,7 @@ export default class WorldGenerator{
             );
 
 
-            for (let floor = 0; floor < floors; floor++) {
+            for (let floor = 1; floor < floors; floor++) {
 
 
                 const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);

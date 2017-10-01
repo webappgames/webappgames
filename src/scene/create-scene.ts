@@ -68,7 +68,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     //todo isVisible playerMesh.visibility = 0;
     //playerMesh.showBoundingBox = true;
     playerMesh.isVisible = false;
-    playerMesh.position =  new BABYLON.Vector3(0, 222, 0);
+    playerMesh.position =  new BABYLON.Vector3(0, 2, 0);
     playerMesh.rotation =  new BABYLON.Vector3(0, /*Math.PI/16*/0, 0);
     playerMesh.scaling =  new BABYLON.Vector3(1, 4, 1);
     //playerMesh.material = getMaterial('grass', 1, scene);
