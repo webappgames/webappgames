@@ -33,18 +33,20 @@ export default function setControlls(
     function lockChangeAlert() {
         if(document.pointerLockElement === canvasElement) {
             //The pointer lock status is now locked
-            document.addEventListener("mousemove", updateCameraAngle, false);
+            document.addEventListener("mousemove", mouseMoveLocked, false);
+            //document.removeEventListener("mousemove", mouseMoveUnlocked, false);
         } else {
             //The pointer lock status is now unlocked
-            document.removeEventListener("mousemove", updateCameraAngle, false);
+            //document.addEventListener("mousemove", mouseMoveUnlocked, false);
+            document.removeEventListener("mousemove", mouseMoveLocked, false);
         }
     }
 
 
 
-    function updateCameraAngle(e:any) {
-        const   x = e.movementX,
-                y = e.movementY;
+    function mouseMoveLocked(event:MouseEvent) {
+        const   x = event.movementX,
+                y = event.movementY;
         rotatePlayerBy(
              y/500
             ,x/500
@@ -53,7 +55,11 @@ export default function setControlls(
     }
 
 
-
+    /*function mouseMoveUnlocked(event:MouseEvent) {
+        return scene.pick(event.clientX,event.clientY, (mesh)=>{
+            return mesh !== playerMesh;
+        });
+    }*/
 
     //todo here should be spell execution
 
