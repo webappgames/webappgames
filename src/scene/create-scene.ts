@@ -68,7 +68,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     //todo isVisible playerMesh.visibility = 0;
     //playerMesh.showBoundingBox = true;
     playerMesh.isVisible = false;
-    playerMesh.position =  new BABYLON.Vector3(0, 2, 0);
+    playerMesh.position =  new BABYLON.Vector3(0, 222, 0);
     playerMesh.rotation =  new BABYLON.Vector3(0, /*Math.PI/16*/0, 0);
     playerMesh.scaling =  new BABYLON.Vector3(1, 4, 1);
     //playerMesh.material = getMaterial('grass', 1, scene);
@@ -89,17 +89,23 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     });
 
 
-    playerMesh.physicsImpostor.registerAfterPhysicsStep(()=> {
-        if (playerMesh.position.y < 2) {
-            playerMesh.physicsImpostor.sleep();
-            playerMesh.position = new BABYLON.Vector3(
-                playerMesh.position.x,
-                2,
-                playerMesh.position.z
-            );
-            //todo why not playerMesh.physicsImpostor.wakeUp();
-        }
+    scene.registerAfterRender(()=>{
+        scene.meshes.forEach((mesh)=> {
+            if ('physicsImpostor' in mesh) {
+                if (mesh.position.y < 0) {
+                    mesh.physicsImpostor.sleep();
+                    mesh.position = new BABYLON.Vector3(
+                        mesh.position.x,
+                        0,
+                        mesh.position.z
+                    );
+                    mesh.physicsImpostor.wakeUp();
+                }
+            }
+            ;
+        });
     });
+
 
 
 
