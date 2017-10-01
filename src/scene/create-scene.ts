@@ -164,7 +164,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+    const skyboxMesh = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
     const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
     skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture(process.env.PUBLIC_URL +"/assets/skyboxes/TropicalSunnyDay/TropicalSunnyDay", scene, ["_ft.jpg", "_up.jpg", "_rt.jpg", "_bk.jpg", "_dn.jpg", "_lf.jpg"]);
@@ -172,8 +172,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     skyboxMaterial.disableLighting = true;
-    skybox.material = skyboxMaterial;
-    skybox.position = playerMesh.position;
+    skyboxMesh.material = skyboxMaterial;
 
 
 
@@ -184,13 +183,14 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     groundMesh.material = materialFactory.getMaterial('grass',100);
     groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, scene);
     scene.registerBeforeRender(()=>{
+
+        skyboxMesh.position = playerMesh.position;
+
         groundMesh.position.x = playerMesh.position.x;
         groundMesh.position.z = playerMesh.position.z;
 
         ((groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).uOffset = groundMesh.position.x/10;
         ((groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).vOffset = groundMesh.position.z/10;
-
-
 
     });
 
