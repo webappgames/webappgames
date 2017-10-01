@@ -4,6 +4,7 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Teleport extends AbstractSpellOnMeshes{
 
+    public ALLOW_GROUND = true;
 
     get price():number{
         return 0;
