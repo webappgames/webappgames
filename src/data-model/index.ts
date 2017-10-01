@@ -3,7 +3,7 @@ import {getCategoryFromSpellId} from '../spells/tools/index';
 
 interface IMessage{date:Date,text:string}
 interface IVector2{x:number,y:number}
-interface ILinkArea{position:IVector2,size:IVector2,url:string}
+interface ILinkArea{position:IVector2,size:IVector2,title:string,url:string}
 
 export default class DataModel {
     //@observable currentSpellId = 'trolololololo';
@@ -59,16 +59,8 @@ export default class DataModel {
 
 
 
-
-    @observable linkAreas:ILinkArea[] = [/*{
-        position:{
-            x:500,y:300
-        },
-        size:{
-            x:300,y:300
-        },
-        url: 'https://www.itnetwork.cz/letni-programatorska-soutez-2017',
-    }*/];
+    @observable locked = false;
+    @observable linkAreas:ILinkArea[] = [];
 
 
 

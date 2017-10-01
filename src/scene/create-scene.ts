@@ -79,7 +79,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
     }, scene);
 
 
-    const worldGenerator = new WorldGenerator(playerMesh,materialFactory,scene);
+    const worldGenerator = new WorldGenerator(playerMesh,materialFactory,dataModel,scene);
 
 
     //todo Is thare better solution for angular friction?
@@ -161,7 +161,8 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-            }
+            },
+            dataModel
         );
 
 

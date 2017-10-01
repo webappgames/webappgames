@@ -6,7 +6,9 @@ import './style/LinkAreas.css';
 
 export default observer(({dataModel}:{dataModel:DataModel})=> {
     return (
-        <div id="link-areas">
+        <div id="link-areas" style={{
+            display: dataModel.locked?'none':'block'
+        }}>
 
             {dataModel.linkAreas
                 .map((linkArea,iterator)=>(
@@ -18,9 +20,7 @@ export default observer(({dataModel}:{dataModel:DataModel})=> {
                         width: linkArea.size.x,
                         height: linkArea.size.y,
                     }}>
-                        <div>
-                            {linkArea.url}
-                        </div>
+                        {linkArea.title}
                     </a>
                 ))}
 

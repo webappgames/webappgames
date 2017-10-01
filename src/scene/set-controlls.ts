@@ -1,4 +1,5 @@
 import {subscribeKeys,SubscriberModes} from '../tools/keys';
+import DataModel from '../data-model';
 import * as BABYLON from 'babylonjs';
 import {KEYMAP,PLAYER} from '../config';
 
@@ -6,7 +7,8 @@ export default function setControlls(
     canvasElement:HTMLCanvasElement,
     onClick:(event:PointerEvent)=>void,
     rotatePlayerBy:(alpha:number,beta:number)=>void,
-    addPlayerVelocity:(vector:BABYLON.Vector3)=>void
+    addPlayerVelocity:(vector:BABYLON.Vector3)=>void,
+    dataModel:DataModel
 ){
 
     //todo add event listener
@@ -33,10 +35,12 @@ export default function setControlls(
     function lockChangeAlert() {
         if(document.pointerLockElement === canvasElement) {
             //The pointer lock status is now locked
+            dataModel.locked=true;
             document.addEventListener("mousemove", mouseMoveLocked, false);
             //document.removeEventListener("mousemove", mouseMoveUnlocked, false);
         } else {
             //The pointer lock status is now unlocked
+            dataModel.locked=false;
             //document.addEventListener("mousemove", mouseMoveUnlocked, false);
             document.removeEventListener("mousemove", mouseMoveLocked, false);
         }

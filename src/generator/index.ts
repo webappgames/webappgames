@@ -1,11 +1,14 @@
 import * as BABYLON from 'babylonjs';
 import MaterialFactory from '../scene/classes/MaterialFactory';
+import DataModel from '../data-model';
+import * as _ from 'lodash';
 
 
 export default class WorldGenerator{
     constructor(
         private playerMesh:BABYLON.AbstractMesh,
         private materialFactory:MaterialFactory,
+        private dataModel:DataModel,
         private scene:BABYLON.Scene
     ){}
 
@@ -51,10 +54,44 @@ export default class WorldGenerator{
 
 
 
-        const billboard = BABYLON.Mesh.CreateBox("box", 1, this.scene);
-        billboard.scaling = new BABYLON.Vector3(width,height, 1);
-        billboard.position = center.add(new BABYLON.Vector3(0, billboard.scaling.y/2+pillarSize.y, 0));
-        this.materialFactory.applyMaterial(billboard,"itnetwork_summer_2017");
+        const billboardMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+        billboardMesh.scaling = new BABYLON.Vector3(width,height, 1);
+        billboardMesh.position = center.add(new BABYLON.Vector3(0, billboardMesh.scaling.y/2+pillarSize.y, 0));
+        this.materialFactory.applyMaterial(billboardMesh,"itnetwork_summer_2017");
+
+        const linkArea = {
+            position:{
+                x:-10,y:-10
+            },
+            size:{
+                x:10,y:10
+            },
+            title: '',
+            url: 'https://www.itnetwork.cz/letni-programatorska-soutez-2017',
+        };
+        this.dataModel.linkAreas.push(linkArea);
+
+        this.scene.registerAfterRender(_.throttle(()=>{
+
+            const canvas = this.scene.getEngine().getRenderingCanvas() as HTMLCanvasElement;
+
+            const corners = [
+                billboardMesh.position.add(billboardMesh.scaling.scale(0.5)),
+                billboardMesh.position.add(billboardMesh.scaling.scale(-.5))
+            ].map((corner)=>BABYLON.Vector3.Project(
+                corner,
+                BABYLON.Matrix.Identity(),
+                this.scene.getTransformMatrix(),
+                this.scene.activeCamera.viewport.toGlobal(canvas.clientWidth, canvas.clientHeight)
+            ))
+
+            for(let axis of ['x','y']){
+                this.dataModel.linkAreas[0].position[axis] = (corners[0][axis] + corners[1][axis]) / 2;
+                this.dataModel.linkAreas[0].size[axis] = Math.abs(corners[0][axis] - corners[1][axis]);
+            };
+
+
+        },1000));
         //----------------------------------
 
 
