@@ -1,4 +1,4 @@
-//import * as BABYLON from 'babylonjs';
+import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 //import log from '../../../tools/log';
 
@@ -12,12 +12,14 @@ export default class Teleport extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
-
-        //todo better with clone
-        //todo teleport to target point not to middle of target mesh
-        this.playerMesh.position.x = this.firstTargetMesh.position.x;
-        this.playerMesh.position.y = this.firstTargetMesh.position.y+this.firstTargetMesh.scaling.y/2+2;
-        this.playerMesh.position.z = this.firstTargetMesh.position.z;
-        //this.playerMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,100,0));
+        if(this.firstTargetMesh.name==='ground'){
+            this.playerMesh.position = this.targets[0].pickedPoint.add(new BABYLON.Vector3(0,2,0));
+        }else{
+            this.playerMesh.position = this.firstTargetMesh.position.add(
+                new BABYLON.Vector3(
+                    0,this.firstTargetMesh.scaling.y/2+2,0
+                )
+            );
+        }
     }
 }
