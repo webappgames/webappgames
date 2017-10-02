@@ -64,7 +64,7 @@ export default function createScene(canvasElement: HTMLCanvasElement, engine: BA
 
 
 
-    const playerMesh = BABYLON.Mesh.CreateSphere("box", 16,1, scene);
+    const playerMesh = BABYLON.Mesh.CreateSphere("player", 16,1, scene);
     //todo isVisible playerMesh.visibility = 0;
     //playerMesh.showBoundingBox = true;
     playerMesh.isVisible = false;

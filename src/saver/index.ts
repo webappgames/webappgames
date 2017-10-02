@@ -1,7 +1,15 @@
 import * as BABYLON from 'babylonjs';
-//import * as download from 'downloadjs';
+import * as download from 'downloadjs';
 import * as xmlBuilder from 'xmlbuilder';
 import DataModel from '../data-model';
+
+function vectorToString(vector:BABYLON.Vector3):string{
+    const values:string[] = [];
+    for(const axis of ['x','y','z']){
+        values.push((Math.round(vector[axis]*1000)/100).toString());
+    }
+    return values.join(',');
+}
 
 export default class WorldGenerator{
     constructor(
@@ -10,7 +18,7 @@ export default class WorldGenerator{
     ){}
 
 
-    createXml(){
+    createXml(pretty=true){
 
             this.scene;
             this.dataModel;
@@ -25,8 +33,17 @@ export default class WorldGenerator{
 
 
             //todo player
-            //const player = world.element('player');
-            //const spells = player.element('spells');spells;
+            const playerMesh = this.scene.meshes.find((mesh)=>mesh.name==='player');
+            if(playerMesh instanceof BABYLON.AbstractMesh) {
+                const player = world.element('player', {
+                    position: vectorToString(playerMesh.position),
+                    'velocity-linear': vectorToString(playerMesh.physicsImpostor.getLinearVelocity()),
+                    'velocity-angular': vectorToString(playerMesh.physicsImpostor.getAngularVelocity()),
+                });
+                player;
+                //const spells = player.element('spells');spells;
+            }
+
 
 
             const scenes = world.element('scenes');
@@ -34,15 +51,28 @@ export default class WorldGenerator{
             //const scene1materials = scene1.element('materials');
             const scene1objects = scene1.element('objects');
             for(const mesh of this.scene.meshes){
-                scene1objects.element('object', {
-                    shape: "cube",
-                    material: "stone",
-                    size: 'aaaa',
-                    position: `${mesh.position.x},${mesh.position.y},${mesh.position.z}`,
-                });
+
+                if(
+                    mesh.name!=='ground'&&
+                    mesh.material instanceof BABYLON.StandardMaterial &&
+                    mesh.physicsImpostor instanceof BABYLON.PhysicsImpostor
+                ){
+
+
+                    scene1objects.element('object', {
+                        shape: "block",//todo real shape
+                        material: mesh.material.name,
+                        size: vectorToString(mesh.scaling),
+                        position: vectorToString(mesh.position),
+                        'velocity-linear': vectorToString(mesh.physicsImpostor.getLinearVelocity()),
+                        'velocity-angular': vectorToString(mesh.physicsImpostor.getAngularVelocity()),
+                    });
+
+                }
+
             }
 
-            return world.end({ pretty: true});
+            return world.end({pretty});
 
 
     }
@@ -50,6 +80,7 @@ export default class WorldGenerator{
 
 
     downloadXml(){
+        download;
         alert(this.createXml());
         //download(this.createXml(), "WebAppGames.xml", "text/xml");
     }
