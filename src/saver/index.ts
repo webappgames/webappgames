@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs';
+import Scene from '../scene/classes/Scene';
 //import * as download from 'downloadjs';
 import * as xmlBuilder from 'xmlbuilder';
 import {DOMParser} from 'xmldom';
@@ -33,19 +34,10 @@ function findNode(parent:Element,tagName:string):Element{
 
 export default class WorldGenerator{
     constructor(
-        private scene:BABYLON.Scene,
+        private scene:Scene,
         private dataModel:DataModel
     ){}
 
-    //todo maybe inject playerMesh to this class via constructor (not find by name)
-    getPlayer():BABYLON.AbstractMesh{
-        const playerMesh = this.scene.meshes.find((mesh)=>mesh.name==='player');
-        if(playerMesh instanceof BABYLON.AbstractMesh) {
-            return playerMesh;
-        }else{
-            throw new Error('In scene is no player.');
-        }
-    }
 
     createXml(pretty=true){
 
@@ -61,16 +53,13 @@ export default class WorldGenerator{
                 .attribute('content', window.location.hostname);
 
 
-            const playerMesh = this.getPlayer();
-            if(playerMesh instanceof BABYLON.AbstractMesh) {
-                const player = world.element('player', {
-                    position: vectorToString(playerMesh.position),
-                    'velocity-linear': vectorToString(playerMesh.physicsImpostor.getLinearVelocity()),
-                    'velocity-angular': vectorToString(playerMesh.physicsImpostor.getAngularVelocity()),
-                });
-                player;
-                //const spells = player.element('spells');spells;
-            }
+
+            world.element('player', {
+                position: vectorToString(this.scene.playerMesh.position),
+                'velocity-linear': vectorToString(this.scene.playerMesh.physicsImpostor.getLinearVelocity()),
+                'velocity-angular': vectorToString(this.scene.playerMesh.physicsImpostor.getAngularVelocity()),
+            });
+
 
 
 
@@ -79,25 +68,14 @@ export default class WorldGenerator{
             //const scene1materials = scene1.element('materials');
             const scene1objects = scene1.element('objects');
             for(const mesh of this.scene.meshes){
-
-                if(
-                    mesh.name!=='ground'&&
-                    mesh.material instanceof BABYLON.StandardMaterial &&
-                    mesh.physicsImpostor instanceof BABYLON.PhysicsImpostor
-                ){
-
-
-                    scene1objects.element('object', {
-                        shape: "block",//todo real shape
-                        material: mesh.material.name,
-                        size: vectorToString(mesh.scaling),
-                        position: vectorToString(mesh.position),
-                        'velocity-linear': vectorToString(mesh.physicsImpostor.getLinearVelocity()),
-                        'velocity-angular': vectorToString(mesh.physicsImpostor.getAngularVelocity()),
-                    });
-
-                }
-
+                scene1objects.element('object', {
+                    shape: "block",//todo real shape
+                    material: mesh.material.name,
+                    size: vectorToString(mesh.scaling),
+                    position: vectorToString(mesh.position),
+                    'velocity-linear': vectorToString(mesh.physicsImpostor.getLinearVelocity()),
+                    'velocity-angular': vectorToString(mesh.physicsImpostor.getAngularVelocity()),
+                });
             }
 
             return world.end({pretty});
@@ -125,6 +103,8 @@ export default class WorldGenerator{
                                 break;
                             case 'scenes':
 
+                                this.scene.cleanScene();
+
 
                                 const scene =findNode(child,'scene');
                                 const objects =findNode(scene,'objects');
@@ -133,10 +113,10 @@ export default class WorldGenerator{
                                 for(const object of objects.childNodes as any){
                                     if(object.tagName==='object'){
 
-                                        const mesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+                                        const mesh = BABYLON.Mesh.CreateBox("box", 1, this.scene.scene);
                                         mesh.scaling = vectorFromString(object.attributes.getNamedItem('size').value);
                                         mesh.position = vectorFromString(object.attributes.getNamedItem('position').value);
-                                        //this.materialFactory.applyMaterial(billboard,"itnetwork_summer_2017");
+                                        this.scene.materialFactory.applyMaterial(mesh,object.attributes.getNamedItem('material').value);
 
 
                                     }
