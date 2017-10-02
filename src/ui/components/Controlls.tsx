@@ -9,10 +9,12 @@ import './style/Controlls.css';
 export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
     return (
         <div id="controlls">
-            <button onClick={()=>saver.downloadXml()}>
+            <button onClick={()=>saver.save()}>
                 Uložit
             </button>
-
+            <button onClick={()=>saver.load()}>
+                Načíst
+            </button>
 
         </div>
     );
