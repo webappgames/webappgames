@@ -56,6 +56,7 @@ export default class WorldGenerator{
 
             world.element('player', {
                 position: vectorToString(this.world.playerMesh.position),
+                rotation: vectorToString(this.world.playerMesh.rotation),
                 'velocity-linear': vectorToString(this.world.playerMesh.physicsImpostor.getLinearVelocity()),
                 'velocity-angular': vectorToString(this.world.playerMesh.physicsImpostor.getAngularVelocity()),
             });
@@ -73,6 +74,7 @@ export default class WorldGenerator{
                     material: mesh.material.name,
                     size: vectorToString(mesh.scaling),
                     position: vectorToString(mesh.position),
+                    rotation: vectorToString(mesh.rotation),
                     'velocity-linear': vectorToString(mesh.physicsImpostor.getLinearVelocity()),
                     'velocity-angular': vectorToString(mesh.physicsImpostor.getAngularVelocity()),
                 });
@@ -99,7 +101,10 @@ export default class WorldGenerator{
                     for(const child of world.childNodes as any){
                         switch(child.tagName){
                             case 'player':
-                                //todo playerMesh.position = vectorFromString(child.attributes.getNamedItem('position').value);
+                                //todo DRY
+                                this.world.playerMesh.position = vectorFromString(child.attributes.getNamedItem('position').value);
+                                this.world.playerMesh.rotation = vectorFromString(child.attributes.getNamedItem('rotation').value);
+                                //todo 2x velocity
                                 break;
                             case 'scenes':
 
@@ -114,9 +119,12 @@ export default class WorldGenerator{
                                     if(object.tagName==='object'){
 
                                         const mesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
+                                        //todo DRY
                                         mesh.scaling = vectorFromString(object.attributes.getNamedItem('size').value);
                                         mesh.position = vectorFromString(object.attributes.getNamedItem('position').value);
-                                        this.world.materialFactory.applyMaterial(mesh,object.attributes.getNamedItem('material').value);
+                                        mesh.rotation = vectorFromString(object.attributes.getNamedItem('rotation').value);
+                                        //todo 2x velocity
+                                        //this.world.materialFactory.applyMaterial(mesh,object.attributes.getNamedItem('material').value);
 
 
                                     }
