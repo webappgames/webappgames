@@ -10,6 +10,7 @@
     "@types/react": "^16.0.2",
     "@types/react-dom": "^15.5.2",
     "@types/xmlbuilder": "0.0.31",
+    "@types/xmldom": "^0.1.29",
     "babylonjs": "^3.0.1-alpha",
     "downloadjs": "^1.4.7",
     "gh-pages": "^1.0.0",
@@ -20,7 +21,8 @@
     "react-redux": "^5.0.5",
     "react-scripts-ts": "2.6.0",
     "redux": "^3.6.0",
-    "xmlbuilder": "^9.0.4"
+    "xmlbuilder": "^9.0.4",
+    "xmldom": "^0.1.27"
   },
   "scripts": {
     "start": "react-scripts-ts start",
