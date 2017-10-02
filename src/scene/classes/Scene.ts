@@ -161,18 +161,18 @@ export default class Scene{
 
 
 
-        const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, this.scene);
-        groundMesh.material = this.materialFactory.getMaterial('grass',100);
-        groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, this.scene);
+        this.groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, this.scene);
+        this.groundMesh.material = this.materialFactory.getMaterial('grass',100);
+        this.groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, this.scene);
         this.scene.registerBeforeRender(()=>{
 
             this.skyboxMesh.position = this.playerMesh.position;
 
-            groundMesh.position.x = this.playerMesh.position.x;
-            groundMesh.position.z = this.playerMesh.position.z;
+            this.groundMesh.position.x = this.playerMesh.position.x;
+            this.groundMesh.position.z = this.playerMesh.position.z;
 
-            ((groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).uOffset = groundMesh.position.x/10;
-            ((groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).vOffset = groundMesh.position.z/10;
+            ((this.groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).uOffset = this.groundMesh.position.x/10;
+            ((this.groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).vOffset = this.groundMesh.position.z/10;
 
         });
 
