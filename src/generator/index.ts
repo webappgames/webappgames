@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs';
+import log from '../tools/log';
 import MaterialFactory from '../scene/classes/MaterialFactory';
 import DataModel from '../data-model';
 import * as _ from 'lodash';
@@ -59,7 +60,7 @@ export default class WorldGenerator{
         billboardMesh.position = center.add(new BABYLON.Vector3(0, billboardMesh.scaling.y/2+pillarSize.y, 0));
         this.materialFactory.applyMaterial(billboardMesh,"itnetwork_summer_2017");
 
-        const linkArea = {
+        const billboardLinkArea = {
             position:{
                 x:-10,y:-10
             },
@@ -69,12 +70,22 @@ export default class WorldGenerator{
             title: '',
             url: 'https://www.itnetwork.cz/letni-programatorska-soutez-2017',
         };
-        this.dataModel.linkAreas.push(linkArea);
+        this.dataModel.linkAreas.push(billboardLinkArea);
 
-        this.scene.registerAfterRender(_.throttle(()=>{
+        const updater = _.throttle(()=>{
+
+            if(billboardMesh.isDisposed()){
+                //this.dataModel.linkAreas = this.dataModel.linkAreas.filter((linkArea)=>linkArea!==billboardLinkArea);
+                this.dataModel.linkAreas[0].position.x = -10;
+                this.dataModel.linkAreas[0].position.y = -10;
+                this.dataModel.linkAreas[0].size.x = 10;
+                this.dataModel.linkAreas[0].size.y = 10;
+                    this.scene.unregisterAfterRender(updater);
+                log.send(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.dataModel.linkAreas);
+                return;
+            }
 
             const canvas = this.scene.getEngine().getRenderingCanvas() as HTMLCanvasElement;
-
             const corners = [
                 billboardMesh.position.add(billboardMesh.scaling.scale(0.5)),
                 billboardMesh.position.add(billboardMesh.scaling.scale(-.5))
@@ -83,15 +94,17 @@ export default class WorldGenerator{
                 BABYLON.Matrix.Identity(),
                 this.scene.getTransformMatrix(),
                 this.scene.activeCamera.viewport.toGlobal(canvas.clientWidth, canvas.clientHeight)
-            ))
-
+            ));
             for(let axis of ['x','y']){
                 this.dataModel.linkAreas[0].position[axis] = (corners[0][axis] + corners[1][axis]) / 2;
                 this.dataModel.linkAreas[0].size[axis] = Math.abs(corners[0][axis] - corners[1][axis]);
             };
 
 
-        },1000));
+        },1000);
+
+
+        this.scene.registerAfterRender(updater);
         //----------------------------------
 
 
