@@ -56,7 +56,7 @@ export default class WorldGenerator{
 
             world.element('player', {
                 position: vectorToString(this.world.playerMesh.position),
-                rotation: vectorToString(this.world.playerMesh.rotation),
+                //todo rotation: vectorToString(this.world.playerMesh.rotation),
                 'velocity-linear': vectorToString(this.world.playerMesh.physicsImpostor.getLinearVelocity()),
                 'velocity-angular': vectorToString(this.world.playerMesh.physicsImpostor.getAngularVelocity()),
             });
@@ -74,7 +74,7 @@ export default class WorldGenerator{
                     material: mesh.material.name,
                     size: vectorToString(mesh.scaling),
                     position: vectorToString(mesh.position),
-                    rotation: vectorToString(mesh.rotation),
+                    rotation: vectorToString(mesh.rotationQuaternion.toEulerAngles()),
                     'velocity-linear': vectorToString(mesh.physicsImpostor.getLinearVelocity()),
                     'velocity-angular': vectorToString(mesh.physicsImpostor.getAngularVelocity()),
                 });
@@ -103,7 +103,7 @@ export default class WorldGenerator{
                             case 'player':
                                 //todo DRY
                                 this.world.playerMesh.position = vectorFromString(child.attributes.getNamedItem('position').value);
-                                this.world.playerMesh.rotation = vectorFromString(child.attributes.getNamedItem('rotation').value);
+                                //todo this.world.playerMesh.rotation = vectorFromString(child.attributes.getNamedItem('rotation').value);
                                 //todo 2x velocity
                                 break;
                             case 'scenes':
@@ -123,8 +123,10 @@ export default class WorldGenerator{
                                         mesh.scaling = vectorFromString(object.attributes.getNamedItem('size').value);
                                         mesh.position = vectorFromString(object.attributes.getNamedItem('position').value);
                                         mesh.rotation = vectorFromString(object.attributes.getNamedItem('rotation').value);
-                                        //todo 2x velocity
-                                        //this.world.materialFactory.applyMaterial(mesh,object.attributes.getNamedItem('material').value);
+
+                                        this.world.materialFactory.applyMaterial(mesh,object.attributes.getNamedItem('material').value);
+                                        mesh.physicsImpostor.setLinearVelocity(vectorFromString(object.attributes.getNamedItem('velocity-linear').value));
+                                        mesh.physicsImpostor.setAngularVelocity(vectorFromString(object.attributes.getNamedItem('velocity-angular').value));
 
 
                                     }

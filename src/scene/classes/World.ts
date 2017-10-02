@@ -26,23 +26,23 @@ export default class World{
         public canvasElement: HTMLCanvasElement,
         public dataModel:DataModel
     ) {
-
-        this.engine = new BABYLON.Engine(canvasElement, true);
         this.createScene(true);
-
-        this.engine.runRenderLoop(()=>{
-            this.scene.render();
-            dataModel.fps = this.engine.getFps();//todo throttle
-        });
-
     }
 
 
     createScene(runWorldGenerator=false){
 
+        this.engine = new BABYLON.Engine(this.canvasElement, true);
+
+        this.engine.runRenderLoop(()=>{
+            this.scene.render();
+            this.dataModel.fps = this.engine.getFps();//todo throttle
+        });
+
         window.addEventListener("resize", ()=>{
             this.engine.resize();
         });
+
 
         this.scene = new BABYLON.Scene(this.engine);
         this.materialFactory = new MaterialFactory(this.scene);
@@ -298,14 +298,14 @@ export default class World{
         this.canvasElement.addEventListener("wheel", onWheel, false);
 
 
-        /*this.scene.onDispose = ()=>{
+        this.scene.onDispose = ()=>{
 
             const old_element = this.canvasElement;
             const new_element = old_element.cloneNode(true);
             (old_element.parentNode as any).replaceChild(new_element, old_element);
             this.canvasElement = new_element as HTMLCanvasElement;
 
-        };*/
+        };
 
         /*BABYLON.SceneOptimizer.OptimizeAsync(this.scene, BABYLON.SceneOptimizerOptions.ModerateDegradationAllowed(),
             function() {
@@ -328,17 +328,8 @@ export default class World{
     }
 
     cleanScene(){
-
-        this.scene.dispose();
+        this.engine.dispose();
         this.createScene();
-
-        /*for(const mesh of this.meshes){
-            mesh.physicsImpostor.dispose();
-            mesh.dispose();
-        }
-        this.scene.meshes = this.scene.meshes.filter((mesh:any)=>!mesh.isDisposed());*/
-
-        //console.log((window as any).OIMO);
     }
 
 }
