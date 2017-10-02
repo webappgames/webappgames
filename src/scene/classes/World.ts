@@ -11,8 +11,9 @@ import WorldGenerator from "../../generator";
 
 
 //todo split to smaller classes
-export default class Scene{
+export default class World{
 
+    public engine:BABYLON.Engine;
     public scene:BABYLON.Scene;
     public materialFactory:MaterialFactory;
     public worldGenerator:WorldGenerator;
@@ -23,12 +24,27 @@ export default class Scene{
 
     constructor(
         public canvasElement: HTMLCanvasElement,
-        public engine: BABYLON.Engine,
         public dataModel:DataModel
-    ){
+    ) {
+
+        this.engine = new BABYLON.Engine(canvasElement, true);
+        this.createScene(true);
+
+        this.engine.runRenderLoop(()=>{
+            this.scene.render();
+            dataModel.fps = this.engine.getFps();//todo throttle
+        });
+
+    }
 
 
-        this.scene = new BABYLON.Scene(engine);
+    createScene(runWorldGenerator=false){
+
+        window.addEventListener("resize", ()=>{
+            this.engine.resize();
+        });
+
+        this.scene = new BABYLON.Scene(this.engine);
         this.materialFactory = new MaterialFactory(this.scene);
         this.scene.clearColor = new BABYLON.Color4(1, 0, 0, 0);
 
@@ -57,7 +73,7 @@ export default class Scene{
         }, this.scene);
 
 
-        this.worldGenerator = new WorldGenerator(this.playerMesh,this.materialFactory,dataModel,this.scene);
+        this.worldGenerator = new WorldGenerator(this.playerMesh,this.materialFactory,this.dataModel,this.scene);
 
 
         //todo Is thare better solution for angular friction?
@@ -85,8 +101,21 @@ export default class Scene{
         });
 
 
+        const onPointerDown = ()=>{
+            //todo only left button ???maybe on spell?
+
+            try {
+                spell.addTarget(pickFromCenter());
+            } catch (error) {
+                //todo catch only SpellError extended from Error
+                this.dataModel.sendMessage(error.message as string);
+            }
+
+        }
+
+
         setControlls(
-            canvasElement
+            this.canvasElement
             ,onPointerDown
             ,(alpha:number,beta:number)=>{
 
@@ -137,7 +166,7 @@ export default class Scene{
 
 
             },
-            dataModel
+            this.dataModel
         );
 
 
@@ -177,13 +206,15 @@ export default class Scene{
         });
 
 
+        if(runWorldGenerator){
+            this.worldGenerator.generateWorld();
+        }
 
-        this.worldGenerator.generateWorld();
 
 
 
         const pickFromCenter = ()=>{
-            return this.scene.pick(canvasElement.width / 2, canvasElement.height / 2, (mesh)=>{
+            return this.scene.pick(this.canvasElement.width / 2, this.canvasElement.height / 2, (mesh)=>{
                 return mesh !== this.playerMesh /*&& mesh !== groundMesh*/ && 'physicsImpostor' in mesh;
             });
         }
@@ -213,7 +244,7 @@ export default class Scene{
                 spell.release();
             }else {
                 spell = spellFactory.createSpell(
-                    dataModel.currentSpellId,
+                    this.dataModel.currentSpellId,
                     (energyCost: number) => {
                         /*todo survival mode
                         if (energyCost > dataModel.energy) {
@@ -251,31 +282,38 @@ export default class Scene{
         createNewSpell();
 
 
-        function onPointerDown() {
-            //todo only left button ???maybe on spell?
-
-            try {
-                spell.addTarget(pickFromCenter());
-            } catch (error) {
-                //todo catch only SpellError extended from Error
-                dataModel.sendMessage(error.message as string);
-            }
-
-        }
 
 
         //todo lodash debounce
-        function onWheel(event:WheelEvent) {
+        const onWheel = (event:WheelEvent)=>{
             if(event.deltaY>0){
-                dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,1);
+                this.dataModel.currentSpellId = neighbourSpell(this.dataModel.currentSpellId,1);
                 createNewSpell();
             }else
             if(event.deltaY<0){
-                dataModel.currentSpellId = neighbourSpell(dataModel.currentSpellId,-1);
+                this.dataModel.currentSpellId = neighbourSpell(this.dataModel.currentSpellId,-1);
                 createNewSpell();
             }
         }
-        canvasElement.addEventListener("wheel", onWheel, false);
+        this.canvasElement.addEventListener("wheel", onWheel, false);
+
+
+        /*this.scene.onDispose = ()=>{
+
+            const old_element = this.canvasElement;
+            const new_element = old_element.cloneNode(true);
+            (old_element.parentNode as any).replaceChild(new_element, old_element);
+            this.canvasElement = new_element as HTMLCanvasElement;
+
+        };*/
+
+        /*BABYLON.SceneOptimizer.OptimizeAsync(this.scene, BABYLON.SceneOptimizerOptions.ModerateDegradationAllowed(),
+            function() {
+                // On success
+            }, function() {
+                // FPS target not reached
+            })*/
+
     }
 
     get meshes():BABYLON.AbstractMesh[]{
@@ -290,9 +328,17 @@ export default class Scene{
     }
 
     cleanScene(){
-        for(const mesh of this.meshes){
+
+        this.scene.dispose();
+        this.createScene();
+
+        /*for(const mesh of this.meshes){
+            mesh.physicsImpostor.dispose();
             mesh.dispose();
         }
+        this.scene.meshes = this.scene.meshes.filter((mesh:any)=>!mesh.isDisposed());*/
+
+        //console.log((window as any).OIMO);
     }
 
 }

@@ -9,6 +9,9 @@ import './style/Controlls.css';
 export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
     return (
         <div id="controlls">
+
+            {dataModel.fps.toFixed(0)}fps
+
             <button onClick={()=>saver.save()}>
                 Uložit
             </button>
