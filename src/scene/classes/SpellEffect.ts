@@ -52,7 +52,12 @@ export default class SpellEffect{
     stop(){
         this.spellParticles.stop();
         setTimeout(() => {
-            this.fountainMesh.dispose();
+            try {
+                this.fountainMesh.dispose();
+            }catch(error){
+                //World can be reloaded at this time.
+                console.warn(error);
+            }
         }, 5000/*todo count this value*/);
     }
 }
