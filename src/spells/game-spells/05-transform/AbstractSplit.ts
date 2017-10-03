@@ -34,7 +34,7 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
                     const xC = (x + .5) * (1 / parts.x);
 
 
-                    const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+                    const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
 
 
                     boxMesh.position = this.firstTargetMesh.position.add(this.firstTargetMesh.scaling.multiplyByFloats(xC - .5,yC - .5,zC - .5));
@@ -48,7 +48,7 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
                     boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
                         mass: 10,
                         restitution: 0.2
-                    }, this.scene);
+                    }, this.world.scene);
 
                 }
             }

@@ -19,7 +19,7 @@ export default class AbstractResize extends AbstractSpellOnMeshes{
         super.finish();
 
 
-        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
         boxMesh.position = this.firstTargetMesh.position.clone();
         boxMesh.scaling = this.firstTargetMesh.scaling.scale(this.scaling);
         boxMesh.rotation = this.firstTargetMesh.rotation.clone();
@@ -30,7 +30,7 @@ export default class AbstractResize extends AbstractSpellOnMeshes{
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 10,
             restitution: 0.2
-        }, this.scene);
+        }, this.world.scene);
 
 
     }

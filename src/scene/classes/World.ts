@@ -31,6 +31,27 @@ export default class World{
     }
 
 
+    get playerDirection():BABYLON.Vector3{
+        const point1 = this.playerMesh.position;
+        const point2 = this.scene.pick(this.canvasElement.width / 2, this.canvasElement.height / 2, (mesh)=>mesh === this.skyboxMesh).pickedPoint;
+
+        return point2.subtract(point1);
+    }
+
+    get playerDirection1():BABYLON.Vector3{
+        const playerDirection = this.playerDirection;
+        return playerDirection.scale(1/playerDirection.length());
+    }
+
+
+    get playerRotationY():number{
+        //todo Is thare a simple and better solution how to count camera rotation after world load than picking?
+        //eg. const cameraRotation = Math.PI/2 - camera.rotation.y;
+        const playerDirection = this.playerDirection;
+        return Math.atan2(playerDirection.z,playerDirection.x);
+    }
+
+
     createScene(runWorldGenerator=false){
 
         this.engine = new BABYLON.Engine(this.canvasElement, true);
@@ -128,22 +149,13 @@ export default class World{
                 camera.rotation.y += beta;
             }
             ,(vector:BABYLON.Vector3)=>{
-
-                //todo Is thare a simple and better solution how to count camera rotation after world load than picking?
-                //eg. const cameraRotation = Math.PI/2 - camera.rotation.y;
-                const point1 = this.playerMesh.position;
-                const point2 = this.scene.pick(this.canvasElement.width / 2, this.canvasElement.height / 2, (mesh)=>mesh === this.skyboxMesh).pickedPoint;
-
-                const cameraRotation = Math.atan2(point2.z-point1.z,point2.x-point1.x);
-
-
                 const currentVelocity = this.playerMesh.physicsImpostor.getLinearVelocity();
 
                 //todo Jumping on flying object
                 const onGround = currentVelocity.y<1;//playerMesh.position.y<=2;
 
                 const distance = Math.sqrt(Math.pow(vector.x,2)+Math.pow(vector.z,2));
-                const rotation = Math.atan2(vector.z,vector.x)+cameraRotation;
+                const rotation = Math.atan2(vector.z,vector.x)+this.playerRotationY;
 
 
                 const rotatedVector = new BABYLON.Vector3(
@@ -257,10 +269,8 @@ export default class World{
                     },
                     (energyGain: number) => {
                     },
-                    [],
-                    this.playerMesh,
-                    this.materialFactory,
-                    this.scene
+                    [],//todo other player spells
+                    this
                 );
 
                 /*spell.subscribe(() => {

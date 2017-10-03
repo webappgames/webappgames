@@ -1,7 +1,5 @@
-import * as BABYLON from 'babylonjs';
 import AbstractSpell from './AbstractSpell';
-import MaterialFactory from '../../scene/classes/MaterialFactory';
-//import spells from './spells';
+import World from '../../scene/classes/World';
 import {getSpellById} from '../tools/index';
 
 class SpellFactory{
@@ -14,22 +12,17 @@ class SpellFactory{
         costCallback:(energy:number)=>void,
         gainCallback:(energy:number)=>void,
         otherPlayerSpell:AbstractSpell[],
-        playerMesh:BABYLON.AbstractMesh,
-        //groundMesh:BABYLON.AbstractMesh,
-        materialFactory:MaterialFactory,
-        scene:BABYLON.Scene,
+        world:World,
     ):AbstractSpell{
         //todo better
         return new (getSpellById(spellId))(
             costCallback,
             gainCallback,
             otherPlayerSpell,
-            playerMesh,
-            //groundMesh,
-            materialFactory,
-            scene
+            world
         );
     }
 }
 
+//todo remove singleton
 export default new SpellFactory();

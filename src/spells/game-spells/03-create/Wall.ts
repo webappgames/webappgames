@@ -43,17 +43,17 @@ export default class Wall extends AbstractSpellOnMeshes {
         const tall = 11;
 
 
-        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
         boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, tall / 2, 0));
         boxMesh.scaling = new BABYLON.Vector3(width, tall, length + 2);
         boxMesh.rotation = new BABYLON.Vector3(0, rotation, 0);
-        boxMesh.material = this.materialFactory.getMaterial('stone-plain');
+        boxMesh.material = this.world.materialFactory.getMaterial('stone-plain');
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 10,
             restitution: 0.2
-        }, this.scene);
+        }, this.world.scene);
 
 
     }

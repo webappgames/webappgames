@@ -60,17 +60,17 @@ export default class Plate extends AbstractSpellOnMeshes {
         const width = Math.max(pillar1.scaling.z, pillar2.scaling.z, pillar1.scaling.x, pillar2.scaling.x);
 
 
-        const boxMesh = BABYLON.Mesh.CreateBox("plate", 1, this.scene);
+        const boxMesh = BABYLON.Mesh.CreateBox("plate", 1, this.world.scene);
         boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, pillar1.scaling.y / 2 + 1, 0));
         boxMesh.scaling = new BABYLON.Vector3(width, 1, length + 2);
         boxMesh.rotation = new BABYLON.Vector3(0, rotation, 0);
-        boxMesh.material = this.materialFactory.getMaterial('stone-plain');
+        boxMesh.material = this.world.materialFactory.getMaterial('stone-plain');
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 10,
             restitution: 0.2
-        }, this.scene);
+        }, this.world.scene);
 
     }
 }

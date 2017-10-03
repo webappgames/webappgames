@@ -66,7 +66,7 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
         this.spellEffects =
         this.dynamicTargetPoints.map((targetPoint)=>{
             return new SpellEffect(
-                this.playerMesh.position,
+                this.world.playerMesh.position,
                 targetPoint,
                 ()=>{
                     const running = this.spellEffects.some((spellEffect)=>spellEffect.running);
@@ -81,7 +81,7 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
                     }
                 },
                 this.EFFECT_COLORS,
-                this.scene,
+                this.world.scene,
                 this.dynamicSpeed
             );
         });

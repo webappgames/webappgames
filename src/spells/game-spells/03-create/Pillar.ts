@@ -19,16 +19,16 @@ export default class Pillar extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
-        const boxMesh = BABYLON.Mesh.CreateBox("pillar", 1, this.scene);
+        const boxMesh = BABYLON.Mesh.CreateBox("pillar", 1, this.world.scene);
         boxMesh.position = this.targets[0].pickedPoint.add(new BABYLON.Vector3(0,5,0));
         boxMesh.scaling = new BABYLON.Vector3(1,10,1);
         //boxMesh.rotation = this.targetMesh.rotation.clone();
-        boxMesh.material = this.materialFactory.getMaterial('stone-plain');
+        boxMesh.material = this.world.materialFactory.getMaterial('stone-plain');
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 100,
             restitution: 0.2
-        }, this.scene);
+        }, this.world.scene);
     }
 }

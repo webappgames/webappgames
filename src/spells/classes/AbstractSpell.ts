@@ -1,5 +1,5 @@
 import * as BABYLON from 'babylonjs';
-import MaterialFactory from '../../scene/classes/MaterialFactory';
+import World from '../../scene/classes/World';
 
 export enum spellPhases{
     PREPARING,
@@ -15,10 +15,7 @@ export default class AbstractSpell{
         public costCallback:(energy:number)=>void,
         public gainCallback:(energy:number)=>void,
         public otherPlayerSpell:AbstractSpell[],
-        public playerMesh:BABYLON.AbstractMesh,
-        //public groundMesh:BABYLON.AbstractMesh,
-        public materialFactory:MaterialFactory,
-        public scene:BABYLON.Scene,
+        public world:World,
     ){
         //this._setPhase(spellPhases.PREPARING);
     }
@@ -91,12 +88,16 @@ export default class AbstractSpell{
 
     finish(){
         if(this.phase === spellPhases.EXECUTING) {
-            this._setPhase(spellPhases.FINISHED);
-            if(!this.released){
-                this.release();
-            }
+            this.kill();
         }else{
             throw new Error(`Method finish() can be called only in EXECUTING(${spellPhases.EXECUTING}) state not ${this.phase}.`);
+        }
+    }
+
+    kill(){
+        this._setPhase(spellPhases.FINISHED);
+        if(!this.released){
+            this.release();
         }
     }
 }

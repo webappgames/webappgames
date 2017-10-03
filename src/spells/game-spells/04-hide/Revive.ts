@@ -16,7 +16,7 @@ export default class Revive extends AbstractSpellOnMeshes{
 
     finish() {
         super.finish();
-        this.materialFactory.applyMaterial(this.firstTargetMesh);
+        this.world.materialFactory.applyMaterial(this.firstTargetMesh);
         //this.firstTargetMesh.physicsImpostor.
         //this.firstTargetMesh.visibility = 1;
     }
