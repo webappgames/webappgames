@@ -141,12 +141,17 @@ export default class World{
         }
 
 
+        const cameraRotationXLimitMin = Math.PI * -.5*.9,
+              cameraRotationXLimitMax = Math.PI * 0.5*.9;
+
         setControlls(
             this.canvasElement
             ,onPointerDown
             ,(alpha:number,beta:number)=>{
                 camera.rotation.x += alpha;
                 camera.rotation.y += beta;
+                if(camera.rotation.x<cameraRotationXLimitMin)camera.rotation.x=cameraRotationXLimitMin;
+                if(camera.rotation.x>cameraRotationXLimitMax)camera.rotation.x=cameraRotationXLimitMax;
             }
             ,(vector:BABYLON.Vector3)=>{
                 const currentVelocity = this.playerMesh.physicsImpostor.getLinearVelocity();
