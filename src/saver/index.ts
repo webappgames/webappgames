@@ -93,6 +93,8 @@ export default class WorldGenerator{
 
             throw new Error(`Document element must be "world not ${world.tagName}".`);
         }else{
+            this.world.cleanScene();
+
             switch(world.attributes.getNamedItem('version').value){
                 case '0.1':
 
@@ -107,9 +109,6 @@ export default class WorldGenerator{
                                 //todo 2x velocity
                                 break;
                             case 'scenes':
-
-                                this.world.cleanScene();
-
 
                                 const scene =findNode(child,'scene');
                                 const objects =findNode(scene,'objects');
