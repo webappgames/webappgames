@@ -36,7 +36,7 @@ export default class World{
 
         this.engine.runRenderLoop(()=>{
             this.scene.render();
-            this.dataModel.fps = this.engine.getFps();//todo throttle
+            //this.dataModel.fps = this.engine.getFps();//todo throttle
         });
 
         window.addEventListener("resize", ()=>{

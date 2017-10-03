@@ -7,6 +7,8 @@ interface ILinkArea{position:IVector2,size:IVector2,title:string,url:string}
 
 export default class DataModel {
     //@observable currentSpellId = 'trolololololo';
+
+    @observable version = 0;
     @observable currentSpellId = 'pull';
     @computed get currentSpellCategory() {
         return getCategoryFromSpellId(this.currentSpellId)

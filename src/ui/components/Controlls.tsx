@@ -10,22 +10,25 @@ export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
     return (
         <div id="controlls">
 
-            {dataModel.fps.toFixed(0)}fps
+            {/*{dataModel.fps.toFixed(0)}fps*/}
+            <span style={{display:'none'}}>{dataModel.version}</span>
 
-            <button onClick={()=>saver.save()}>
+            <button onClick={()=>{saver.save();dataModel.version++}}>
                 Uložit
             </button>
 
             <ul>
                 {saver.loadAllSaveIds().map((saveId)=>(
                     <li key={saveId}>
-                        <button onClick={()=>saver.load(saveId)}>
+                        <span className="save-id">
+                            {saveId}
+                        </span>
+                        <button onClick={()=>{saver.load(saveId);dataModel.version++}}>
                             Load
                         </button>
-                        <button onClick={()=>saver.remove(saveId)}>
+                        <button onClick={()=>{saver.remove(saveId);dataModel.version++}}>
                             Delete
                         </button>
-                        {saveId}
                     </li>
                 ))}
             </ul>

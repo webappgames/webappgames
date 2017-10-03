@@ -4,7 +4,34 @@
     top: 0;
     right: 0;
 
+    text-align: right;
+
 }
+
+
+#controlls ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    margin-right: -15px;
+
+    height: 100px;
+    overflow-y: scroll;
+
+}
+
+
+#controlls ul li{
+
+}
+
+.save-id{
+    font-size: 0.8em;
+    margin-right: 5px;
+}
+
+
 
 button{
 
