@@ -4,6 +4,7 @@ import World from '../scene/classes/World';
 import * as xmlBuilder from 'xmlbuilder';
 import {DOMParser} from 'xmldom';
 import DataModel from '../data-model';
+import {isNull} from "util";
 
 function vectorToString(vector:BABYLON.Vector3):string{
     const values:string[] = [];
@@ -140,17 +141,39 @@ export default class WorldGenerator{
 
     }
 
-
-    load(){
-        const xml = localStorage.getItem('save') as string;
-        //console.log(xml);
-        this.loadXml(xml);
+    public SAVE_PREFIX = 'webappgames-save-';
+    load(saveId:string){
+        const xml = localStorage.getItem(this.SAVE_PREFIX+saveId);
+        if(isNull(xml)){
+            throw new Error(`Save "${saveId}" does not exists.`);
+        }else{
+            this.loadXml(xml);
+        }
     }
 
+    save(saveId:string|null = null){
+        if(saveId===null){
+            saveId = new Date().toLocaleString('en');
+        }
+        localStorage.setItem(this.SAVE_PREFIX+saveId,this.createXml());
 
-    save(){
-        localStorage.setItem('save',this.createXml())
+
     }
+
+    remove(saveId:string){
+        localStorage.removeItem(this.SAVE_PREFIX+saveId);
+    }
+
+    loadAllSaveIds():string[]{
+        const saveIds = []
+        for (var key in localStorage){
+            if(key.substring(0,this.SAVE_PREFIX.length)===this.SAVE_PREFIX){
+                saveIds.push(key.substring(this.SAVE_PREFIX.length));
+            }
+        }
+        return saveIds;
+    }
+
 
 
     /*downloadXml(){

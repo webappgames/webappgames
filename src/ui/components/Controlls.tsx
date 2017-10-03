@@ -15,9 +15,21 @@ export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
             <button onClick={()=>saver.save()}>
                 Uložit
             </button>
-            <button onClick={()=>saver.load()}>
-                Načíst
-            </button>
+
+            <ul>
+                {saver.loadAllSaveIds().map((saveId)=>(
+                    <li key={saveId}>
+                        <button onClick={()=>saver.load(saveId)}>
+                            Load
+                        </button>
+                        <button onClick={()=>saver.remove(saveId)}>
+                            Delete
+                        </button>
+                        {saveId}
+                    </li>
+                ))}
+            </ul>
+
 
         </div>
     );
