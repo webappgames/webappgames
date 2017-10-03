@@ -17,7 +17,10 @@ export default class DataModel {
     @observable energy = 10000000000;
 
 
-    @observable fps:number=0;
+    @observable stat = {
+        fps: 0,
+        meshes: 0,
+    };
 
 
 

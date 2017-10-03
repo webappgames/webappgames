@@ -8,6 +8,7 @@ import spellFactory from '../../spells/classes/SpellFactory';
 import {neighbourSpell} from '../../spells/tools/index';
 import MaterialFactory from "./../classes/MaterialFactory";
 import WorldGenerator from "../../generator";
+import * as _ from "lodash";
 
 
 //todo split to smaller classes
@@ -34,9 +35,14 @@ export default class World{
 
         this.engine = new BABYLON.Engine(this.canvasElement, true);
 
+        const updateFps = _.throttle(()=>{
+            this.dataModel.stat.fps = this.engine.getFps();
+            this.dataModel.stat.meshes = this.scene.meshes.length;
+        },200);
+
         this.engine.runRenderLoop(()=>{
             this.scene.render();
-            //this.dataModel.fps = this.engine.getFps();//todo throttle
+            updateFps();
         });
 
         window.addEventListener("resize", ()=>{
