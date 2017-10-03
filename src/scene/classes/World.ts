@@ -124,12 +124,17 @@ export default class World{
             this.canvasElement
             ,onPointerDown
             ,(alpha:number,beta:number)=>{
-
                 camera.rotation.x += alpha;
                 camera.rotation.y += beta;
-
             }
             ,(vector:BABYLON.Vector3)=>{
+
+                //todo Is thare a simple and better solution how to count camera rotation after world load than picking?
+                //eg. const cameraRotation = Math.PI/2 - camera.rotation.y;
+                const point1 = this.playerMesh.position;
+                const point2 = this.scene.pick(this.canvasElement.width / 2, this.canvasElement.height / 2, (mesh)=>mesh === this.skyboxMesh).pickedPoint;
+
+                const cameraRotation = Math.atan2(point2.z-point1.z,point2.x-point1.x);
 
 
                 const currentVelocity = this.playerMesh.physicsImpostor.getLinearVelocity();
@@ -137,12 +142,8 @@ export default class World{
                 //todo Jumping on flying object
                 const onGround = currentVelocity.y<1;//playerMesh.position.y<=2;
 
-                const cameraDirection = camera.getDirection(new BABYLON.Vector3(1,1,1));
-                const cameraRotation = Math.atan2(cameraDirection.z,cameraDirection.x);
-
-
                 const distance = Math.sqrt(Math.pow(vector.x,2)+Math.pow(vector.z,2));
-                const rotation = Math.atan2(vector.z,vector.x)+cameraRotation+Math.PI/4;
+                const rotation = Math.atan2(vector.z,vector.x)+cameraRotation;
 
 
                 const rotatedVector = new BABYLON.Vector3(
@@ -151,12 +152,7 @@ export default class World{
                     Math.sin(rotation)*distance
                 );
 
-
-
-
                 const composedVelocity = currentVelocity.add(rotatedVector);
-                PLAYER;
-
                 const jumpVelocity = new BABYLON.Vector3(0,composedVelocity.y,0);
                 const surfaceVelocity = new BABYLON.Vector3(composedVelocity.x,0,composedVelocity.z);
 
@@ -334,6 +330,8 @@ export default class World{
     }
 
     cleanScene(){
+
+        (this.scene.activeCamera as BABYLON.FreeCamera).rotation.y = 0;
         this.engine.dispose();
         this.createScene();
     }
