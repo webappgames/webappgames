@@ -22,6 +22,7 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
+        //todo prevent duplicating
         const parts = this.splitParts;
         for(let z=0;z<parts.z;z++) {
             const zC = (z + .5) * (1 / parts.z);
@@ -33,7 +34,8 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
                     const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
                     boxMesh.position = this.firstTargetMesh.position.add(this.firstTargetMesh.scaling.multiplyByFloats(xC - .5,yC - .5,zC - .5));
                     boxMesh.scaling = this.firstTargetMesh.scaling.multiplyByFloats(1/parts.x,1/parts.y,1/parts.z);
-                    boxMesh.rotation = this.firstTargetMesh.rotation.clone();
+                    //boxMesh.rotation = this.firstTargetMesh.rotation.clone();
+                    //todo preserve rotation
                     this.world.materialFactory.applyMaterial(boxMesh,this.firstTargetMesh.material.name);
 
                 }
