@@ -195,6 +195,40 @@ export default class WorldGenerator{
 
 
 
+        //----------------------------------Domino
+        {
+            const center = new BABYLON.Vector3(-20, 0, 50);
+            const blockSize = new BABYLON.Vector3(1.5,2.5,7.5);
+
+            for (let floor = 0; floor < 7; floor++) {
+
+                for (let i = -1; i <= 1; i++) {
+
+                    const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+
+                    if(floor%2||1) {
+
+                        mesh1.scaling = new BABYLON.Vector3(
+                            blockSize.x,
+                            blockSize.y,
+                            blockSize.z
+                        );
+                        mesh1.position = new BABYLON.Vector3(0, blockSize.y * (floor + .5), blockSize.y * i).add(center);
+
+
+                    }else{
+
+                    }
+
+                    this.materialFactory.applyMaterial(mesh1, 'wood-fence');
+                }
+
+            }
+        }
+        //----------------------------------
+
+
+
         /*setInterval(()=>{
 
 
