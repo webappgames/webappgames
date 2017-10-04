@@ -23,16 +23,8 @@ export default class AbstractResize extends AbstractSpellOnMeshes{
         boxMesh.position = this.firstTargetMesh.position.clone();
         boxMesh.scaling = this.firstTargetMesh.scaling.scale(this.scaling);
         boxMesh.rotation = this.firstTargetMesh.rotation.clone();
-        boxMesh.material = this.firstTargetMesh.material.clone('clonedMaterial');
-
+        this.world.materialFactory.applyMaterial(boxMesh,this.firstTargetMesh.material.name);
         this.firstTargetMesh.dispose();
-
-        boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-            mass: 10,
-            restitution: 0.2
-        }, this.world.scene);
-
-
     }
 
 }

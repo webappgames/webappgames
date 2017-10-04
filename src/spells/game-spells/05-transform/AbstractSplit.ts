@@ -22,10 +22,7 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
-        this.firstTargetMesh.dispose();
-
         const parts = this.splitParts;
-
         for(let z=0;z<parts.z;z++) {
             const zC = (z + .5) * (1 / parts.z);
             for (let y = 0; y < parts.y; y++) {
@@ -33,29 +30,15 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
                 for (let x = 0; x < parts.x; x++) {
                     const xC = (x + .5) * (1 / parts.x);
 
-
                     const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
-
-
                     boxMesh.position = this.firstTargetMesh.position.add(this.firstTargetMesh.scaling.multiplyByFloats(xC - .5,yC - .5,zC - .5));
-
-
                     boxMesh.scaling = this.firstTargetMesh.scaling.multiplyByFloats(1/parts.x,1/parts.y,1/parts.z);
                     boxMesh.rotation = this.firstTargetMesh.rotation.clone();
-                    boxMesh.material = this.firstTargetMesh.material.clone('clonedMaterial');
-
-
-                    boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
-                        mass: 10,
-                        restitution: 0.2
-                    }, this.world.scene);
+                    this.world.materialFactory.applyMaterial(boxMesh,this.firstTargetMesh.material.name);
 
                 }
             }
         }
-
-
-
-
+        this.firstTargetMesh.dispose();
     }
 }
