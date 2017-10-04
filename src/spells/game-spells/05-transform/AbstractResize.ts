@@ -19,6 +19,7 @@ export default class AbstractResize extends AbstractSpellOnMeshes{
         super.finish();
 
         //todo prevent duplicating
+        //todo preserve velocity linear/angular
         const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
         boxMesh.position = this.firstTargetMesh.position.clone();
         boxMesh.scaling = this.firstTargetMesh.scaling.scale(this.scaling);
