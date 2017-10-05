@@ -195,34 +195,32 @@ export default class WorldGenerator{
 
 
 
-        //----------------------------------Domino
+        //----------------------------------Domino Jenga
         {
-            const center = new BABYLON.Vector3(-20, 0, 50);
-            const blockSize = new BABYLON.Vector3(1.5,2.5,7.5);
+            const center = new BABYLON.Vector3(-40, 0, 100);
+            const blockSize = new BABYLON.Vector3(2.5,1.5,7.5);
 
-            for (let floor = 0; floor < 7; floor++) {
-
+            for (let floor = 0; floor < 20; floor++) {
                 for (let i = -1; i <= 1; i++) {
-
                     const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+                    mesh1.scaling = blockSize;
 
-                    if(floor%2||1) {
-
-                        mesh1.scaling = new BABYLON.Vector3(
-                            blockSize.x,
-                            blockSize.y,
-                            blockSize.z
-                        );
-                        mesh1.position = new BABYLON.Vector3(0, blockSize.y * (floor + .5), blockSize.y * i).add(center);
-
-
+                    if(floor%2) {
+                        mesh1.rotation.y = Math.PI / 2;
+                        mesh1.position = new BABYLON.Vector3(
+                            0,
+                            blockSize.y * (floor + .5),
+                            blockSize.x * i
+                        ).add(center);
                     }else{
-
+                        mesh1.position = new BABYLON.Vector3(
+                            blockSize.x * i,
+                            blockSize.y * (floor + .5),
+                            0
+                        ).add(center);
                     }
-
                     this.materialFactory.applyMaterial(mesh1, 'wood-fence');
                 }
-
             }
         }
         //----------------------------------
