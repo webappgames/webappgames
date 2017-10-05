@@ -54,15 +54,26 @@ export default class MaterialFactory{
             }
         }
 
+
+
         const materialPhysicOptions = {
             mass: 100,
             restitution:0.002,
-            //friction:100
+            friction:1
         };
 
         if(materialName==='itnetwork_summer_2017'){
             materialPhysicOptions.mass = 1;
         }
+
+
+        if(materialName==='wood-fence'){
+            materialPhysicOptions.mass = 10;
+            //materialPhysicOptions.restitution = 0;
+            //materialPhysicOptions.friction = 100;
+        }
+
+
 
         mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, impostor/*BABYLON.PhysicsImpostor.BoxImpostor*/, materialPhysicOptions, this.scene);
 

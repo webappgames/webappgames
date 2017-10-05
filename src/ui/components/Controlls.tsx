@@ -14,7 +14,7 @@ export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
             <span style={{display:'none'}}>{dataModel.version}</span>
 
             <button onClick={()=>{saver.save();dataModel.version++}}>
-                Uložit
+                Save
             </button>
 
             <ul>
