@@ -18,6 +18,8 @@ import reduce from './05-transform/Reduce';
 import grow from './05-transform/Grow';
 import chop from './05-transform/Chop';
 import desintegrate from './05-transform/Desintegrate';
+import meteorite from './06-environment/Meteorite';
+import perseids from './06-environment/Perseids';
 
 export default {
     subjective: {
@@ -50,5 +52,9 @@ export default {
         grow,
         chop,
         desintegrate
+    },
+    environment: {
+        meteorite,
+        perseids,
     }
 };

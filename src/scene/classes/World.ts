@@ -8,6 +8,7 @@ import spellFactory from '../../spells/classes/SpellFactory';
 import {neighbourSpell} from '../../spells/tools/index';
 import MaterialFactory from "./../classes/MaterialFactory";
 import WorldGenerator from "../../generator";
+import createSpellParticles from '../create-spell-particles';
 import * as _ from "lodash";
 
 
@@ -302,7 +303,7 @@ export default class World{
 
 
         //todo lodash debounce
-        const onWheel = (event:WheelEvent)=>{
+        const onWheel = _.throttle((event:WheelEvent)=>{
             if(event.deltaY>0){
                 this.dataModel.currentSpellId = neighbourSpell(this.dataModel.currentSpellId,1);
                 createNewSpell();
@@ -311,7 +312,7 @@ export default class World{
                 this.dataModel.currentSpellId = neighbourSpell(this.dataModel.currentSpellId,-1);
                 createNewSpell();
             }
-        }
+        },10);
         this.canvasElement.addEventListener("wheel", onWheel, false);
 
 
@@ -323,6 +324,15 @@ export default class World{
             this.canvasElement = new_element as HTMLCanvasElement;
 
         };
+
+        //----------disasters
+        setInterval(()=>{
+            if(Math.random()>0.99){
+                this.randomDisaster()
+            }
+        },100);
+        //----------
+
 
         /*BABYLON.SceneOptimizer.OptimizeAsync(this.scene, BABYLON.SceneOptimizerOptions.ModerateDegradationAllowed(),
             function() {
@@ -350,6 +360,78 @@ export default class World{
         this.engine.dispose();
         this.createScene();
     }
+
+
+
+    //-------------------------------environment disasters
+
+    randomDisaster(){
+        const allMeshes = this.meshes;
+        const randomMesh = allMeshes[Math.floor(Math.random()*allMeshes.length)];
+        this.setMeteoriteTarget(randomMesh.position);
+    }
+
+    //todo inject - move to separate file
+    setMeteoriteTarget(target:BABYLON.Vector3){
+
+        const meteoriteMesh = BABYLON.Mesh.CreateSphere("box", 1, 1, this.scene);
+        //meteoriteMesh.isVisible = false;
+        meteoriteMesh.scaling = new BABYLON.Vector3(4,4,4);
+
+        const awayRotation = Math.random()*Math.PI*2;
+
+        const away = new BABYLON.Vector3(
+            Math.cos(awayRotation)*100,
+            Math.random()*100,
+            Math.sin(awayRotation)*100
+        );
+        meteoriteMesh.position = target.add(away);
+
+
+        this.materialFactory.applyMaterial(meteoriteMesh,'stone-plain');
+
+        meteoriteMesh.physicsImpostor.setLinearVelocity(
+            away.scale(-2).add(new BABYLON.Vector3(0,20,0))
+        );
+        meteoriteMesh.physicsImpostor.setAngularVelocity(
+            new BABYLON.Vector3(
+                Math.random()*Math.PI*2*7,
+                Math.random()*Math.PI*2*7,
+                Math.random()*Math.PI*2*7
+            )
+        );
+
+        const particles = createSpellParticles(
+            meteoriteMesh,
+            {
+                color1: '#ff0000',
+                color2: '#ffd32d',
+                minSize:1,
+                maxSize:5,
+                minLifeTime: 1,
+                maxLifeTime: 3
+            },
+            this.scene
+        );
+
+        setTimeout(()=> {
+
+            particles.stop();
+
+            setTimeout(() => {
+                particles.dispose();
+                meteoriteMesh.dispose();
+            }, 500);
+
+        },2000);
+
+    }
+
+
+
+
+
+
 
 }
 

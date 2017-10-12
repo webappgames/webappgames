@@ -196,7 +196,7 @@ export default class WorldGenerator{
 
 
         //----------------------------------Domino Jenga
-        {
+        /*{
             const center = new BABYLON.Vector3(-40, 0, 100);
             const blockSize = new BABYLON.Vector3(2.5,1.5,7.5);
 
@@ -222,7 +222,7 @@ export default class WorldGenerator{
                     this.materialFactory.applyMaterial(mesh1, 'wood-fence');
                 }
             }
-        }
+        }*/
         //----------------------------------
 
 

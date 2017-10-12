@@ -9,7 +9,8 @@ export default class DataModel {
     //@observable currentSpellId = 'trolololololo';
 
     @observable version = 0;
-    @observable currentSpellId = 'pull';
+    @observable currentSpellId = 'meteorite';
+    //@observable currentSpellId = 'pull';
     @computed get currentSpellCategory() {
         return getCategoryFromSpellId(this.currentSpellId)
     }
