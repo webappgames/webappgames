@@ -2,6 +2,8 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Meteorite extends AbstractSpellOnMeshes{
 
+    public ALLOW_GROUND = true;
+
     public EFFECT_COLORS = {
         color1: '#ff81f0',
         color2: '#8000ff'
@@ -16,7 +18,7 @@ export default class Meteorite extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
-        this.world.setMeteoriteTarget(this.firstTargetMesh.position);
+        this.world.setMeteoriteTarget(this.targets[0].pickedPoint);
     }
 
 }
