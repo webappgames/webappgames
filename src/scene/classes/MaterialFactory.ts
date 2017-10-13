@@ -1,5 +1,6 @@
 import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
+import * as _ from 'lodash';
 
 export default class MaterialFactory{
 
@@ -76,6 +77,49 @@ export default class MaterialFactory{
 
 
         mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, impostor/*BABYLON.PhysicsImpostor.BoxImpostor*/, materialPhysicOptions, this.scene);
+
+
+
+        const stepSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/step-stairs.mp3`, this.scene, undefined, { loop: false });
+        //stepSound.attachToMesh(mesh);
+        //stepSound.play();
+        //console.log(stepSound);
+        /*mesh.physicsImpostor.onCollide = _.throttle(()=>{
+            console.log('boom');
+            stepSound.play();
+        },1000);*/
+        const playSound = _.throttle(()=>{console.log('boom');stepSound.play()},100);
+
+        let lastVelocity = mesh.physicsImpostor.getLinearVelocity();
+        mesh.physicsImpostor.registerAfterPhysicsStep(()=>{
+
+            const currentVelocity = mesh.physicsImpostor.getLinearVelocity();
+            const deltaVelocity = currentVelocity.subtract(lastVelocity);
+            lastVelocity = currentVelocity;
+            if(deltaVelocity.length()>1){
+                playSound();
+            }
+
+        })
+
+
+
+
+
+        /*sphereImpostor.registerOnPhysicsCollide(undefined, function(main, collided) {
+            console.log('boom');
+            stepSound.play();
+        });*/
+
+
+
+        /*mesh.physicsImpostor.registerBeforePhysicsStep(()=>{
+            //const angularVelocity = mesh.physicsImpostor.getAngularVelocity();
+            //mesh.physicsImpostor.setAngularVelocity(angularVelocity.add(new BABYLON.Vector3(.1,0,0)));
+            mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,0,0));
+        });*/
+
+
 
 
         /*mesh.physicsImpostor.registerBeforePhysicsStep(()=>{

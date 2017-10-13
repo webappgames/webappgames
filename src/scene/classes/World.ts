@@ -102,7 +102,7 @@ export default class World{
 
         const stepSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/step-ground.mp3`, this.scene, undefined, { loop: false });
         stepSound.attachToMesh(this.playerMesh);
-        const playStepSound = _.throttle(()=>stepSound.play(),600);
+        const playStepSound = _.throttle(()=>/*stepSound.play()*/1,600);
 
 
         this.worldGenerator = new WorldGenerator(this.playerMesh,this.materialFactory,this.dataModel,this.scene);
