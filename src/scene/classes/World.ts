@@ -100,6 +100,10 @@ export default class World{
             friction: 100
         }, this.scene);
 
+        const stepSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/step-ground.mp3`, this.scene, undefined, { loop: false });
+        stepSound.attachToMesh(this.playerMesh);
+        const playStepSound = _.throttle(()=>stepSound.play(),600);
+
 
         this.worldGenerator = new WorldGenerator(this.playerMesh,this.materialFactory,this.dataModel,this.scene);
 
@@ -155,6 +159,9 @@ export default class World{
                 if(camera.rotation.x>cameraRotationXLimitMax)camera.rotation.x=cameraRotationXLimitMax;
             }
             ,(vector:BABYLON.Vector3)=>{
+
+                playStepSound();
+
                 const currentVelocity = this.playerMesh.physicsImpostor.getLinearVelocity();
 
                 //todo Jumping on flying object

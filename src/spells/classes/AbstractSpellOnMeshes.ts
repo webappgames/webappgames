@@ -82,9 +82,11 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
                 },
                 this.EFFECT_COLORS,
                 this.world.scene,
-                this.dynamicSpeed
-            );
+                this.dynamicSpeed);
         });
+
+        const spellSound = new BABYLON.Sound("Spell", `${process.env.PUBLIC_URL}/assets/sound/link-teleport.mp3`, this.world.scene, undefined, { loop: false, autoplay: true });
+        spellSound;
 
         this.release();
         super.execute();
