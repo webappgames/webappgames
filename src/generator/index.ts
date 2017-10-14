@@ -58,7 +58,7 @@ export default class WorldGenerator{
         const billboardMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
         billboardMesh.scaling = new BABYLON.Vector3(width,height, 1);
         billboardMesh.position = center.add(new BABYLON.Vector3(0, billboardMesh.scaling.y/2+pillarSize.y, 0));
-        this.materialFactory.applyMaterial(billboardMesh,"itnetwork_summer_2017");
+        this.materialFactory.applyMaterial(billboardMesh,"20748414_1462486403845565_3744246535818041341_o");
 
         const billboardLinkArea = {
             position:{

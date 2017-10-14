@@ -62,7 +62,7 @@ export default class MaterialFactory{
             friction:1
         };
 
-        if(materialName==='itnetwork_summer_2017'){
+        if(materialName==='20748414_1462486403845565_3744246535818041341_o'){
             materialPhysicOptions.mass = 1;
         }
 

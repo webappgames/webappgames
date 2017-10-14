@@ -326,11 +326,11 @@ export default class World{
         };
 
         //----------disasters
-        setInterval(()=>{
+        /*setInterval(()=>{
             if(Math.random()>0.99){
                 this.randomDisaster()
             }
-        },100);
+        },100);*/
         //----------
 
 
