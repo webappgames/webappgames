@@ -1,6 +1,7 @@
 import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
 import * as _ from 'lodash';
+import {countVolume} from '../../tools/babylon';
 
 export default class MaterialFactory{
 
@@ -88,7 +89,15 @@ export default class MaterialFactory{
             console.log('boom');
             stepSound.play();
         },1000);*/
-        const playSound = _.throttle(()=>{console.log('boom');stepSound.play()},100);
+        const playSound = _.throttle((volume:number,playbackRate:number)=>{
+
+            stepSound.setVolume(volume);
+            stepSound.setPlaybackRate(playbackRate);
+
+            console.log(`${volume} ${playbackRate}`);
+            stepSound.play()
+
+        },100);
 
         let lastVelocity = mesh.physicsImpostor.getLinearVelocity();
         mesh.physicsImpostor.registerAfterPhysicsStep(()=>{
@@ -96,8 +105,12 @@ export default class MaterialFactory{
             const currentVelocity = mesh.physicsImpostor.getLinearVelocity();
             const deltaVelocity = currentVelocity.subtract(lastVelocity);
             lastVelocity = currentVelocity;
-            if(deltaVelocity.length()>1){
-                playSound();
+            if(deltaVelocity.length()>10){
+
+                playSound(
+                    countVolume(mesh)*deltaVelocity.length()/1000,
+                    100/countVolume(mesh)
+                );
             }
 
         })
