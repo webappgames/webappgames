@@ -395,10 +395,10 @@ export default class World{
         meteoriteMesh.position = target.add(away);
 
 
-        this.materialFactory.applyMaterial(meteoriteMesh,'stone-plain');
+        this.materialFactory.applyMaterial(meteoriteMesh,'meteorite');
 
         meteoriteMesh.physicsImpostor.setLinearVelocity(
-            away.scale(-2).add(new BABYLON.Vector3(0,20,0))
+            away.scale(-2).add(new BABYLON.Vector3(0,30,0))
         );
         meteoriteMesh.physicsImpostor.setAngularVelocity(
             new BABYLON.Vector3(

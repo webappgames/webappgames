@@ -64,6 +64,10 @@ export default class MaterialFactory{
             friction:1
         };
 
+        if(materialName==='meteorite'){
+            materialPhysicOptions.mass = 200;
+        }
+
         if(materialName==='itnetwork_summer_2017'){
             materialPhysicOptions.mass = 1;
         }
