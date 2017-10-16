@@ -81,8 +81,17 @@ export default class MaterialFactory{
 
 
 
-        const stepSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/step-stairs.mp3`, this.scene, undefined, { loop: false });
-        //stepSound.attachToMesh(mesh);
+        const stepSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/step-stairs.mp3`, this.scene, undefined, {
+            loop: false,
+            useCustomAttenuation: true
+            //distanceModel: "linear",
+            //refDistance: 100
+        });
+        stepSound.setAttenuationFunction((currentVolume, currentDistance, maxDistance, refDistance, rolloffFactor)=>{
+            return currentVolume / currentDistance * maxDistance;
+        });
+
+        stepSound.attachToMesh(mesh);
         //stepSound.play();
         //console.log(stepSound);
         /*mesh.physicsImpostor.onCollide = _.throttle(()=>{
@@ -109,7 +118,7 @@ export default class MaterialFactory{
 
                 playSound(
                     countVolume(mesh)*deltaVelocity.length()/1000,
-                    100/countVolume(mesh)
+                    Math.sqrt(100/countVolume(mesh))
                 );
             }
 
