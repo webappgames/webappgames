@@ -112,19 +112,22 @@ export default class MaterialFactory{
 
         },100);
 
-        let lastVelocity = mesh.physicsImpostor.getLinearVelocity();
+
+        let lastVelocityLength = 0;
         mesh.physicsImpostor.registerAfterPhysicsStep(()=>{
 
-            const currentVelocity = mesh.physicsImpostor.getLinearVelocity();
-            const deltaVelocity = currentVelocity.subtract(lastVelocity);
-            lastVelocity = currentVelocity;
-            if(deltaVelocity.length()>10){
+            const currentVelocityLength = mesh.physicsImpostor.getLinearVelocity().length();
+            const velocityDelta = currentVelocityLength - lastVelocityLength;
+            lastVelocityLength = currentVelocityLength;
+
+            if(velocityDelta<-1){
 
                 playSound(
-                    countVolume(mesh)*deltaVelocity.length()/1000,
+                    countVolume(mesh)*velocityDelta/1000,
                     Math.sqrt(100/countVolume(mesh))
                 );
             }
+
 
         })
 
