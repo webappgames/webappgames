@@ -7,4 +7,5 @@ class Log{
     }
 }
 
+//todo remove singleton use DI
 export default new Log();

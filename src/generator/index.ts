@@ -233,7 +233,7 @@ export default class WorldGenerator{
             const boxMesh = BABYLON.Mesh.CreateSphere("box", 16,1, this.scene);
             boxMesh.scaling = new BABYLON.Vector3(3,3,3);
             boxMesh.position = new BABYLON.Vector3(0, 100 , 0);
-            boxMesh.material = this.materialFactory.getMaterial('stone-plain');
+            boxMesh.material = this.materialFactory.getSound('stone-plain');
 
 
             boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.SphereImpostor, {

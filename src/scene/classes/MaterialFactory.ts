@@ -2,17 +2,19 @@ import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
 import * as _ from 'lodash';
 import {countVolume} from '../../tools/babylon';
+import SoundFactory from './SoundFactory';
 
 export default class MaterialFactory{
 
 
-    private materialsCache:BABYLON.StandardMaterial[];
+    private _materialsCache:BABYLON.StandardMaterial[];
 
 
     constructor(
-        private scene:BABYLON.Scene
+        private _soundFactory:SoundFactory,
+        private _scene:BABYLON.Scene
     ){
-        this.materialsCache = [];
+        this._materialsCache = [];
     }
 
 
@@ -23,15 +25,15 @@ export default class MaterialFactory{
     ){
 
 
-        const cashedMaterial = this.materialsCache.find((material)=>material.name === materialName)||null;
+        const cashedMaterial = this._materialsCache.find((material)=>material.name === materialName)||null;
 
         if(cashedMaterial){
             return cashedMaterial;
         }else {
             log.send(`Creating material "${materialName}".`);
 
-            const material = new BABYLON.StandardMaterial(materialName, this.scene);
-            const texture = new BABYLON.Texture(process.env.PUBLIC_URL +`/assets/textures/${materialName}.jpg`, this.scene);
+            const material = new BABYLON.StandardMaterial(materialName, this._scene);
+            const texture = new BABYLON.Texture(process.env.PUBLIC_URL +`/assets/textures/${materialName}.jpg`, this._scene);
             texture.uScale = textureScale;
             texture.vScale = textureScale;
             material.diffuseTexture = texture;
@@ -40,7 +42,7 @@ export default class MaterialFactory{
             //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
             material.emissiveTexture = texture;
 
-            this.materialsCache.push(material);
+            this._materialsCache.push(material);
             return material;
         }
 
@@ -81,27 +83,13 @@ export default class MaterialFactory{
 
 
 
-        mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, impostor/*BABYLON.PhysicsImpostor.BoxImpostor*/, materialPhysicOptions, this.scene);
+        mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, impostor/*BABYLON.PhysicsImpostor.BoxImpostor*/, materialPhysicOptions, this._scene);
 
 
 
-        const stepSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/step-stairs.mp3`, this.scene, undefined, {
-            loop: false,
-            useCustomAttenuation: true
-            //distanceModel: "linear",
-            //refDistance: 100
-        });
-        stepSound.setAttenuationFunction((currentVolume, currentDistance, maxDistance, refDistance, rolloffFactor)=>{
-            return currentVolume / currentDistance * maxDistance;
-        });
+        const stepSound = this._soundFactory.getMeshSound('step-stairs',mesh);
 
-        stepSound.attachToMesh(mesh);
-        //stepSound.play();
-        //console.log(stepSound);
-        /*mesh.physicsImpostor.onCollide = _.throttle(()=>{
-            console.log('boom');
-            stepSound.play();
-        },1000);*/
+
         const playSound = _.throttle((volume:number,playbackRate:number)=>{
 
             stepSound.setVolume(volume);

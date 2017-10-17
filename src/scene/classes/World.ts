@@ -8,6 +8,7 @@ import spellFactory from '../../spells/classes/SpellFactory';
 import {neighbourSpell} from '../../spells/tools/index';
 import MaterialFactory from "./../classes/MaterialFactory";
 import WorldGenerator from "../../generator";
+import SoundFactory from './SoundFactory';
 import createSpellParticles from '../create-spell-particles';
 import * as _ from "lodash";
 
@@ -18,6 +19,7 @@ export default class World{
     public engine:BABYLON.Engine;
     public scene:BABYLON.Scene;
     public materialFactory:MaterialFactory;
+    public soundFactory:SoundFactory;
     public worldGenerator:WorldGenerator;
     public playerMesh:BABYLON.AbstractMesh;
     public groundMesh:BABYLON.AbstractMesh;
@@ -73,7 +75,8 @@ export default class World{
 
 
         this.scene = new BABYLON.Scene(this.engine);
-        this.materialFactory = new MaterialFactory(this.scene);
+        this.soundFactory = new SoundFactory(this.scene);
+        this.materialFactory = new MaterialFactory(this.soundFactory,this.scene);
         this.scene.clearColor = new BABYLON.Color4(1, 0, 0, 0);
 
 
@@ -100,9 +103,8 @@ export default class World{
             friction: 100
         }, this.scene);
 
-        const stepSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/step-ground.mp3`, this.scene, undefined, { loop: false });
-        stepSound.attachToMesh(this.playerMesh);
-        const playStepSound = _.throttle(()=>/*stepSound.play()*/1,600);
+        const stepSound = this.soundFactory.getMeshSound('step-ground',this.playerMesh);
+        const playStepSound = _.throttle(()=>stepSound.play(),600);
 
 
         this.worldGenerator = new WorldGenerator(this.playerMesh,this.materialFactory,this.dataModel,this.scene);
