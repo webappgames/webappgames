@@ -1,7 +1,7 @@
 import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
 import * as _ from 'lodash';
-import {countVolume} from '../../tools/babylon';
+import {countVolume,countEnergy} from '../../tools/babylon';
 import SoundFactory from './SoundFactory';
 
 export default class MaterialFactory{
@@ -101,18 +101,18 @@ export default class MaterialFactory{
         },100);
 
 
-        let lastVelocityLength = 0;
+        let lastEnergy = 0;
         mesh.physicsImpostor.registerAfterPhysicsStep(()=>{
 
-            const currentVelocityLength = mesh.physicsImpostor.getLinearVelocity().length();
-            const velocityDelta = currentVelocityLength - lastVelocityLength;
-            lastVelocityLength = currentVelocityLength;
+            const currentEnergy = countEnergy(mesh);
+            const energyDelta = currentEnergy - lastEnergy;
+            lastEnergy = currentEnergy;
 
-            if(velocityDelta<-1){
+            if(energyDelta<-100){
 
                 playSound(
-                    countVolume(mesh)*velocityDelta/1000,
-                    Math.sqrt(100/countVolume(mesh))
+                    countVolume(mesh)*-energyDelta/10000,
+                    1//Math.sqrt(100/countVolume(mesh))
                 );
             }
 
