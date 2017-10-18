@@ -103,8 +103,9 @@ export default class World{
             friction: 100
         }, this.scene);
 
-        const stepSound = this.soundFactory.getMeshSound('step-ground',this.playerMesh);
-        const playStepSound = _.throttle(()=>stepSound.play(),600);
+        const stepSound = this.soundFactory.getSound('step-ground');
+        stepSound.setVolume(2);//todo to global sound config
+        const playStepSound = _.throttle(()=>stepSound.play(),400, {leading:true,trailing:false});
 
 
         this.worldGenerator = new WorldGenerator(this.playerMesh,this.materialFactory,this.dataModel,this.scene);
