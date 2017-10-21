@@ -89,8 +89,8 @@ export default class MaterialFactory{
 
         const stepSound = this._soundFactory.getMeshSound('step-stairs',mesh);
 
-
-        const playSound = _.throttle((volume:number,playbackRate:number)=>{
+        _;countVolume;countEnergy;stepSound;
+        /*const playSound = _.throttle((volume:number,playbackRate:number)=>{
 
             stepSound.setVolume(volume);
             stepSound.setPlaybackRate(playbackRate);
@@ -117,7 +117,7 @@ export default class MaterialFactory{
             }
 
 
-        })
+        })/**/
 
 
 
