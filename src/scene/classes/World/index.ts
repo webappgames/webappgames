@@ -94,36 +94,13 @@ export default class World{
 
         this.camera = createCamera(this.scene);
         this.lights = createLights(this.scene);
-
-
-
-
-        this.playerMesh = BABYLON.Mesh.CreateSphere("player", 16,1, this.scene);
-        this.playerMesh.isVisible = false;
-        this.playerMesh.position =  new BABYLON.Vector3(0, 2, 0);
-        this.playerMesh.rotation =  new BABYLON.Vector3(0, 0, 0);
-        this.playerMesh.scaling =  new BABYLON.Vector3(1, 4, 1);
-        this.playerMesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.playerMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
-            mass: 1,
-            restitution: 0.01,
-            friction: 100
-        }, this.scene);
-
-        const stepSound = this.soundFactory.getSound('step-ground');
-        stepSound.setVolume(2);//todo to global sound config
-        const playStepSound = _.throttle(()=>stepSound.play(),400, {leading:true,trailing:false});
-
-
+        this.playerMesh = createPlayerMesh(this.scene,this.camera,this.soundFactory);
         this.worldGenerator = new WorldGenerator(this.playerMesh,this.materialFactory,this.dataModel,this.scene);
 
 
-        //todo Is thare better solution for angular friction?
-        this.playerMesh.physicsImpostor.registerAfterPhysicsStep(()=>{
-            this.camera.position =  this.playerMesh.position;
-            this.playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-        });
 
 
+        //todo refactor to other file
         this.scene.registerAfterRender(()=>{
             this.scene.meshes.forEach((mesh)=> {
                 if ('physicsImpostor' in mesh) {
@@ -206,40 +183,9 @@ export default class World{
         );
 
 
+        this.skyboxMesh = createSkyboxMesh(this.scene);
+        this.groundMesh = createGroundMesh(this.scene,this.playerMesh,this.materialFactory)
 
-
-
-
-
-        this.skyboxMesh = BABYLON.Mesh.CreateBox("skyBox", 1000, this.scene);
-        const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", this.scene);
-        skyboxMaterial.backFaceCulling = false;
-        skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture(process.env.PUBLIC_URL +"/assets/skyboxes/TropicalSunnyDay/TropicalSunnyDay", this.scene, ["_ft.jpg", "_up.jpg", "_rt.jpg", "_bk.jpg", "_dn.jpg", "_lf.jpg"]);
-        skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-        skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-        skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-        skyboxMaterial.disableLighting = true;
-        this.skyboxMesh.material = skyboxMaterial;
-
-
-
-
-
-
-        this.groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, this.scene);
-        this.groundMesh.material = this.materialFactory.getMaterial('grass',100);
-        this.groundMesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.groundMesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.1}, this.scene);
-        this.scene.registerBeforeRender(()=>{
-
-            this.skyboxMesh.position = this.playerMesh.position;
-
-            this.groundMesh.position.x = this.playerMesh.position.x;
-            this.groundMesh.position.z = this.playerMesh.position.z;
-
-            ((this.groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).uOffset = this.groundMesh.position.x/10;
-            ((this.groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).vOffset = this.groundMesh.position.z/10;
-
-        });
 
 
         if(runWorldGenerator){
