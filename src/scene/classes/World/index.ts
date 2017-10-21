@@ -1,17 +1,24 @@
 //import log from '../tools/log';
 import * as BABYLON from 'babylonjs';
-import DataModel from '../../data-model';
-import setControlls from '../set-controlls';
-import {PLAYER} from '../../config';
-import {default as AbstractSpell, spellPhases} from '../../spells/classes/AbstractSpell';
-import spellFactory from '../../spells/classes/SpellFactory';
-import {neighbourSpell} from '../../spells/tools/index';
-import MaterialFactory from "./../classes/MaterialFactory";
-import WorldGenerator from "../../generator";
-import SoundFactory from './SoundFactory';
-import createSpellParticles from '../create-spell-particles';
+import DataModel from '../../../data-model';
+import setControlls from '../../set-controlls';
+import {PLAYER} from '../../../config';
+import {default as AbstractSpell, spellPhases} from '../../../spells/classes/AbstractSpell';
+import spellFactory from '../../../spells/classes/SpellFactory';
+import {neighbourSpell} from '../../../spells/tools/index';
+import MaterialFactory from "./../../classes/MaterialFactory";
+import WorldGenerator from "../../../generator";
+import SoundFactory from './../SoundFactory';
+import createSpellParticles from '../../create-spell-particles';
+import createCamera from './createCamera';
+import createLights from './createLights';
+import createGroundMesh from './createGroundMesh';
+import createSkyboxMesh from './createSkyboxMesh';
+import createPlayerMesh from './createPlayerMesh';
 import * as _ from "lodash";
 
+//todo remove
+//createLights;createGroundMesh;createSkyboxMesh;createSkyboxMesh;createPlayerMesh;
 
 //todo split to smaller classes
 export default class World{
@@ -21,6 +28,8 @@ export default class World{
     public materialFactory:MaterialFactory;
     public soundFactory:SoundFactory;
     public worldGenerator:WorldGenerator;
+    public camera:BABYLON.FreeCamera;
+    public lights:BABYLON.Light[];
     public playerMesh:BABYLON.AbstractMesh;
     public groundMesh:BABYLON.AbstractMesh;
     public skyboxMesh:BABYLON.AbstractMesh;
@@ -79,17 +88,14 @@ export default class World{
         this.materialFactory = new MaterialFactory(this.soundFactory,this.scene);
         this.scene.clearColor = new BABYLON.Color4(1, 0, 0, 0);
 
-
-        const camera = new BABYLON.FreeCamera("FreeCamera", BABYLON.Vector3.Zero(),  this.scene);
-        camera.fov = 1.2;
-
-        const light1 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(1, -2, 1), this.scene);
-        light1.position = new BABYLON.Vector3(20, 3, 20);
-        light1.intensity = 0.7;
-
         const gravityVector = new BABYLON.Vector3(0,-100, 0);
         const physicsPlugin = new BABYLON.OimoJSPlugin()
         this.scene.enablePhysics(gravityVector, physicsPlugin);
+
+        this.camera = createCamera(this.scene);
+        this.lights = createLights(this.scene);
+
+
 
 
         this.playerMesh = BABYLON.Mesh.CreateSphere("player", 16,1, this.scene);
@@ -113,7 +119,7 @@ export default class World{
 
         //todo Is thare better solution for angular friction?
         this.playerMesh.physicsImpostor.registerAfterPhysicsStep(()=>{
-            camera.position =  this.playerMesh.position;
+            this.camera.position =  this.playerMesh.position;
             this.playerMesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
         });
 
@@ -150,16 +156,16 @@ export default class World{
 
 
         const cameraRotationXLimitMin = Math.PI * -.5*.9,
-              cameraRotationXLimitMax = Math.PI * 0.5*.9;
+            cameraRotationXLimitMax = Math.PI * 0.5*.9;
 
         setControlls(
             this.canvasElement
             ,onPointerDown
             ,(alpha:number,beta:number)=>{
-                camera.rotation.x += alpha;
-                camera.rotation.y += beta;
-                if(camera.rotation.x<cameraRotationXLimitMin)camera.rotation.x=cameraRotationXLimitMin;
-                if(camera.rotation.x>cameraRotationXLimitMax)camera.rotation.x=cameraRotationXLimitMax;
+                this.camera.rotation.x += alpha;
+                this.camera.rotation.y += beta;
+                if(this.camera.rotation.x<cameraRotationXLimitMin)camera.rotation.x=cameraRotationXLimitMin;
+                if(this.camera.rotation.x>cameraRotationXLimitMax)camera.rotation.x=cameraRotationXLimitMax;
             }
             ,(vector:BABYLON.Vector3)=>{
 
@@ -277,11 +283,11 @@ export default class World{
                     this.dataModel.currentSpellId,
                     (energyCost: number) => {
                         /*todo survival mode
-                        if (energyCost > dataModel.energy) {
-                            throw new Error('Not enough resources.');
-                        }
-                        dataModel.energy -= energyCost;
-                        return true;*/
+                         if (energyCost > dataModel.energy) {
+                         throw new Error('Not enough resources.');
+                         }
+                         dataModel.energy -= energyCost;
+                         return true;*/
                     },
                     (energyGain: number) => {
                     },
@@ -290,15 +296,15 @@ export default class World{
                 );
 
                 /*spell.subscribe(() => {
-                    //console.log('spell.subscribe', spell.phase);
-                    switch (spell.phase) {
-                        case spellPhases.EXECUTING:
-                            break;
-                        case spellPhases.FINISHED:
-                            //todo remove from executingSpells
-                            break;
-                    }
-                });*/
+                 //console.log('spell.subscribe', spell.phase);
+                 switch (spell.phase) {
+                 case spellPhases.EXECUTING:
+                 break;
+                 case spellPhases.FINISHED:
+                 //todo remove from executingSpells
+                 break;
+                 }
+                 });*/
 
                 spell.subscribeOnRelease(() => {
                     createNewSpell();
@@ -336,32 +342,32 @@ export default class World{
         };
 
         //----------disasters
-        setInterval(()=>{
-            if(Math.random()>0.99){
-                this.randomDisaster()
-            }
-        },100);
+        /*setInterval(()=>{
+         if(Math.random()>0.99){
+         this.randomDisaster()
+         }
+         },100);/**/
         //----------
 
 
         /*BABYLON.SceneOptimizer.OptimizeAsync(this.scene, BABYLON.SceneOptimizerOptions.ModerateDegradationAllowed(),
-            function() {
-                // On success
-            }, function() {
-                // FPS target not reached
-            })*/
+         function() {
+         // On success
+         }, function() {
+         // FPS target not reached
+         })*/
 
     }
 
     get meshes():BABYLON.AbstractMesh[]{
 
-            return this.scene.meshes.filter((mesh)=>(
-                mesh!==this.playerMesh&&
-                mesh!==this.groundMesh&&
-                mesh!==this.skyboxMesh&&
-                mesh.material instanceof BABYLON.StandardMaterial &&
-                mesh.physicsImpostor instanceof BABYLON.PhysicsImpostor
-            ));
+        return this.scene.meshes.filter((mesh)=>(
+            mesh!==this.playerMesh&&
+            mesh!==this.groundMesh&&
+            mesh!==this.skyboxMesh&&
+            mesh.material instanceof BABYLON.StandardMaterial &&
+            mesh.physicsImpostor instanceof BABYLON.PhysicsImpostor
+        ));
     }
 
     cleanScene(){

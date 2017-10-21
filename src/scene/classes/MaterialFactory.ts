@@ -86,7 +86,6 @@ export default class MaterialFactory{
         mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, impostor/*BABYLON.PhysicsImpostor.BoxImpostor*/, materialPhysicOptions, this._scene);
 
 
-
         const stepSound = this._soundFactory.getMeshSound('step-stairs',mesh);
 
         _;countVolume;countEnergy;stepSound;
