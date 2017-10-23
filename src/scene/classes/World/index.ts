@@ -1,7 +1,7 @@
 //import log from '../tools/log';
 import * as BABYLON from 'babylonjs';
 import DataModel from '../../../data-model';
-import setControlls from '../../set-controlls';
+import setControlls from './set-controlls';
 import {PLAYER} from '../../../config';
 import {default as AbstractSpell, spellPhases} from '../../../spells/classes/AbstractSpell';
 import spellFactory from '../../../spells/classes/SpellFactory';
@@ -9,7 +9,7 @@ import {neighbourSpell} from '../../../spells/tools/index';
 import MaterialFactory from "./../../classes/MaterialFactory";
 import WorldGenerator from "../../../generator";
 import SoundFactory from './../SoundFactory';
-import createSpellParticles from '../../create-spell-particles';
+import createParticles from '../../tools/create-particles';
 import createCamera from './createCamera';
 import createLights from './createLights';
 import createGroundMesh from './createGroundMesh';
@@ -363,7 +363,7 @@ export default class World{
             )
         );
 
-        const particles = createSpellParticles(
+        const particles = createParticles(
             meteoriteMesh,
             {
                 color1: '#ff0000',

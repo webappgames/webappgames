@@ -1,7 +1,7 @@
-import {subscribeKeys,SubscriberModes} from '../tools/keys';
-import DataModel from '../data-model';
+import {subscribeKeys,SubscriberModes} from '../../../tools/keys';
+import DataModel from '../../../data-model';
 import * as BABYLON from 'babylonjs';
-import {KEYMAP,PLAYER} from '../config';
+import {KEYMAP,PLAYER} from '../../../config';
 
 export default function setControlls(
     canvasElement:HTMLCanvasElement,
