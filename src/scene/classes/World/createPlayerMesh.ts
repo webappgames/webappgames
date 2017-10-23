@@ -21,6 +21,7 @@ export default function createPlayerMesh(
     const stepSound = soundFactory.getSound('step-ground');
     stepSound.setVolume(2);//todo to global sound config
     const playStepSound = _.throttle(()=>stepSound.play(),400, {leading:true,trailing:false});
+    playStepSound;
 
     //todo Is thare better solution for angular friction?
     playerMesh.physicsImpostor.registerAfterPhysicsStep(()=>{

@@ -141,12 +141,12 @@ export default class World{
             ,(alpha:number,beta:number)=>{
                 this.camera.rotation.x += alpha;
                 this.camera.rotation.y += beta;
-                if(this.camera.rotation.x<cameraRotationXLimitMin)camera.rotation.x=cameraRotationXLimitMin;
-                if(this.camera.rotation.x>cameraRotationXLimitMax)camera.rotation.x=cameraRotationXLimitMax;
+                if(this.camera.rotation.x<cameraRotationXLimitMin)this.camera.rotation.x=cameraRotationXLimitMin;
+                if(this.camera.rotation.x>cameraRotationXLimitMax)this.camera.rotation.x=cameraRotationXLimitMax;
             }
             ,(vector:BABYLON.Vector3)=>{
 
-                playStepSound();
+                //!todo playStepSound();
 
                 const currentVelocity = this.playerMesh.physicsImpostor.getLinearVelocity();
 
