@@ -118,6 +118,13 @@ export default class World{
             });
         });
 
+        //--------------------------------------------------------------todo Refactor below
+        //set Locking
+        //set player rotating
+        //set PointerDown - PrimaryAction
+        //set Mousewheel
+        //set arrows - movement
+
 
         const onPointerDown = ()=>{
             //todo only left button ???maybe on spell?
