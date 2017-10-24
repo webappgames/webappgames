@@ -183,12 +183,28 @@ export default class WorldGenerator{
         //----------------------------------Domino
         for (let i = 0; i < 7; i++) {
 
+            /*const faceUV = new Array(6);
+            for (let i = 0; i < 6; i++) {
+                faceUV[i] = new BABYLON.Vector4(0, 0, 100, 1);
+            }*/
+            const width = 2;
+            const height = 40;
+            const depth = 100;
+            const faceUV = [
+                new BABYLON.Vector4(0, 0, width/10 , height/10),
+                new BABYLON.Vector4(0, 0, width/10 , height/10),
 
-            const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
-            mesh1.scaling = new BABYLON.Vector3(2, 40, 10);
+                new BABYLON.Vector4(0, 0, height/10 , depth/10),
+                new BABYLON.Vector4(0, 0, height/10 , depth/10),
+
+                new BABYLON.Vector4(0, 0, depth/10 , width/10),
+                new BABYLON.Vector4(0, 0, depth/10 , width/10),
+            ];
+            const meshOptions = {width, height, depth, faceUV};
+            const mesh1 = BABYLON.MeshBuilder.CreateBox('box', meshOptions, this.scene);
+            //mesh1.scaling = new BABYLON.Vector3(2, 40, 10);
             mesh1.position = new BABYLON.Vector3(i*25+50, 15, 100);
             this.materialFactory.applyMaterial(mesh1);
-
 
         }
         //----------------------------------
