@@ -1,3 +1,4 @@
+//todo create class not singleton
 import log from './log';
 
 class Subscriber{

@@ -1,26 +1,17 @@
 //import log from '../tools/log';
 import * as BABYLON from 'babylonjs';
 import DataModel from '../../../data-model';
-import setControlls from './set-controlls';
-import {PLAYER} from '../../../config';
-import {default as AbstractSpell, spellPhases} from '../../../spells/classes/AbstractSpell';
-import spellFactory from '../../../spells/classes/SpellFactory';
-import {neighbourSpell} from '../../../spells/tools/index';
 import MaterialFactory from "./../../classes/MaterialFactory";
 import WorldGenerator from "../../../generator";
-import SoundFactory from './../SoundFactory';
+import SoundFactory from '../SoundFactory';
+import Player from '../Player';
 import createParticles from '../../tools/create-particles';
-import createCamera from './createCamera';
 import createLights from './createLights';
 import createGroundMesh from './createGroundMesh';
 import createSkyboxMesh from './createSkyboxMesh';
-import createPlayerMesh from './createPlayerMesh';
 import * as _ from "lodash";
 
-//todo remove
-//createLights;createGroundMesh;createSkyboxMesh;createSkyboxMesh;createPlayerMesh;
 
-//todo split to smaller classes
 export default class World{
 
     public engine:BABYLON.Engine;
@@ -28,9 +19,8 @@ export default class World{
     public materialFactory:MaterialFactory;
     public soundFactory:SoundFactory;
     public worldGenerator:WorldGenerator;
-    public camera:BABYLON.FreeCamera;
     public lights:BABYLON.Light[];
-    public playerMesh:BABYLON.AbstractMesh;
+    public player:Player;
     public groundMesh:BABYLON.AbstractMesh;
     public skyboxMesh:BABYLON.AbstractMesh;
 
@@ -40,27 +30,6 @@ export default class World{
         public dataModel:DataModel
     ) {
         this.createScene(true);
-    }
-
-
-    get playerDirection():BABYLON.Vector3{
-        const point1 = this.playerMesh.position;
-        const point2 = this.scene.pick(this.canvasElement.width / 2, this.canvasElement.height / 2, (mesh)=>mesh === this.skyboxMesh).pickedPoint;
-
-        return point2.subtract(point1);
-    }
-
-    get playerDirection1():BABYLON.Vector3{
-        const playerDirection = this.playerDirection;
-        return playerDirection.scale(1/playerDirection.length());
-    }
-
-
-    get playerRotationY():number{
-        //todo Is thare a simple and better solution how to count camera rotation after world load than picking?
-        //eg. const cameraRotation = Math.PI/2 - camera.rotation.y;
-        const playerDirection = this.playerDirection;
-        return Math.atan2(playerDirection.z,playerDirection.x);
     }
 
 
@@ -86,18 +55,24 @@ export default class World{
         this.scene = new BABYLON.Scene(this.engine);
         this.soundFactory = new SoundFactory(this.scene);
         this.materialFactory = new MaterialFactory(this.soundFactory,this.scene);
-        this.scene.clearColor = new BABYLON.Color4(1, 0, 0, 0);
+        this.player = new Player(this);
 
+
+        this.lights = createLights(this.scene);
+        this.worldGenerator = new WorldGenerator(this.player,this.materialFactory,this.dataModel,this.scene);
+        this.skyboxMesh = createSkyboxMesh(this.scene);
+        this.groundMesh = createGroundMesh(this.scene,this.player,this.materialFactory);
+
+
+        this.scene.clearColor = new BABYLON.Color4(1, 0, 0, 0);
         const gravityVector = new BABYLON.Vector3(0,-100, 0);
         const physicsPlugin = new BABYLON.OimoJSPlugin()
         this.scene.enablePhysics(gravityVector, physicsPlugin);
 
-        this.camera = createCamera(this.scene);
-        this.lights = createLights(this.scene);
-        this.playerMesh = createPlayerMesh(this.scene,this.camera,this.soundFactory);
-        this.worldGenerator = new WorldGenerator(this.playerMesh,this.materialFactory,this.dataModel,this.scene);
 
-
+        if(runWorldGenerator){
+            this.worldGenerator.generateWorld();
+        }
 
 
         //todo refactor to other file
@@ -118,173 +93,6 @@ export default class World{
             });
         });
 
-        //--------------------------------------------------------------todo Refactor below
-        //set Locking
-        //set player rotating
-        //set PointerDown - PrimaryAction
-        //set Mousewheel
-        //set arrows - movement
-
-
-        const onPointerDown = ()=>{
-            //todo only left button ???maybe on spell?
-
-            try {
-                spell.addTarget(pickFromCenter());
-            } catch (error) {
-                //todo catch only SpellError extended from Error
-                this.dataModel.sendMessage(error.message as string);
-            }
-
-        }
-
-
-        const cameraRotationXLimitMin = Math.PI * -.5*.9,
-            cameraRotationXLimitMax = Math.PI * 0.5*.9;
-
-        setControlls(
-            this.canvasElement
-            ,onPointerDown
-            ,(alpha:number,beta:number)=>{
-                this.camera.rotation.x += alpha;
-                this.camera.rotation.y += beta;
-                if(this.camera.rotation.x<cameraRotationXLimitMin)this.camera.rotation.x=cameraRotationXLimitMin;
-                if(this.camera.rotation.x>cameraRotationXLimitMax)this.camera.rotation.x=cameraRotationXLimitMax;
-            }
-            ,(vector:BABYLON.Vector3)=>{
-
-                //!todo playStepSound();
-
-                const currentVelocity = this.playerMesh.physicsImpostor.getLinearVelocity();
-
-                //todo Jumping on flying object
-                const onGround = currentVelocity.y<1;//playerMesh.position.y<=2;
-
-                const distance = Math.sqrt(Math.pow(vector.x,2)+Math.pow(vector.z,2));
-                const rotation = Math.atan2(vector.z,vector.x)+this.playerRotationY;
-
-
-                const rotatedVector = new BABYLON.Vector3(
-                    Math.cos(rotation)*distance,
-                    onGround?vector.y:0,
-                    Math.sin(rotation)*distance
-                );
-
-                const composedVelocity = currentVelocity.add(rotatedVector);
-                const jumpVelocity = new BABYLON.Vector3(0,composedVelocity.y,0);
-                const surfaceVelocity = new BABYLON.Vector3(composedVelocity.x,0,composedVelocity.z);
-
-                const surfaceVelocityLength = surfaceVelocity.length();
-                if(surfaceVelocityLength>PLAYER.SPEED.TERMINAL){
-                    surfaceVelocity.scaleInPlace(PLAYER.SPEED.TERMINAL/surfaceVelocityLength);
-                }
-
-                const composedVelocityTerminated = surfaceVelocity.add(jumpVelocity);
-
-                this.playerMesh.physicsImpostor.setLinearVelocity(composedVelocityTerminated);
-
-
-
-            },
-            this.dataModel
-        );
-
-
-        this.skyboxMesh = createSkyboxMesh(this.scene);
-        this.groundMesh = createGroundMesh(this.scene,this.playerMesh,this.materialFactory)
-
-
-
-        if(runWorldGenerator){
-            this.worldGenerator.generateWorld();
-        }
-
-
-
-
-        const pickFromCenter = ()=>{
-            return this.scene.pick(this.canvasElement.width / 2, this.canvasElement.height / 2, (mesh)=>{
-                return mesh !== this.playerMesh /*&& mesh !== groundMesh*/ && 'physicsImpostor' in mesh;
-            });
-        }
-
-
-
-        const allSpells:AbstractSpell[] = [];
-        let lastTick = performance.now();
-        this.scene.registerBeforeRender(()=>{
-            const thisTick = performance.now();
-            const tickDuration = thisTick - lastTick;
-            lastTick = thisTick;
-
-            //todo garbage collector
-            allSpells.forEach((spell:AbstractSpell)=>{
-                if(spell.phase===spellPhases.EXECUTING) {
-                    spell.tick(tickDuration);
-                }
-            });
-
-        });
-
-        let spell:AbstractSpell;
-        const createNewSpell = ()=>{
-
-            if(!(spell||{released:true}/*todo better*/).released) {
-                spell.release();
-            }else {
-                spell = spellFactory.createSpell(
-                    this.dataModel.currentSpellId,
-                    (energyCost: number) => {
-                        /*todo survival mode
-                         if (energyCost > dataModel.energy) {
-                         throw new Error('Not enough resources.');
-                         }
-                         dataModel.energy -= energyCost;
-                         return true;*/
-                    },
-                    (energyGain: number) => {
-                    },
-                    [],//todo other player spells
-                    this
-                );
-
-                /*spell.subscribe(() => {
-                 //console.log('spell.subscribe', spell.phase);
-                 switch (spell.phase) {
-                 case spellPhases.EXECUTING:
-                 break;
-                 case spellPhases.FINISHED:
-                 //todo remove from executingSpells
-                 break;
-                 }
-                 });*/
-
-                spell.subscribeOnRelease(() => {
-                    createNewSpell();
-                });
-
-                allSpells.push(spell);
-            }
-        }
-        createNewSpell();
-
-
-
-
-        //todo lodash debounce
-        const onWheel = _.throttle((event:WheelEvent)=>{
-            if(event.deltaY>0){
-                this.dataModel.currentSpellId = neighbourSpell(this.dataModel.currentSpellId,1);
-                createNewSpell();
-            }else
-            if(event.deltaY<0){
-                this.dataModel.currentSpellId = neighbourSpell(this.dataModel.currentSpellId,-1);
-                createNewSpell();
-            }
-        },10);
-        this.canvasElement.addEventListener("wheel", onWheel, false);
-
-
         this.scene.onDispose = ()=>{
 
             const old_element = this.canvasElement;
@@ -293,6 +101,8 @@ export default class World{
             this.canvasElement = new_element as HTMLCanvasElement;
 
         };
+
+        //--------------------------------------------------------------todo Refactor below
 
         //----------disasters
         /*setInterval(()=>{
@@ -312,10 +122,16 @@ export default class World{
 
     }
 
+    pickFromCenter():BABYLON.PickingInfo{
+        return this.scene.pick(this.canvasElement.width / 2, this.canvasElement.height / 2, (mesh)=>{
+            return mesh !== this.player.mesh /*&& mesh !== groundMesh*/ && 'physicsImpostor' in mesh;
+        });
+    }
+
     get meshes():BABYLON.AbstractMesh[]{
 
         return this.scene.meshes.filter((mesh)=>(
-            mesh!==this.playerMesh&&
+            mesh!==this.player.mesh&&
             mesh!==this.groundMesh&&
             mesh!==this.skyboxMesh&&
             mesh.material instanceof BABYLON.StandardMaterial &&
@@ -340,7 +156,7 @@ export default class World{
         this.setMeteoriteTarget(randomMesh.position);
     }
 
-    //todo inject - move to separate file
+    //todo create class Disaster - move to separate file
     setMeteoriteTarget(target:BABYLON.Vector3){
 
         const meteoriteMesh = BABYLON.Mesh.CreateSphere("box", 1, 1, this.scene);

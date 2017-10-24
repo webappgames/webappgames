@@ -1,9 +1,10 @@
 import * as BABYLON from 'babylonjs';
 import MaterialFactory from './../MaterialFactory';
+import Player from '../Player';
 
 export default function createGroundMesh(
     scene:BABYLON.Scene,
-    playerMesh:BABYLON.AbstractMesh,
+    player:Player,
     materialFactory:MaterialFactory
 ):BABYLON.AbstractMesh{
     const groundMesh = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
@@ -13,8 +14,8 @@ export default function createGroundMesh(
 
         //!todo skyboxMesh.position = position;
 
-        groundMesh.position.x = playerMesh.position.x;
-        groundMesh.position.z = playerMesh.position.z;
+        groundMesh.position.x = player.mesh.position.x;
+        groundMesh.position.z = player.mesh.position.z;
 
         ((groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).uOffset = groundMesh.position.x/10;
         ((groundMesh.material as BABYLON.StandardMaterial).diffuseTexture as BABYLON.Texture).vOffset = groundMesh.position.z/10;

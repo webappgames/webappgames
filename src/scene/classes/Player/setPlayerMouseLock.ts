@@ -1,13 +1,10 @@
-import {subscribeKeys,SubscriberModes} from '../../../tools/keys';
 import DataModel from '../../../data-model';
 import * as BABYLON from 'babylonjs';
-import {KEYMAP,PLAYER} from '../../../config';
 
-export default function setControlls(
+export default function setPlayerMouseLock(
     canvasElement:HTMLCanvasElement,
-    onClick:(event:PointerEvent)=>void,
-    rotatePlayerBy:(alpha:number,beta:number)=>void,
-    addPlayerVelocity:(vector:BABYLON.Vector3)=>void,
+    camera:BABYLON.FreeCamera,
+    //onClick:(event:PointerEvent)=>void,
     dataModel:DataModel
 ){
 
@@ -16,8 +13,9 @@ export default function setControlls(
         (event)=>{
             if(document.pointerLockElement !== canvasElement) {
                 canvasElement.requestPointerLock();
+                event.stopPropagation();
             }else{
-                onClick(event);
+                //onClick(event);
             }
 
         }
@@ -46,60 +44,21 @@ export default function setControlls(
         }
     }
 
-
+    //todo to config
+    const cameraRotationXLimitMin = Math.PI * -.5*.9,
+        cameraRotationXLimitMax = Math.PI * 0.5*.9;
 
     function mouseMoveLocked(event:MouseEvent) {
-        const   x = event.movementX,
-                y = event.movementY;
-        rotatePlayerBy(
-             y/500
-            ,x/500
-        );
+            const x = event.movementX,
+                  y = event.movementY;
+            const alpha = y/500,
+                  beta = x/500;
+
+            camera.rotation.x += alpha;
+            camera.rotation.y += beta;
+            if(camera.rotation.x<cameraRotationXLimitMin)camera.rotation.x=cameraRotationXLimitMin;
+            if(camera.rotation.x>cameraRotationXLimitMax)camera.rotation.x=cameraRotationXLimitMax;
 
     }
-
-
-    /*function mouseMoveUnlocked(event:MouseEvent) {
-        return scene.pick(event.clientX,event.clientY, (mesh)=>{
-            return mesh !== playerMesh;
-        });
-    }*/
-
-    //todo here should be spell execution
-
-
-
-
-    subscribeKeys(KEYMAP.FORWARD,SubscriberModes.FRAME,()=>{
-
-        addPlayerVelocity(new BABYLON.Vector3(PLAYER.SPEED.FORWARD,0,0));
-
-    });
-    subscribeKeys(KEYMAP.BACKWARD,SubscriberModes.FRAME,()=>{
-
-        addPlayerVelocity(new BABYLON.Vector3(-PLAYER.SPEED.BACKWARD,0,0));
-
-    });
-    subscribeKeys(KEYMAP.LEFT,SubscriberModes.FRAME,()=>{
-
-        addPlayerVelocity(new BABYLON.Vector3(0,0,PLAYER.SPEED.SIDE));
-
-    });
-    subscribeKeys(KEYMAP.RIGHT,SubscriberModes.FRAME,()=>{
-
-        addPlayerVelocity(new BABYLON.Vector3(0,0,-PLAYER.SPEED.SIDE));
-
-    });
-
-
-
-
-    subscribeKeys(KEYMAP.JUMP,SubscriberModes.PRESS,()=>{
-
-        addPlayerVelocity(new BABYLON.Vector3(0,PLAYER.SPEED.JUMP,0));
-
-    });
-
-
 
 }

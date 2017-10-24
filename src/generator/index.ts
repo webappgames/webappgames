@@ -1,13 +1,14 @@
 import * as BABYLON from 'babylonjs';
 import log from '../tools/log';
 import MaterialFactory from '../scene/classes/MaterialFactory';
+import Player from '../scene/classes/Player';
 import DataModel from '../data-model';
 import * as _ from 'lodash';
 
 
 export default class WorldGenerator{
     constructor(
-        private playerMesh:BABYLON.AbstractMesh,
+        private player:Player,
         private materialFactory:MaterialFactory,
         private dataModel:DataModel,
         private scene:BABYLON.Scene
@@ -37,8 +38,8 @@ export default class WorldGenerator{
 
         //this.playerMesh.position = new BABYLON.Vector3(-10,2,100);
         //this.createMesh0(this.playerMesh,10);
-        this.playerMesh.position.x += 5;
-        this.playerMesh.position.z += -10;
+        this.player.mesh.position.x += 5;
+        this.player.mesh.position.z += -10;
 
 
         //----------------------------------Billboard

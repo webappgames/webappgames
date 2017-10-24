@@ -33,6 +33,7 @@ export default class MaterialFactory{
             log.send(`Creating material "${materialName}".`);
 
             const material = new BABYLON.StandardMaterial(materialName, this._scene);
+            material.backFaceCulling = false;
             const texture = new BABYLON.Texture(process.env.PUBLIC_URL +`/assets/textures/${materialName}.jpg`, this._scene);
             texture.uScale = textureScale;
             texture.vScale = textureScale;
@@ -89,7 +90,7 @@ export default class MaterialFactory{
         const stepSound = this._soundFactory.getMeshSound('step-stairs',mesh);
 
         _;countVolume;countEnergy;stepSound;
-        /*const playSound = _.throttle((volume:number,playbackRate:number)=>{
+        /*!todo const playSound = _.throttle((volume:number,playbackRate:number)=>{
 
             stepSound.setVolume(volume);
             stepSound.setPlaybackRate(playbackRate);

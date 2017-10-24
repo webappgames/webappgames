@@ -56,10 +56,10 @@ export default class WorldGenerator{
 
 
             world.element('player', {
-                position: vectorToString(this.world.playerMesh.position),
+                position: vectorToString(this.world.player.mesh.position),
                 //todo rotation: vectorToString(this.world.playerMesh.rotation),
-                'velocity-linear': vectorToString(this.world.playerMesh.physicsImpostor.getLinearVelocity()),
-                'velocity-angular': vectorToString(this.world.playerMesh.physicsImpostor.getAngularVelocity()),
+                'velocity-linear': vectorToString(this.world.player.mesh.physicsImpostor.getLinearVelocity()),
+                'velocity-angular': vectorToString(this.world.player.mesh.physicsImpostor.getAngularVelocity()),
             });
 
 
@@ -105,7 +105,7 @@ export default class WorldGenerator{
                         switch(child.tagName){
                             case 'player':
                                 //todo DRY
-                                this.world.playerMesh.position = vectorFromString(child.attributes.getNamedItem('position').value);
+                                this.world.player.mesh.position = vectorFromString(child.attributes.getNamedItem('position').value);
                                 //todo this.world.playerMesh.rotation = vectorFromString(child.attributes.getNamedItem('rotation').value);
                                 //todo 2x velocity
                                 break;
