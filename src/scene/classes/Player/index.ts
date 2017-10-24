@@ -14,6 +14,7 @@ export default class Player{
     public mesh:BABYLON.AbstractMesh;
     public camera:BABYLON.FreeCamera;
     public player:BABYLON.AbstractMesh;
+    private _playStepSound:()=>void;
 
 
     constructor(
@@ -35,8 +36,7 @@ export default class Player{
 
         const stepSound = world.soundFactory.getSound('step-ground');
         stepSound.setVolume(2);//todo to global sound config
-        const playStepSound = _.throttle(()=>stepSound.play(),400, {leading:true,trailing:false});
-        playStepSound;
+        this._playStepSound = _.throttle(()=>stepSound.play(),400, {leading:true,trailing:false});
 
         //todo Is thare better solution for angular friction?
         this.mesh.physicsImpostor.registerAfterPhysicsStep(()=>{
@@ -74,10 +74,10 @@ export default class Player{
         return Math.atan2(playerDirection.z,playerDirection.x);
     }
 
-
+    //todo separate jump and walk
     addMovement(vector:BABYLON.Vector3){
 
-        //!todo playStepSound();
+        this._playStepSound();
 
         const currentVelocity = this.mesh.physicsImpostor.getLinearVelocity();
 
