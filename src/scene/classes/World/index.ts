@@ -6,6 +6,7 @@ import WorldGenerator from "../../../generator";
 import SoundFactory from '../SoundFactory';
 import Player from '../Player';
 import createParticles from '../../tools/create-particles';
+import createScene from './createScene';
 import createLights from './createLights';
 import createGroundMesh from './createGroundMesh';
 import createSkyboxMesh from './createSkyboxMesh';
@@ -52,46 +53,22 @@ export default class World{
         });
 
 
-        this.scene = new BABYLON.Scene(this.engine);
+        this.scene = createScene(this.engine);
+        this.lights = createLights(this.scene);
         this.soundFactory = new SoundFactory(this.scene);
         this.materialFactory = new MaterialFactory(this.soundFactory,this.scene);
         this.player = new Player(this);
-
-
-        this.lights = createLights(this.scene);
-        this.worldGenerator = new WorldGenerator(this.player,this.materialFactory,this.dataModel,this.scene);
         this.skyboxMesh = createSkyboxMesh(this.scene);
         this.groundMesh = createGroundMesh(this.scene,this.player,this.materialFactory);
 
 
-        this.scene.clearColor = new BABYLON.Color4(1, 0, 0, 0);
-        const gravityVector = new BABYLON.Vector3(0,-100, 0);
-        const physicsPlugin = new BABYLON.OimoJSPlugin()
-        this.scene.enablePhysics(gravityVector, physicsPlugin);
-
 
         if(runWorldGenerator){
+            this.worldGenerator = new WorldGenerator(this.player,this.materialFactory,this.dataModel,this.scene);
             this.worldGenerator.generateWorld();
         }
 
 
-        //todo refactor to other file
-        this.scene.registerAfterRender(()=>{
-            this.scene.meshes.forEach((mesh)=> {
-                if ('physicsImpostor' in mesh) {
-                    if (mesh.position.y < 0) {
-                        mesh.physicsImpostor.sleep();
-                        mesh.position = new BABYLON.Vector3(
-                            mesh.position.x,
-                            0,
-                            mesh.position.z
-                        );
-                        mesh.physicsImpostor.wakeUp();
-                    }
-                }
-                ;
-            });
-        });
 
         this.scene.onDispose = ()=>{
 
@@ -156,7 +133,7 @@ export default class World{
         this.setMeteoriteTarget(randomMesh.position);
     }
 
-    //todo create class Disaster - move to separate file
+    //todo create class Disaster, or move to worldGenerator - move to separate file
     setMeteoriteTarget(target:BABYLON.Vector3){
 
         const meteoriteMesh = BABYLON.Mesh.CreateSphere("box", 1, 1, this.scene);

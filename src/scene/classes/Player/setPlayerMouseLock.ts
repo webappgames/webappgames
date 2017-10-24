@@ -13,11 +13,7 @@ export default function setPlayerMouseLock(
         (event)=>{
             if(document.pointerLockElement !== canvasElement) {
                 canvasElement.requestPointerLock();
-                event.stopPropagation();
-            }else{
-                //onClick(event);
             }
-
         }
         , false);
 

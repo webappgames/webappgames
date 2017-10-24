@@ -11,11 +11,14 @@ export default function setPlayerSpells(
     const onPointerDown = ()=>{
         //todo only left button ???maybe on spell?
 
-        try {
-            spell.addTarget(player.world.pickFromCenter());
-        } catch (error) {
-            //todo catch only SpellError extended from Error
-            player.world.dataModel.sendMessage(error.message as string);
+        if(player.world.dataModel.locked) {
+
+            try {
+                spell.addTarget(player.world.pickFromCenter());
+            } catch (error) {
+                //todo catch only SpellError extended from Error
+                player.world.dataModel.sendMessage(error.message as string);
+            }
         }
 
     };
@@ -78,7 +81,7 @@ export default function setPlayerSpells(
 
 
     //todo 1 adapter for events
-    const onWheel = _.debounce((event:WheelEvent)=>{
+    const onWheel = _.throttle((event:WheelEvent)=>{
         if(event.deltaY>0){
             player.world.dataModel.currentSpellId = neighbourSpell(player.world.dataModel.currentSpellId,1);
             createNewSpell();
@@ -87,7 +90,7 @@ export default function setPlayerSpells(
             player.world.dataModel.currentSpellId = neighbourSpell(player.world.dataModel.currentSpellId,-1);
             createNewSpell();
         }
-    },500, {leading:true,trailing:false});
+    },50, {leading:true,trailing:false});
 
     //todo method on World class to set listeners
     player.world.canvasElement.addEventListener("wheel", onWheel, false);
