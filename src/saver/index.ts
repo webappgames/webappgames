@@ -1,5 +1,5 @@
 import * as BABYLON from 'babylonjs';
-import World from '../scene/classes/World';
+import World from '../world/classes/World';
 //import * as download from 'downloadjs';
 import * as xmlBuilder from 'xmlbuilder';
 import {DOMParser} from 'xmldom';

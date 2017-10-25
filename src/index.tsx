@@ -1,4 +1,4 @@
-import World from './scene/classes/World';
+import World from './world/classes/World';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Root from './ui/components/Root';

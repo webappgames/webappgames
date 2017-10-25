@@ -1,7 +1,7 @@
 import * as BABYLON from 'babylonjs';
 import AbstractSpell from './AbstractSpell';
 //import {spellPhases} from './AbstractSpell';
-import SpellEffect from '../../scene/classes/SpellEffect';
+import SpellEffect from '../../world/classes/SpellEffect';
 
 
 export default class AbstractSpellOnMeshes extends AbstractSpell {

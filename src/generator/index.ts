@@ -1,7 +1,8 @@
 import * as BABYLON from 'babylonjs';
 import log from '../tools/log';
-import MaterialFactory from '../scene/classes/MaterialFactory';
-import Player from '../scene/classes/Player';
+import MaterialFactory from '../world/classes/MaterialFactory';
+import Player from '../world/classes/Player';
+import BoxBrick from '../world/classes/bricks/BoxBrick';
 import DataModel from '../data-model';
 import * as _ from 'lodash';
 
@@ -181,6 +182,7 @@ export default class WorldGenerator{
 
 
         //----------------------------------Domino
+        BoxBrick;
         for (let i = 0; i < 7; i++) {
 
             /*const faceUV = new Array(6);
