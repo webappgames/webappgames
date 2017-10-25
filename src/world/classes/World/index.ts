@@ -5,6 +5,7 @@ import MaterialFactory from "./../../classes/MaterialFactory";
 import WorldGenerator from "../../../generator";
 import SoundFactory from '../SoundFactory';
 import Player from '../Player';
+import AbstractBrick from '../bricks/AbstractBrick';
 import createParticles from '../../tools/create-particles';
 import createScene from './createScene';
 import createLights from './createLights';
@@ -22,6 +23,7 @@ export default class World{
     public worldGenerator:WorldGenerator;
     public lights:BABYLON.Light[];
     public player:Player;
+    public bricks:AbstractBrick[];
     public groundMesh:BABYLON.AbstractMesh;
     public skyboxMesh:BABYLON.AbstractMesh;
 
@@ -35,6 +37,7 @@ export default class World{
 
 
     createScene(runWorldGenerator=false){
+        this.bricks=[];
 
         this.engine = new BABYLON.Engine(this.canvasElement, true);
 
@@ -64,7 +67,7 @@ export default class World{
 
 
         if(runWorldGenerator){
-            this.worldGenerator = new WorldGenerator(this.player,this.materialFactory,this.dataModel,this.scene);
+            this.worldGenerator = new WorldGenerator(this);
             this.worldGenerator.generateWorld();
         }
 
@@ -99,9 +102,29 @@ export default class World{
 
     }
 
+    findBrickByMesh(mesh:BABYLON.AbstractMesh):AbstractBrick|null{
+
+    }
+
+
+    pick(left:number=.5,top:number=.5):{pickedPoint:BABYLON.Vector3,pickedBrick:AbstractBrick|null}{
+        const pickingInfo = this.scene.pick(this.canvasElement.width*left, this.canvasElement.height*top, (mesh)=>{
+            return mesh !== this.player.mesh  && 'physicsImpostor' in mesh;
+        });
+
+
+        return(
+            {
+                pickedPoint: pickingInfo.pickedPoint,
+                pickedBrick: this.findBrickByMesh(pickingInfo.pickedMesh)
+            }
+        );
+    }
+
+    /*
     pickFromCenter():BABYLON.PickingInfo{
         return this.scene.pick(this.canvasElement.width / 2, this.canvasElement.height / 2, (mesh)=>{
-            return mesh !== this.player.mesh /*&& mesh !== groundMesh*/ && 'physicsImpostor' in mesh;
+            return mesh !== this.player.mesh  && 'physicsImpostor' in mesh;
         });
     }
 
@@ -114,7 +137,7 @@ export default class World{
             mesh.material instanceof BABYLON.StandardMaterial &&
             mesh.physicsImpostor instanceof BABYLON.PhysicsImpostor
         ));
-    }
+    }*/
 
     cleanScene(){
 

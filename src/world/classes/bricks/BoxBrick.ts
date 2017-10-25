@@ -20,7 +20,7 @@ export default class BoxBrick extends AbstractBrick{
             new BABYLON.Vector4(0, 0, depth / globalScale, width / globalScale),
         ];
         const meshOptions = {width, height, depth, faceUV};
-        this.mesh = BABYLON.MeshBuilder.CreateBox('box', meshOptions, this.world.scene);
+        this.mesh = BABYLON.MeshBuilder.CreateBox('BoxBrick', meshOptions, this.world.scene);
     }
 }
 

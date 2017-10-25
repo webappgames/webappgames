@@ -19,6 +19,7 @@ export default class AbstractBrick{
     ){
         this.createBabylonMesh();
         this._ApplyExternalsOnMesh();
+        this.world.bricks.push(this);
     }
 
     public createBabylonMesh() {
@@ -31,6 +32,20 @@ export default class AbstractBrick{
         this.world.materialFactory.applyMaterial(this.mesh,this.materialName);
         this.mesh.physicsImpostor.setLinearVelocity(this._linearVelocity);
         this.mesh.physicsImpostor.setAngularVelocity(this._angularVelocity);
+    }
+
+    volume():number{
+        //todo This is precise only for box.
+        return this.size.x*this.size.y*this.size.z;
+    }
+
+    countEnergy():number{
+
+        const volume = this.volume;
+        const linearVelocityEnergy = volume * mesh.physicsImpostor.getLinearVelocity().length();
+        const potentialEnergy = volume * this.mesh.position.y;//todo gravity field constant
+
+        return(linearVelocityEnergy+potentialEnergy);
     }
 }
 

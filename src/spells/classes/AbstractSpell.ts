@@ -55,8 +55,14 @@ export default class AbstractSpell{
             this.targets.push(target);
         }
     }
+
+    //todo deprecated
     get firstTargetMesh():BABYLON.AbstractMesh{
         return this.targets[0].pickedMesh;
+    }
+
+    get firstTargetBrick():BABYLON.AbstractMesh{
+        return this.worldthis.targets[0].pickedMesh;
     }
 
     release(){

@@ -1,35 +1,37 @@
 import * as BABYLON from 'babylonjs';
 import log from '../tools/log';
-import MaterialFactory from '../world/classes/MaterialFactory';
-import Player from '../world/classes/Player';
+import World from '../world/classes/World';
+//import MaterialFactory from '../world/classes/MaterialFactory';
+//import Player from '../world/classes/Player';
 import BoxBrick from '../world/classes/bricks/BoxBrick';
-import DataModel from '../data-model';
+//import DataModel from '../data-model';
 import * as _ from 'lodash';
 
 
 export default class WorldGenerator{
     constructor(
-        private player:Player,
-        private materialFactory:MaterialFactory,
-        private dataModel:DataModel,
-        private scene:BABYLON.Scene
+        private world:World
+        //private player:Player,
+        //private materialFactory:MaterialFactory,
+        //private dataModel:DataModel,
+        //private scene:BABYLON.Scene
     ){}
 
 
     createMesh0(mesh1:BABYLON.AbstractMesh, scale=1){
 
-        const mesh0 = BABYLON.Mesh.CreateBox("box0", 1, this.scene);
+        const mesh0 = BABYLON.Mesh.CreateBox("box0", 1, this.world.scene);
         mesh0.scaling = mesh1.scaling.clone();
         mesh0.scaling.x *= scale;
         mesh0.scaling.y = 1000;
         mesh0.scaling.z *= scale;
         mesh0.position = mesh1.position.subtract(new BABYLON.Vector3(0,mesh1.scaling.y/2+mesh0.scaling.y/2,0));
-        mesh0.material = this.materialFactory.getMaterial('clay-bricks');
+        mesh0.material = this.world.materialFactory.getMaterial('clay-bricks');
 
 
         mesh0.physicsImpostor = new BABYLON.PhysicsImpostor(mesh0, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 0
-        }, this.scene);
+        }, this.world.scene);
 
 
     }
@@ -37,10 +39,10 @@ export default class WorldGenerator{
 
     generateWorld(){
 
-        //this.playerMesh.position = new BABYLON.Vector3(-10,2,100);
-        //this.createMesh0(this.playerMesh,10);
-        this.player.mesh.position.x += 5;
-        this.player.mesh.position.z += -10;
+        //this.world.playerMesh.position = new BABYLON.Vector3(-10,2,100);
+        //this.world.createMesh0(this.world.playerMesh,10);
+        this.world.player.mesh.position.x += 5;
+        this.world.player.mesh.position.z += -10;
 
 
         //----------------------------------Billboard
@@ -49,18 +51,18 @@ export default class WorldGenerator{
         const pillarSize = new BABYLON.Vector3(1,5,1);
         const center = new BABYLON.Vector3(0,0,10);
 
-        const pillar1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
-        //const pillar1 = BABYLON.Mesh.CreateCylinder("cylinder", 3, 3, 3, 20, 1, this.scene);
+        const pillar1 = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
+        //const pillar1 = BABYLON.Mesh.CreateCylinder("cylinder", 3, 3, 3, 20, 1, this.world.scene);
         pillar1.scaling = pillarSize;
         pillar1.position = center.add(new BABYLON.Vector3(0, pillarSize.y/2, 0));
-        this.materialFactory.applyMaterial(pillar1);
+        this.world.materialFactory.applyMaterial(pillar1);
 
 
 
-        const billboardMesh = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+        const billboardMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
         billboardMesh.scaling = new BABYLON.Vector3(width,height, 1);
         billboardMesh.position = center.add(new BABYLON.Vector3(0, billboardMesh.scaling.y/2+pillarSize.y, 0));
-        this.materialFactory.applyMaterial(billboardMesh,"itnetwork_summer_2017");
+        this.world.materialFactory.applyMaterial(billboardMesh,"itnetwork_summer_2017");
 
         const billboardLinkArea = {
             position:{
@@ -72,41 +74,41 @@ export default class WorldGenerator{
             title: '',
             url: 'https://www.itnetwork.cz/letni-programatorska-soutez-2017',
         };
-        this.dataModel.linkAreas.push(billboardLinkArea);
+        this.world.dataModel.linkAreas.push(billboardLinkArea);
 
         const updater = _.throttle(()=>{
 
             if(billboardMesh.isDisposed()){
-                //this.dataModel.linkAreas = this.dataModel.linkAreas.filter((linkArea)=>linkArea!==billboardLinkArea);
-                this.dataModel.linkAreas[0].position.x = -10;
-                this.dataModel.linkAreas[0].position.y = -10;
-                this.dataModel.linkAreas[0].size.x = 10;
-                this.dataModel.linkAreas[0].size.y = 10;
-                    this.scene.unregisterAfterRender(updater);
-                log.send(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.dataModel.linkAreas);
+                //this.world.dataModel.linkAreas = this.world.dataModel.linkAreas.filter((linkArea)=>linkArea!==billboardLinkArea);
+                this.world.dataModel.linkAreas[0].position.x = -10;
+                this.world.dataModel.linkAreas[0].position.y = -10;
+                this.world.dataModel.linkAreas[0].size.x = 10;
+                this.world.dataModel.linkAreas[0].size.y = 10;
+                    this.world.scene.unregisterAfterRender(updater);
+                log.send(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.world.dataModel.linkAreas);
                 return;
             }
 
-            const canvas = this.scene.getEngine().getRenderingCanvas() as HTMLCanvasElement;
+            const canvas = this.world.scene.getEngine().getRenderingCanvas() as HTMLCanvasElement;
             const corners = [
                 billboardMesh.position.add(billboardMesh.scaling.scale(0.5)),
                 billboardMesh.position.add(billboardMesh.scaling.scale(-.5))
             ].map((corner)=>BABYLON.Vector3.Project(
                 corner,
                 BABYLON.Matrix.Identity(),
-                this.scene.getTransformMatrix(),
-                this.scene.activeCamera.viewport.toGlobal(canvas.clientWidth, canvas.clientHeight)
+                this.world.scene.getTransformMatrix(),
+                this.world.scene.activeCamera.viewport.toGlobal(canvas.clientWidth, canvas.clientHeight)
             ));
             for(let axis of ['x','y']){
-                this.dataModel.linkAreas[0].position[axis] = (corners[0][axis] + corners[1][axis]) / 2;
-                this.dataModel.linkAreas[0].size[axis] = Math.abs(corners[0][axis] - corners[1][axis]);
+                this.world.dataModel.linkAreas[0].position[axis] = (corners[0][axis] + corners[1][axis]) / 2;
+                this.world.dataModel.linkAreas[0].size[axis] = Math.abs(corners[0][axis] - corners[1][axis]);
             };
 
 
         },1000);
 
 
-        this.scene.registerAfterRender(updater);
+        this.world.scene.registerAfterRender(updater);
         //----------------------------------
 
 
@@ -136,10 +138,10 @@ export default class WorldGenerator{
             for (let floor = 1; floor < floors; floor++) {
 
 
-                const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+                const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
                 mesh1.scaling = new BABYLON.Vector3(size.x, 1, size.z);
                 mesh1.position = center.add(new BABYLON.Vector3(0, floor * 10 + 9.5, 0));
-                this.materialFactory.applyMaterial(mesh1);
+                this.world.materialFactory.applyMaterial(mesh1);
 
 
                 for (let pillX = 0; pillX < pillsInFloor; pillX++) {
@@ -149,7 +151,7 @@ export default class WorldGenerator{
                         if(floor===2 && pillX===0 && pillY===2){
                         }else {
 
-                            const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+                            const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
                             mesh1.scaling = new BABYLON.Vector3(
                                 size.x / pillsInFloor * pillsThick,
                                 9,
@@ -160,13 +162,13 @@ export default class WorldGenerator{
                                 floor * 10 + 4.5,
                                 (pillY / (pillsInFloor - 1) - .5) * size.z * (1 - 1 / pillsInFloor * pillsThick)
                             ));
-                            this.materialFactory.applyMaterial(mesh1);
+                            this.world.materialFactory.applyMaterial(mesh1);
                         }
 
                     }
                 }
                 /*if (floor === 0) {
-                    //this.createMesh0(mesh1, 2);
+                    //this.world.createMesh0(mesh1, 2);
                 }else {
 
                 }*/
@@ -182,13 +184,16 @@ export default class WorldGenerator{
 
 
         //----------------------------------Domino
-        BoxBrick;
         for (let i = 0; i < 7; i++) {
 
-            /*const faceUV = new Array(6);
-            for (let i = 0; i < 6; i++) {
-                faceUV[i] = new BABYLON.Vector4(0, 0, 100, 1);
-            }*/
+            new BoxBrick(
+                this.world,
+                'stone-plain',
+                new BABYLON.Vector3(2,40,10),
+                new BABYLON.Vector3(i*25+50, 15, 100)
+            );
+
+            /*
             const width = 2;
             const height = 40;
             const depth = 100;
@@ -203,11 +208,10 @@ export default class WorldGenerator{
                 new BABYLON.Vector4(0, 0, depth/10 , width/10),
             ];
             const meshOptions = {width, height, depth, faceUV};
-            const mesh1 = BABYLON.MeshBuilder.CreateBox('box', meshOptions, this.scene);
+            const mesh1 = BABYLON.MeshBuilder.CreateBox('box', meshOptions, this.world.scene);
             //mesh1.scaling = new BABYLON.Vector3(2, 40, 10);
             mesh1.position = new BABYLON.Vector3(i*25+50, 15, 100);
-            this.materialFactory.applyMaterial(mesh1);
-
+            this.world.materialFactory.applyMaterial(mesh1);*/
         }
         //----------------------------------
 
@@ -221,7 +225,7 @@ export default class WorldGenerator{
 
             for (let floor = 0; floor < 20; floor++) {
                 for (let i = -1; i <= 1; i++) {
-                    const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.scene);
+                    const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
                     mesh1.scaling = blockSize;
 
                     if(floor%2) {
@@ -238,7 +242,7 @@ export default class WorldGenerator{
                             0
                         ).add(center);
                     }
-                    this.materialFactory.applyMaterial(mesh1, 'wood-fence');
+                    this.world.materialFactory.applyMaterial(mesh1, 'wood-fence');
                 }
             }
         }*/
@@ -249,16 +253,16 @@ export default class WorldGenerator{
         /*setInterval(()=>{
 
 
-            const boxMesh = BABYLON.Mesh.CreateSphere("box", 16,1, this.scene);
+            const boxMesh = BABYLON.Mesh.CreateSphere("box", 16,1, this.world.scene);
             boxMesh.scaling = new BABYLON.Vector3(3,3,3);
             boxMesh.position = new BABYLON.Vector3(0, 100 , 0);
-            boxMesh.material = this.materialFactory.getSound('stone-plain');
+            boxMesh.material = this.world.materialFactory.getSound('stone-plain');
 
 
             boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
                 mass: 1000,
                 restitution: 0.2
-            }, this.scene);
+            }, this.world.scene);
             boxMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,-5,100));
 
 
