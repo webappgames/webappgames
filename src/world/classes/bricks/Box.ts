@@ -2,7 +2,7 @@
 import * as BABYLON from 'babylonjs';
 import AbstractBrick from './AbstractBrick';
 
-export default class BoxBrick extends AbstractBrick{
+export default class extends AbstractBrick{
 
     createBabylonMesh(){
         const globalScale = 10;//todo from matrial

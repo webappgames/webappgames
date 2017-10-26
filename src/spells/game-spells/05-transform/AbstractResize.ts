@@ -1,5 +1,6 @@
-import * as BABYLON from 'babylonjs';
+//import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
+import { Box } from '../../../world/classes/bricks';
 
 export default class AbstractResize extends AbstractSpellOnMeshes{
 
@@ -18,14 +19,17 @@ export default class AbstractResize extends AbstractSpellOnMeshes{
     finish(){
         super.finish();
 
-        //todo prevent duplicating
-        //todo preserve velocity linear/angular
-        const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
-        boxMesh.position = this.firstTargetMesh.position.clone();
-        boxMesh.scaling = this.firstTargetMesh.scaling.scale(this.scaling);
-        boxMesh.rotation = this.firstTargetMesh.rotationQuaternion.toEulerAngles();
-        this.world.materialFactory.applyMaterial(boxMesh,this.firstTargetMesh.material.name);
-        this.firstTargetMesh.dispose();
+        new Box(
+            this.world,
+            this.firstTargetBrick.materialName,
+            this.firstTargetBrick.size.scale(this.scaling),
+            this.firstTargetBrick.position.clone(),
+            this.firstTargetBrick.rotation.clone(),//todo is clone needed?
+            this.firstTargetBrick.linearVelocity,
+            this.firstTargetBrick.angularVelocity
+        );
+
+        this.firstTargetBrick.dispose();
     }
 
 }

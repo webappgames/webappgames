@@ -14,7 +14,7 @@ export default function setPlayerSpells(
         if(player.world.dataModel.locked) {
 
             try {
-                spell.addTarget(player.world.pickFromCenter());
+                spell.addTarget(player.world.pick());
             } catch (error) {
                 //todo catch only SpellError extended from Error
                 player.world.dataModel.sendMessage(error.message as string);

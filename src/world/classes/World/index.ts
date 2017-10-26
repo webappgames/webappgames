@@ -1,4 +1,5 @@
 //import log from '../tools/log';
+import IPickingInfo from '../../../interfaces/IPickingInfo';
 import * as BABYLON from 'babylonjs';
 import DataModel from '../../../data-model';
 import MaterialFactory from "./../../classes/MaterialFactory";
@@ -103,11 +104,12 @@ export default class World{
     }
 
     findBrickByMesh(mesh:BABYLON.AbstractMesh):AbstractBrick|null{
-
+        const brick = this.bricks.find((brick)=>brick.mesh===mesh)||null;
+        return brick;
     }
 
 
-    pick(left:number=.5,top:number=.5):{pickedPoint:BABYLON.Vector3,pickedBrick:AbstractBrick|null}{
+    pick(left:number=.5,top:number=.5):IPickingInfo{
         const pickingInfo = this.scene.pick(this.canvasElement.width*left, this.canvasElement.height*top, (mesh)=>{
             return mesh !== this.player.mesh  && 'physicsImpostor' in mesh;
         });
@@ -146,18 +148,30 @@ export default class World{
         this.createScene();
     }
 
+    randomBrick():AbstractBrick{
+        const allBricks = this.bricks;
+        return allBricks[Math.floor(Math.random()*allBricks.length)];
+    }
 
 
     //-------------------------------environment disasters
 
     randomDisaster(){
-        const allMeshes = this.meshes;
-        const randomMesh = allMeshes[Math.floor(Math.random()*allMeshes.length)];
-        this.setMeteoriteTarget(randomMesh.position);
+        this.setMeteoriteTarget(this.randomBrick());
     }
 
     //todo create class Disaster, or move to worldGenerator - move to separate file
-    setMeteoriteTarget(target:BABYLON.Vector3){
+    setMeteoriteTarget(target:BABYLON.Vector3|AbstractBrick){
+
+        let targetPoint: BABYLON.Vector3;
+        if(target instanceof BABYLON.Vector3){
+            targetPoint = target;
+        }else
+        if(target instanceof AbstractBrick){
+            targetPoint = target.mesh.position;
+        }else{
+            return;
+        }
 
         const meteoriteMesh = BABYLON.Mesh.CreateSphere("box", 1, 1, this.scene);
         //meteoriteMesh.isVisible = false;
@@ -170,7 +184,7 @@ export default class World{
             Math.random()*100,
             Math.sin(awayRotation)*100
         );
-        meteoriteMesh.position = target.add(away);
+        meteoriteMesh.position = targetPoint.add(away);
 
 
         this.materialFactory.applyMaterial(meteoriteMesh,'meteorite');

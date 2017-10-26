@@ -3,7 +3,7 @@ import * as BABYLON from 'babylonjs';
 import World from '../World';
 
 //todo maybe extend from BABYLON.AbstractMesh
-export default class AbstractBrick{
+export default class{
 
     public mesh:BABYLON.AbstractMesh;
 
@@ -22,6 +22,18 @@ export default class AbstractBrick{
         this.world.bricks.push(this);
     }
 
+    get rotation():BABYLON.Vector3{
+        return this.mesh.rotationQuaternion.toEulerAngles();
+    }
+
+    get linearVelocity():BABYLON.Vector3{
+        return this.mesh.physicsImpostor.getLinearVelocity();
+    }
+
+    get angularVelocity():BABYLON.Vector3{
+        return this.mesh.physicsImpostor.getAngularVelocity();
+    }
+
     public createBabylonMesh() {
         throw new Error('This method should be overwritten.');
     }
@@ -34,19 +46,41 @@ export default class AbstractBrick{
         this.mesh.physicsImpostor.setAngularVelocity(this._angularVelocity);
     }
 
-    volume():number{
+    get volume():number{
         //todo This is precise only for box.
         return this.size.x*this.size.y*this.size.z;
     }
 
-    countEnergy():number{
-
-        const volume = this.volume;
-        const linearVelocityEnergy = volume * mesh.physicsImpostor.getLinearVelocity().length();
-        const potentialEnergy = volume * this.mesh.position.y;//todo gravity field constant
-
-        return(linearVelocityEnergy+potentialEnergy);
+    get energy():number{
+        return this.energyPotential + this.energyKinetics;
     }
+
+    get energyPotential():number{
+        //todo gravity field constant
+        return this.volume * this.mesh.position.y;
+    }
+
+    get energyKinetics():number{
+        return this.energyKineticsLinear + this.energyKineticsAngular;
+    }
+
+    get energyKineticsLinear():number{
+        //todo constants
+        return this.mesh.physicsImpostor.getLinearVelocity().length() * this.volume;
+    }
+
+    get energyKineticsAngular():number{
+        //todo constants
+        //todo spinning constant for every shape
+        return this.mesh.physicsImpostor.getAngularVelocity().length() * this.volume;
+    }
+
+    dispose(){
+        this.world.bricks = this.world.bricks.filter((mesh)=>mesh!==this);
+        this.mesh.dispose();
+
+    }
+
 }
 
 

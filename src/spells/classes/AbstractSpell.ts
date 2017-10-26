@@ -1,5 +1,8 @@
-import * as BABYLON from 'babylonjs';
+//import * as BABYLON from 'babylonjs';
+import IPickingInfo from '../../interfaces/IPickingInfo';
 import World from '../../world/classes/World';
+import AbstractBrick from '../../world/classes/bricks/AbstractBrick';
+import {isNull} from "util";
 
 export enum spellPhases{
     PREPARING,
@@ -43,8 +46,8 @@ export default class AbstractSpell{
     }
 
 
-    public targets:BABYLON.PickingInfo[] = [];
-    addTarget(target:BABYLON.PickingInfo){
+    public targets:IPickingInfo[] = [];
+    addTarget(target:IPickingInfo){
         if(this.phase !== spellPhases.PREPARING) {
             throw new Error(`Target can be added only in PREPARING(${spellPhases.PREPARING}) state.`);
         }else
@@ -56,13 +59,12 @@ export default class AbstractSpell{
         }
     }
 
-    //todo deprecated
-    get firstTargetMesh():BABYLON.AbstractMesh{
-        return this.targets[0].pickedMesh;
-    }
-
-    get firstTargetBrick():BABYLON.AbstractMesh{
-        return this.worldthis.targets[0].pickedMesh;
+    get firstTargetBrick():AbstractBrick{
+        if(!isNull(this.targets[0].pickedBrick)){
+            throw new Error
+        }else{
+            return this.targets[0].pickedBrick as AbstractBrick;
+        }
     }
 
     release(){
