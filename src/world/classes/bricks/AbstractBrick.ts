@@ -3,7 +3,7 @@ import * as BABYLON from 'babylonjs';
 import World from '../World';
 
 //todo maybe extend from BABYLON.AbstractMesh
-export default class Box{
+export default class AbstractBrick{
 
     public mesh:BABYLON.AbstractMesh;
 
@@ -48,20 +48,15 @@ export default class Box{
 
     dispose(){
         this.world.bricks = this.world.bricks.filter((mesh)=>mesh!==this);
+        //todo delete spells targeting to this Brick.
         this.mesh.dispose();
 
     }
 
-    clone():Box{
-        return new Box(
-            this.world,
-            this.materialName,
-            this.size.clone(),
-            this.position.clone(),
-            this.rotation.clone(),
-            this.linearVelocity.clone(),
-            this.angularVelocity.clone(),
-        )
+    replaceBy(brick:AbstractBrick){
+        //todo replace spells targeting to this Brick.
+        this.dispose();
+
     }
 
     set materialName(materialName:string){

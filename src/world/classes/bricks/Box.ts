@@ -2,7 +2,7 @@
 import * as BABYLON from 'babylonjs';
 import AbstractBrick from './AbstractBrick';
 
-export default class extends AbstractBrick{
+export default class Box extends AbstractBrick{
 
     createBabylonMesh(){
         const globalScale = 10;//todo from matrial
@@ -21,6 +21,18 @@ export default class extends AbstractBrick{
         ];
         const meshOptions = {width, height, depth, faceUV};
         this.mesh = BABYLON.MeshBuilder.CreateBox('BoxBrick', meshOptions, this.world.scene);
+    }
+
+    clone():AbstractBrick{
+        return new Box(
+            this.world,
+            this.materialName,
+            this.size.clone(),
+            this.position.clone(),
+            this.rotation.clone(),
+            this.linearVelocity.clone(),
+            this.angularVelocity.clone(),
+        )
     }
 }
 

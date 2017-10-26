@@ -16,20 +16,20 @@ export default class AbstractResize extends AbstractSpellOnMeshes{
         return 1;
     }
 
-    finish(){
+    finish() {
         super.finish();
 
-        new Box(
-            this.world,
-            this.firstTargetBrick.materialName,
-            this.firstTargetBrick.size.scale(this.scaling),
-            this.firstTargetBrick.position.clone(),
-            this.firstTargetBrick.rotation.clone(),//todo is clone needed?
-            this.firstTargetBrick.linearVelocity,
-            this.firstTargetBrick.angularVelocity
+        this.firstTargetBrick.replaceBy(
+            new Box(
+                this.world,
+                this.firstTargetBrick.materialName,
+                this.firstTargetBrick.size.scale(this.scaling),
+                this.firstTargetBrick.position.clone(),
+                this.firstTargetBrick.rotation.clone(),
+                this.firstTargetBrick.linearVelocity,
+                this.firstTargetBrick.angularVelocity
+            )
         );
-
-        this.firstTargetBrick.dispose();
     }
 
 }
