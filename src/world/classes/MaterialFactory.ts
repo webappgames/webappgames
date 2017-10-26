@@ -59,13 +59,18 @@ export default class MaterialFactory{
             }
         }
 
-
+        if(materialName==='stone-plain-ghost')return;
 
         const materialPhysicOptions = {
             mass: 100,
             restitution:0.002,
             friction:1
         };
+
+
+        if(materialName==='stone-plain-freezed'){
+            materialPhysicOptions.mass = 0;
+        }
 
         if(materialName==='meteorite'){
             materialPhysicOptions.mass = 200;

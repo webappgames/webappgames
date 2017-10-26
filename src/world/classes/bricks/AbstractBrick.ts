@@ -3,13 +3,13 @@ import * as BABYLON from 'babylonjs';
 import World from '../World';
 
 //todo maybe extend from BABYLON.AbstractMesh
-export default class{
+export default class Box{
 
     public mesh:BABYLON.AbstractMesh;
 
     constructor(
         public world:World,
-        public materialName:string,
+        materialName:string,
         public size:BABYLON.Vector3,
         public position:BABYLON.Vector3,
         private _rotation:BABYLON.Vector3 = BABYLON.Vector3.Zero(),
@@ -19,6 +19,7 @@ export default class{
     ){
         this.createBabylonMesh();
         this._ApplyExternalsOnMesh();
+        this.materialName = materialName;
         this.world.bricks.push(this);
     }
 
@@ -41,9 +42,30 @@ export default class{
     private _ApplyExternalsOnMesh(){
         this.mesh.position = this.position;
         this.mesh.rotation = this._rotation;
-        this.world.materialFactory.applyMaterial(this.mesh,this.materialName);
         this.mesh.physicsImpostor.setLinearVelocity(this._linearVelocity);
         this.mesh.physicsImpostor.setAngularVelocity(this._angularVelocity);
+    }
+
+    dispose(){
+        this.world.bricks = this.world.bricks.filter((mesh)=>mesh!==this);
+        this.mesh.dispose();
+
+    }
+
+    clone():Box{
+        return new Box(
+            this.world,
+            this.materialName,
+            this.size.clone(),
+            this.position.clone(),
+            this.rotation.clone(),
+            this.linearVelocity.clone(),
+            this.angularVelocity.clone(),
+        )
+    }
+
+    set materialName(materialName:string){
+        this.world.materialFactory.applyMaterial(this.mesh,materialName);
     }
 
     get volume():number{
@@ -73,12 +95,6 @@ export default class{
         //todo constants
         //todo spinning constant for every shape
         return this.mesh.physicsImpostor.getAngularVelocity().length() * this.volume;
-    }
-
-    dispose(){
-        this.world.bricks = this.world.bricks.filter((mesh)=>mesh!==this);
-        this.mesh.dispose();
-
     }
 
 }
