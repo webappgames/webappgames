@@ -35,6 +35,14 @@ export default class AbstractBrick{
         return this.mesh.physicsImpostor.getAngularVelocity();
     }
 
+    set linearVelocity(linearVelocity:BABYLON.Vector3){
+        this.mesh.physicsImpostor.setLinearVelocity(linearVelocity);
+    }
+
+    set angularVelocity(angularVelocity:BABYLON.Vector3){
+        this.mesh.physicsImpostor.setAngularVelocity(angularVelocity);
+    }
+
     public createBabylonMesh() {
         throw new Error('This method should be overwritten.');
     }
