@@ -1,6 +1,6 @@
 //import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
-import { Box } from '../../../world/classes/bricks';
+import Box from '../../../world/classes/bricks/Box';
 
 export default class AbstractSplit extends AbstractSpellOnMeshes{
 
@@ -37,7 +37,7 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
                     new Box(
                         this.world,
                         this.firstTargetBrick.materialName,
-                        this.firstTargetBrick.size.multiplyByFloats(1/parts.x,1/parts.y,1/parts.z);,
+                        this.firstTargetBrick.size.multiplyByFloats(1/parts.x,1/parts.y,1/parts.z),
                         this.firstTargetBrick.position.add(this.firstTargetBrick.size.multiplyByFloats(xC - .5,yC - .5,zC - .5)),
                         this.firstTargetBrick.rotation.clone(),
                         this.firstTargetBrick.linearVelocity,

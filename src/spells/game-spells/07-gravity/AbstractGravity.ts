@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs';
+import IPickingInfo from '../../../interfaces/IPickingInfo';
 import AbstractSpell from '../../classes/AbstractSpell';
 import {spellPhases} from '../../classes/AbstractSpell';
 
@@ -7,7 +8,7 @@ export default class AbstractGravity extends AbstractSpell{
     //private PRICE_PER_SECOND = 10;
 
     //todo better addTarget
-    addTarget(target:BABYLON.PickingInfo){
+    addTarget(target:IPickingInfo){
         target;//no action
         if(this.phase===spellPhases.PREPARING){
             this.execute();

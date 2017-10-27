@@ -46,7 +46,7 @@ export default class AbstractSpell{
     }
 
 
-    public targets:IPickingInfo[] = [];
+    public targets:IPickingInfo[] = [];//!todo here should be IPickingInfoPicked
     addTarget(target:IPickingInfo){
         if(this.phase !== spellPhases.PREPARING) {
             throw new Error(`Target can be added only in PREPARING(${spellPhases.PREPARING}) state.`);

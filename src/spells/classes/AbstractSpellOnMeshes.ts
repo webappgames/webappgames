@@ -1,7 +1,10 @@
 import * as BABYLON from 'babylonjs';
+import IPickingInfo from '../../interfaces/IPickingInfo';
 import AbstractSpell from './AbstractSpell';
 //import {spellPhases} from './AbstractSpell';
 import SpellEffect from '../../world/classes/SpellEffect';
+import AbstractBrick from '../../world/classes/bricks/AbstractBrick';
+import {isNull} from "util";
 
 
 export default class AbstractSpellOnMeshes extends AbstractSpell {
@@ -23,7 +26,7 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
         if(this.ALLOW_GROUND){
             return this.targets.map((target)=>target.pickedPoint)
         }else{
-            return this.targets.map((target)=>target.pickedMesh.position)
+            return this.targets.map((target)=>(target.pickedBrick as AbstractBrick).position)
         }
     }
 
@@ -32,21 +35,24 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
         return this.spellEffects[0].direction;
     }
 
-    addTarget(target:BABYLON.PickingInfo){
+    addTarget(target:IPickingInfo){
 
-        if (!target.hit) {
+        if (isNull(target.pickedBrick)) {
             throw new Error(`You must select an object.`);//todo copywriting
         }else
-        if(!this.ALLOW_GROUND && target.pickedMesh.name==='ground'){
-            throw new Error(`This spell cant be released on ground.`);//todo copywriting
-        }
-        if(!this.ALLOW_NO_PHISICS_IMPOSTOR && target.pickedMesh.physicsImpostor.isDisposed){
-            throw new Error(`Object must have physics.`);
-        }
+        //!todo ground as Brick
+        //if(!this.ALLOW_GROUND && target.pickedBrick.name==='ground'){
+        //    throw new Error(`This spell cant be released on ground.`);//todo copywriting
+        //}
+        //todo how to handle this with bricks
+        //if(!this.ALLOW_NO_PHISICS_IMPOSTOR && target.pickedMesh.physicsImpostor.isDisposed){
+        //    throw new Error(`Object must have physics.`);
+       // }
         //else
         //if(this.targets.length===this.TARGET_COUNT){
         //    throw new Error(`This spell has already all ${this.TARGET_COUNT} targets.`);
-        else{
+        //else
+        {
             super.addTarget(target);
 
             if(this.targets.length===this.TARGET_COUNT){

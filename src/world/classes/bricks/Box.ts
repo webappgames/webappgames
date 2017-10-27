@@ -23,7 +23,7 @@ export default class Box extends AbstractBrick{
         this.mesh = BABYLON.MeshBuilder.CreateBox('BoxBrick', meshOptions, this.world.scene);
     }
 
-    clone():AbstractBrick{
+    clone():Box{
         return new Box(
             this.world,
             this.materialName,

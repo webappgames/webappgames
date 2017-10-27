@@ -33,14 +33,14 @@ function findNode(parent:Element,tagName:string):Element{
     throw new Error(`Thare is no child element with tagname "${tagName}".`);
 }
 
-export default class WorldGenerator{
+export default class{
     constructor(
         private world:World,
         private dataModel:DataModel
     ){}
 
 
-    createXml(pretty=true){
+    createXml(pretty=true):string{
 
             this.world;
             this.dataModel;
@@ -69,7 +69,8 @@ export default class WorldGenerator{
             const scene1 = scenes.element('scene');
             //const scene1materials = scene1.element('materials');
             const scene1objects = scene1.element('objects');
-            for(const mesh of this.world.meshes){
+            scene1objects;
+            /*!todo for(const mesh of this.world.meshes){
                 scene1objects.element('object', {
                     shape: "block",//todo real shape
                     material: mesh.material.name,
@@ -79,7 +80,7 @@ export default class WorldGenerator{
                     'velocity-linear': vectorToString(mesh.physicsImpostor.getLinearVelocity()),
                     'velocity-angular': vectorToString(mesh.physicsImpostor.getAngularVelocity()),
                 });
-            }
+            }*/
 
             return world.end({pretty});
 

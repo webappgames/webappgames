@@ -1,9 +1,9 @@
 import * as BABYLON from 'babylonjs';
-import log from '../tools/log';
+//import log from '../tools/log';
 import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
-import BoxBrick from '../world/classes/bricks/BoxBrick';
+import BoxBrick from '../world/classes/bricks/Box';
 //import DataModel from '../data-model';
 import * as _ from 'lodash';
 
@@ -39,14 +39,13 @@ export default class WorldGenerator{
 
     generateWorld(){
 
-        //this.world.playerMesh.position = new BABYLON.Vector3(-10,2,100);
-        //this.world.createMesh0(this.world.playerMesh,10);
         this.world.player.mesh.position.x += 5;
         this.world.player.mesh.position.z += -10;
 
 
         //----------------------------------Billboard
-        const width = 1280/100;
+        _;
+        /*!todo const width = 1280/100;
         const height = 750/100;
         const pillarSize = new BABYLON.Vector3(1,5,1);
         const center = new BABYLON.Vector3(0,0,10);
@@ -108,7 +107,7 @@ export default class WorldGenerator{
         },1000);
 
 
-        this.world.scene.registerAfterRender(updater);
+        this.world.scene.registerAfterRender(updater);*/
         //----------------------------------
 
 
@@ -117,7 +116,7 @@ export default class WorldGenerator{
 
 
         //----------------------------------Building
-        const towers = 1;
+        /*!todo const towers = 1;
         const floors = 6;
         const size = new BABYLON.Vector3(50,10,50);
         const pillsInFloor = 5;
@@ -167,17 +166,13 @@ export default class WorldGenerator{
 
                     }
                 }
-                /*if (floor === 0) {
-                    //this.world.createMesh0(mesh1, 2);
-                }else {
 
-                }*/
 
 
 
 
             }
-        }
+        }*/
         //----------------------------------
 
 
@@ -192,26 +187,6 @@ export default class WorldGenerator{
                 new BABYLON.Vector3(2,40,10),
                 new BABYLON.Vector3(i*25+50, 15, 100)
             );
-
-            /*
-            const width = 2;
-            const height = 40;
-            const depth = 100;
-            const faceUV = [
-                new BABYLON.Vector4(0, 0, width/10 , height/10),
-                new BABYLON.Vector4(0, 0, width/10 , height/10),
-
-                new BABYLON.Vector4(0, 0, height/10 , depth/10),
-                new BABYLON.Vector4(0, 0, height/10 , depth/10),
-
-                new BABYLON.Vector4(0, 0, depth/10 , width/10),
-                new BABYLON.Vector4(0, 0, depth/10 , width/10),
-            ];
-            const meshOptions = {width, height, depth, faceUV};
-            const mesh1 = BABYLON.MeshBuilder.CreateBox('box', meshOptions, this.world.scene);
-            //mesh1.scaling = new BABYLON.Vector3(2, 40, 10);
-            mesh1.position = new BABYLON.Vector3(i*25+50, 15, 100);
-            this.world.materialFactory.applyMaterial(mesh1);*/
         }
         //----------------------------------
 

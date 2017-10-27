@@ -1,6 +1,6 @@
 //import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
-import { Box } from '../../../world/classes/bricks';
+import Box from '../../../world/classes/bricks/Box';
 
 export default class AbstractResize extends AbstractSpellOnMeshes{
 

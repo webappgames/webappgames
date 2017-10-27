@@ -9,7 +9,7 @@ export default class AbstractBrick{
 
     constructor(
         public world:World,
-        materialName:string,
+        private _originalMaterialName:string,
         public size:BABYLON.Vector3,
         public position:BABYLON.Vector3,
         private _rotation:BABYLON.Vector3 = BABYLON.Vector3.Zero(),
@@ -19,7 +19,6 @@ export default class AbstractBrick{
     ){
         this.createBabylonMesh();
         this._ApplyExternalsOnMesh();
-        this.materialName = materialName;
         this.world.bricks.push(this);
     }
 
@@ -50,6 +49,7 @@ export default class AbstractBrick{
     private _ApplyExternalsOnMesh(){
         this.mesh.position = this.position;
         this.mesh.rotation = this._rotation;
+        this.materialName = this._originalMaterialName;
         this.mesh.physicsImpostor.setLinearVelocity(this._linearVelocity);
         this.mesh.physicsImpostor.setAngularVelocity(this._angularVelocity);
     }
@@ -65,6 +65,10 @@ export default class AbstractBrick{
         //todo replace spells targeting to this Brick.
         this.dispose();
 
+    }
+
+    clone():AbstractBrick{
+        throw new Error('This method should be overwritten.');
     }
 
     set materialName(materialName:string){

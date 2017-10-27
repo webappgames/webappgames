@@ -1,5 +1,4 @@
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
-import {countVolume} from '../../../tools/babylon';
 
 export default class Pull extends AbstractSpellOnMeshes{
 

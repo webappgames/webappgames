@@ -1,7 +1,6 @@
 import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
 import * as _ from 'lodash';
-import {countVolume,countEnergy} from '../../tools/babylon';
 import SoundFactory from './SoundFactory';
 
 export default class MaterialFactory{
@@ -94,7 +93,7 @@ export default class MaterialFactory{
 
         const stepSound = this._soundFactory.getMeshSound('step-stairs',mesh);
 
-        _;countVolume;countEnergy;stepSound;
+        _;stepSound;
         /*!todo const playSound = _.throttle((volume:number,playbackRate:number)=>{
 
             stepSound.setVolume(volume);
