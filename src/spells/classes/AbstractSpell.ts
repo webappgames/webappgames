@@ -1,5 +1,6 @@
 //import * as BABYLON from 'babylonjs';
 import IPickingInfo from '../../interfaces/IPickingInfo';
+import IPickingInfoPicked from '../../interfaces/IPickingInfoPicked';
 import World from '../../world/classes/World';
 import AbstractBrick from '../../world/classes/bricks/AbstractBrick';
 import {isNull} from "util";
@@ -46,7 +47,11 @@ export default class AbstractSpell{
     }
 
 
-    public targets:IPickingInfo[] = [];//!todo here should be IPickingInfoPicked
+    public targets:IPickingInfo[] = [];
+    get targetsPicked():IPickingInfoPicked[]{
+        return this.targets.filter((target)=>!isNull(target.pickedBrick)) as IPickingInfoPicked[];
+    }
+
     addTarget(target:IPickingInfo){
         if(this.phase !== spellPhases.PREPARING) {
             throw new Error(`Target can be added only in PREPARING(${spellPhases.PREPARING}) state.`);
@@ -60,11 +65,7 @@ export default class AbstractSpell{
     }
 
     get firstTargetBrick():AbstractBrick{
-        if(!isNull(this.targets[0].pickedBrick)){
-            throw new Error
-        }else{
-            return this.targets[0].pickedBrick as AbstractBrick;
-        }
+        return this.targetsPicked[0].pickedBrick;
     }
 
     release(){
