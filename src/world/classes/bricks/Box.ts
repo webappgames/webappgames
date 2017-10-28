@@ -1,8 +1,9 @@
 //import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
 import AbstractBrick from './AbstractBrick';
+import AbstractBrickFinite from './AbstractBrickFinite';
 
-export default class Box extends AbstractBrick{
+export default class Box extends AbstractBrickFinite{
 
     createBabylonMesh(){
         const globalScale = 10;//todo from matrial
@@ -23,7 +24,7 @@ export default class Box extends AbstractBrick{
         this.mesh = BABYLON.MeshBuilder.CreateBox('BoxBrick', meshOptions, this.world.scene);
     }
 
-    clone():Box{
+    clone():AbstractBrick{
         return new Box(
             this.world,
             this.materialName,

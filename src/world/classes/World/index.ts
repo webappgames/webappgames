@@ -7,10 +7,11 @@ import WorldGenerator from "../../../generator";
 import SoundFactory from '../SoundFactory';
 import Player from '../Player';
 import AbstractBrick from '../bricks/AbstractBrick';
+import Ground from '../bricks/Ground';
 import createParticles from '../../tools/create-particles';
 import createScene from './createScene';
 import createLights from './createLights';
-import createGroundMesh from './createGroundMesh';
+import createGroundMesh from './createGroundBrick';
 import createSkyboxMesh from './createSkyboxMesh';
 import * as _ from "lodash";
 
@@ -25,7 +26,7 @@ export default class World{
     public lights:BABYLON.Light[];
     public player:Player;
     public bricks:AbstractBrick[];
-    public groundMesh:BABYLON.AbstractMesh;
+    public groundBrick:Ground;
     public skyboxMesh:BABYLON.AbstractMesh;
 
 
@@ -63,7 +64,7 @@ export default class World{
         this.materialFactory = new MaterialFactory(this.soundFactory,this.scene);
         this.player = new Player(this);
         this.skyboxMesh = createSkyboxMesh(this.scene);
-        this.groundMesh = createGroundMesh(this.scene,this.player,this.materialFactory);
+        this.groundBrick = createGroundMesh(this);
 
 
 

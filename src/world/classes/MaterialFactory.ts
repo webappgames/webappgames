@@ -3,6 +3,19 @@ import * as BABYLON from 'babylonjs';
 import * as _ from 'lodash';
 import SoundFactory from './SoundFactory';
 
+/*
+todo material props
+
+
+textureScale
+materialPhysicOptions
+soundSettings
+
+*/
+
+
+
+
 export default class MaterialFactory{
 
 
@@ -18,10 +31,9 @@ export default class MaterialFactory{
 
 
     getMaterial(
-        materialName:string,
-        textureScale:number=1,
-        //freezed:boolean=false
+        materialName:string
     ){
+
 
 
         const cashedMaterial = this._materialsCache.find((material)=>material.name === materialName)||null;
@@ -30,6 +42,12 @@ export default class MaterialFactory{
             return cashedMaterial;
         }else {
             log.send(`Creating material "${materialName}".`);
+
+
+            let textureScale=1;
+            if(materialName==='grass'){
+                textureScale=100;
+            }
 
             const material = new BABYLON.StandardMaterial(materialName, this._scene);
             material.backFaceCulling = false;

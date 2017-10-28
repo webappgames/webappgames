@@ -10,48 +10,45 @@ export default class AbstractBrick{
     constructor(
         public world:World,
         private _originalMaterialName:string,
-        public size:BABYLON.Vector3,
-        public position:BABYLON.Vector3,
-        private _rotation:BABYLON.Vector3 = BABYLON.Vector3.Zero(),
-        private _linearVelocity:BABYLON.Vector3 = BABYLON.Vector3.Zero(),
-        private _angularVelocity:BABYLON.Vector3 = BABYLON.Vector3.Zero(),
+        private _size:BABYLON.Vector3 = BABYLON.Vector3.Zero()
 
     ){
         this.createBabylonMesh();
-        this._ApplyExternalsOnMesh();
+        this.materialName = this._originalMaterialName;
         this.world.bricks.push(this);
     }
 
+    get size():BABYLON.Vector3{
+        return this._size;
+    }
+
+    get position():BABYLON.Vector3{
+        return BABYLON.Vector3.Zero();
+    }
+
     get rotation():BABYLON.Vector3{
-        return this.mesh.rotationQuaternion.toEulerAngles();
+        return BABYLON.Vector3.Zero();
     }
 
     get linearVelocity():BABYLON.Vector3{
-        return this.mesh.physicsImpostor.getLinearVelocity();
+        return BABYLON.Vector3.Zero();
     }
 
     get angularVelocity():BABYLON.Vector3{
-        return this.mesh.physicsImpostor.getAngularVelocity();
+        return BABYLON.Vector3.Zero();
     }
 
     set linearVelocity(linearVelocity:BABYLON.Vector3){
-        this.mesh.physicsImpostor.setLinearVelocity(linearVelocity);
+        throw new Error('Cannot set linearVelocity of AbstractBrick.');
     }
 
     set angularVelocity(angularVelocity:BABYLON.Vector3){
-        this.mesh.physicsImpostor.setAngularVelocity(angularVelocity);
+        throw new Error('Cannot set angularVelocity of AbstractBrick.');
     }
+
 
     public createBabylonMesh() {
         throw new Error('This method should be overwritten.');
-    }
-
-    private _ApplyExternalsOnMesh(){
-        this.mesh.position = this.position;
-        this.mesh.rotation = this._rotation;
-        this.materialName = this._originalMaterialName;
-        this.mesh.physicsImpostor.setLinearVelocity(this._linearVelocity);
-        this.mesh.physicsImpostor.setAngularVelocity(this._angularVelocity);
     }
 
     dispose(){
@@ -76,8 +73,7 @@ export default class AbstractBrick{
     }
 
     get volume():number{
-        //todo This is precise only for box.
-        return this.size.x*this.size.y*this.size.z;
+        return NaN;
     }
 
     get energy():number{
@@ -85,8 +81,7 @@ export default class AbstractBrick{
     }
 
     get energyPotential():number{
-        //todo gravity field constant
-        return this.volume * this.mesh.position.y;
+        return NaN;
     }
 
     get energyKinetics():number{
@@ -94,15 +89,13 @@ export default class AbstractBrick{
     }
 
     get energyKineticsLinear():number{
-        //todo constants
-        return this.mesh.physicsImpostor.getLinearVelocity().length() * this.volume;
+        return NaN;
     }
 
     get energyKineticsAngular():number{
-        //todo constants
-        //todo spinning constant for every shape
-        return this.mesh.physicsImpostor.getAngularVelocity().length() * this.volume;
+        return NaN;
     }
+
 
 }
 
