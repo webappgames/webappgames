@@ -4,6 +4,8 @@ import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
 import BoxBrick from '../world/classes/bricks/Box';
+import mazeGenerator from './mazeGenerator';
+import { mazeToString } from './mazeGenerator';
 //import DataModel from '../data-model';
 import * as _ from 'lodash';
 
@@ -223,6 +225,49 @@ export default class WorldGenerator{
         }*/
         //----------------------------------
 
+
+        //----------------------------------
+        const mazeHeight = 1;
+        const cellSize = 10;
+        const maze = mazeGenerator(5,5);
+
+        console.log(mazeToString(maze));
+
+        for(let y=0;y<6;y++){
+            for(let x=0;x<6;x++){
+
+
+                if(((maze.horizontal[y]||[])[x]||false)) {
+                    new BoxBrick(
+                        this.world,
+                        'stone-plain',
+                        new BABYLON.Vector3(cellSize, mazeHeight, 1),
+                        new BABYLON.Vector3((x - .5) * cellSize, mazeHeight / 2, (y) * cellSize)
+                    );
+                }
+
+
+
+                if(((maze.vertical[y]||[])[x]||false)) {
+                    new BoxBrick(
+                        this.world,
+                        'stone-plain',
+                        new BABYLON.Vector3(1, mazeHeight, cellSize),
+                        new BABYLON.Vector3((x) * cellSize, mazeHeight / 2, (y - .5) * cellSize)
+                    );
+                }
+
+
+                /*if(maze.horizontal[y][x]||false){
+
+
+                }*/
+
+            }
+        }
+
+
+        //----------------------------------
 
 
         /*setInterval(()=>{
