@@ -4,8 +4,7 @@ import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
 import BoxBrick from '../world/classes/bricks/Box';
-import mazeGenerator from './mazeGenerator';
-import { mazeToString } from './mazeGenerator';
+import Maze from './Maze';
 //import DataModel from '../data-model';
 import * as _ from 'lodash';
 
@@ -227,44 +226,64 @@ export default class WorldGenerator{
 
 
         //----------------------------------
-        const mazeHeight = 1;
+
+        const mazeHeight = 20;
+        const wallThick = 2;
         const cellSize = 10;
-        const maze = mazeGenerator(5,5);
+        const maze = new Maze({x:10,y:10});
 
-        console.log(mazeToString(maze));
+        console.log(maze);
+        console.log(maze.toString());
+        const {horizontal,vertical} = maze.toWalls();
+        console.log(Maze.gridToString(horizontal));
+        console.log(Maze.gridToString(vertical));
 
-        for(let y=0;y<6;y++){
-            for(let x=0;x<6;x++){
+
+        for(let y=0;y<horizontal.length;y++){
+            for(let x=0;x<horizontal[y].length;x++){
 
 
-                if(((maze.horizontal[y]||[])[x]||false)) {
+                if(horizontal[y][x]) {
                     new BoxBrick(
                         this.world,
                         'stone-plain',
-                        new BABYLON.Vector3(cellSize, mazeHeight, 1),
-                        new BABYLON.Vector3((x - .5) * cellSize, mazeHeight / 2, (y) * cellSize)
+                        new BABYLON.Vector3(cellSize - wallThick, mazeHeight, wallThick),
+                        new BABYLON.Vector3((x + .5) * cellSize, mazeHeight / 2, (y) * cellSize)
                     );
                 }
-
-
-
-                if(((maze.vertical[y]||[])[x]||false)) {
-                    new BoxBrick(
-                        this.world,
-                        'stone-plain',
-                        new BABYLON.Vector3(1, mazeHeight, cellSize),
-                        new BABYLON.Vector3((x) * cellSize, mazeHeight / 2, (y - .5) * cellSize)
-                    );
-                }
-
-
-                /*if(maze.horizontal[y][x]||false){
-
-
-                }*/
-
             }
         }
+
+
+        for(let y=0;y<vertical.length;y++){
+            for(let x=0;x<vertical[y].length;x++){
+
+
+                if(vertical[y][x]) {
+                    new BoxBrick(
+                        this.world,
+                        'stone-plain',
+                        new BABYLON.Vector3(wallThick, mazeHeight, cellSize - wallThick),
+                        new BABYLON.Vector3((x) * cellSize, mazeHeight / 2, (y + .5) * cellSize)
+                    );
+                }
+            }
+        }
+
+        /*for(let y=0;y<5;y++){
+            for(let x=0;x<6;x++){
+
+                if(true||maze.isVertical(x,y)) {
+                    new BoxBrick(
+                        this.world,
+                        'stone-plain',
+                        new BABYLON.Vector3(wallThick, mazeHeight, cellSize - wallThick),
+                        new BABYLON.Vector3((x) * cellSize, mazeHeight / 2, (y + .5) * cellSize)
+                    );
+                }
+
+            }
+        }*/
 
 
         //----------------------------------

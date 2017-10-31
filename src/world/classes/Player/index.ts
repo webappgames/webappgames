@@ -82,7 +82,7 @@ export default class Player{
         const currentVelocity = this.mesh.physicsImpostor.getLinearVelocity();
 
         //todo Jumping on flying object
-        const onGround = currentVelocity.y<1;//playerMesh.position.y<=2;
+        const onGround = true;//currentVelocity.y<1;//playerMesh.position.y<=2;
 
         const distance = Math.sqrt(Math.pow(vector.x,2)+Math.pow(vector.z,2));
         const rotation = Math.atan2(vector.z,vector.x)+this.rotationY;

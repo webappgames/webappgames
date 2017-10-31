@@ -29,9 +29,9 @@ export default function setPlayerMovement(
 
     });
 
-    subscribeKeys(KEYMAP.JUMP,SubscriberModes.PRESS,()=>{
+    subscribeKeys(KEYMAP.JUMP,SubscriberModes.FRAME,()=>{//PRESS
 
-        player.addMovement(new BABYLON.Vector3(0,PLAYER.SPEED.JUMP,0));
+        player.addMovement(new BABYLON.Vector3(0,PLAYER.SPEED.JUMP/10,0));
 
     });
 
