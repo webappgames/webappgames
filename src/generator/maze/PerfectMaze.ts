@@ -1,10 +1,7 @@
-export interface IVector2{
-    x:number;
-    y:number;
-}
+import IVector2 from '../../interfaces/IVector2';
+import IMaze from '../../interfaces/IMaze';
 
-
-export default class PerfectMaze{
+export default class PerfectMaze implements IMaze{
 
 
     public grid:boolean[][];

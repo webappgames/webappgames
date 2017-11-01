@@ -5,6 +5,7 @@ import World from '../world/classes/World';
 //import Player from '../world/classes/Player';
 import BoxBrick from '../world/classes/bricks/Box';
 import Maze from './maze/Maze';
+import mazeToBricks from './maze/mazeToBricks';
 //import DataModel from '../data-model';
 import * as _ from 'lodash';
 
@@ -226,66 +227,9 @@ export default class WorldGenerator{
 
 
         //----------------------------------
-
-        const mazeHeight = 20;
-        const wallThick = 2;
-        const cellSize = 10;
         const maze = new Maze({x:10,y:10});
-
-        console.log(maze);
         console.log(maze.toString());
-        const {horizontal,vertical} = maze.toWalls();
-        console.log(Maze.gridToString(horizontal));
-        console.log(Maze.gridToString(vertical));
-
-
-        for(let y=0;y<horizontal.length;y++){
-            for(let x=0;x<horizontal[y].length;x++){
-
-
-                if(horizontal[y][x]) {
-                    new BoxBrick(
-                        this.world,
-                        'stone-plain',
-                        new BABYLON.Vector3(cellSize - wallThick, mazeHeight, wallThick),
-                        new BABYLON.Vector3((x + .5) * cellSize, mazeHeight / 2, (y) * cellSize)
-                    );
-                }
-            }
-        }
-
-
-        for(let y=0;y<vertical.length;y++){
-            for(let x=0;x<vertical[y].length;x++){
-
-
-                if(vertical[y][x]) {
-                    new BoxBrick(
-                        this.world,
-                        'stone-plain',
-                        new BABYLON.Vector3(wallThick, mazeHeight, cellSize - wallThick),
-                        new BABYLON.Vector3((x) * cellSize, mazeHeight / 2, (y + .5) * cellSize)
-                    );
-                }
-            }
-        }
-
-        /*for(let y=0;y<5;y++){
-            for(let x=0;x<6;x++){
-
-                if(true||maze.isVertical(x,y)) {
-                    new BoxBrick(
-                        this.world,
-                        'stone-plain',
-                        new BABYLON.Vector3(wallThick, mazeHeight, cellSize - wallThick),
-                        new BABYLON.Vector3((x) * cellSize, mazeHeight / 2, (y + .5) * cellSize)
-                    );
-                }
-
-            }
-        }*/
-
-
+        mazeToBricks(maze,{mazeHeight:8,wallThick:1.5,cellSize:15},this.world);
         //----------------------------------
 
 

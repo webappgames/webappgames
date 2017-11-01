@@ -1,5 +1,5 @@
 import PerfectMaze from './PerfectMaze';
-import { IVector2 } from './PerfectMaze';
+import IVector2 from '../../interfaces/IVector2';
 
 export default class Maze extends PerfectMaze{
     createStarts(){
