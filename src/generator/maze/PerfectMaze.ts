@@ -1,64 +1,61 @@
-interface IVector2{
+export interface IVector2{
     x:number;
     y:number;
 }
 
 
-export default class Maze{
+export default class PerfectMaze{
 
 
     public grid:boolean[][];
 
     constructor(public size:IVector2) {
+        this.grid = this.createGrid();
+        this.finishGrid(this.grid,this.createStarts());
+    }
 
-        this.grid = [];
+    createGrid():boolean[][]{
+        const grid:boolean[][] = [];
         for (let y = 0; y < this.size.y * 2 + 1; y++) {
-            this.grid[y] = [];
+            grid[y] = [];
             for (let x = 0; x < this.size.x * 2 + 1; x++) {
-
-
                 if(x===0 || y===0 || x===this.size.x*2 || y===this.size.y*2 ){
-                    this.grid[y][x] = true;
-                } /*else
-                if(x%2===0 && y%2===0){
-                    this.grid[y][x] = true;
-                }*/
-                else{
-                    this.grid[y][x] = false;
+                    grid[y][x] = true;
                 }
-
-
-
-
+                else{
+                    grid[y][x] = false;
+                }
             }
         }
+        return grid;
+    }
 
-
-        let starts:IVector2[] = [];
+    createStarts():IVector2[]{
+        const starts:IVector2[] = [];
         for(let y = 0; y < this.size.y - 1; y++) {
             for (let x = 0; x < this.size.x - 1; x++) {
                 starts.push({x:x*2+2,y:y*2+2});
             }
         }
+        return starts;
+    }
 
+    finishGrid(grid:boolean[][],starts:IVector2[]){
         const DIRECTIONS = [
             {x:1,y:0},
             {x:-1,y:0},
             {x:0,y:1},
             {x:0,y:-1},
-        ]
+        ];
         while(starts.length!==0){
 
             const start = starts[Math.floor(Math.random()*starts.length)];
             const direction = DIRECTIONS[Math.floor(Math.random()*DIRECTIONS.length)];
 
-
-
-
             let currentPosition = start;
-            while(!this.grid[currentPosition.y][currentPosition.x]){
+            while(!grid[currentPosition.y][currentPosition.x]){
 
-                this.grid[currentPosition.y][currentPosition.x] = true;
+                grid[currentPosition.y][currentPosition.x] = true;
                 currentPosition = {
                     x: currentPosition.x + direction.x,
                     y: currentPosition.y + direction.y,
@@ -66,16 +63,10 @@ export default class Maze{
 
             }
 
-
-
-
-
-
-
             starts = starts.filter((start)=>!this.grid[start.y][start.x]);
         }
-
     }
+
 
 
     toWalls(){
@@ -107,7 +98,7 @@ export default class Maze{
 
 
     toString():string{
-        return Maze.gridToString(this.grid);
+        return PerfectMaze.gridToString(this.grid);
     }
 
 

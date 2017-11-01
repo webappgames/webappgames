@@ -4,7 +4,7 @@ import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
 import BoxBrick from '../world/classes/bricks/Box';
-import Maze from './Maze';
+import Maze from './maze/Maze';
 //import DataModel from '../data-model';
 import * as _ from 'lodash';
 
