@@ -15,23 +15,43 @@ export default function(maze:IMaze,options:IMazeToBrickOptions,world:World):Box[
     const boxes:Box[] = [];
     const {horizontal,vertical} = maze.toWalls();
 
-    for(let y=0;y<horizontal.length;y++){
-        for(let x=0;x<horizontal[y].length;x++){
+
+    [{walls:horizontal,rotation:0},{walls:vertical,rotation:Math.PI/2}].forEach(({walls,rotation})=>{
+
+        for(let y=0;y<walls.length;y++){
+            for(let x=0;x<walls[y].length;x++){
 
 
-            if(horizontal[y][x]) {
-                boxes.push(new Box(
-                    world,
-                    'stone-plain',
-                    new BABYLON.Vector3(options.cellSize - options.wallThick, options.mazeHeight, options.wallThick),
-                    new BABYLON.Vector3((x + .5) * options.cellSize, options.mazeHeight / 2, (y) * options.cellSize)
-                ));
+                if(walls[y][x]) {
+                    boxes.push(new Box(
+                        world,
+                        'stone-plain',
+                        new BABYLON.Vector3(
+                            options.cellSize - options.wallThick,
+                            options.mazeHeight,
+                            options.wallThick
+                        ),
+                        new BABYLON.Vector3(
+                            (x + Math.cos(rotation)*.5) * options.cellSize,
+                            options.mazeHeight / 2,
+                            (y + Math.sin(rotation)*.5) * options.cellSize
+                        ),
+                        new BABYLON.Vector3(
+                            0,
+                            rotation,
+                            0
+                        )
+                    ));
+                }
             }
         }
-    }
+
+    });
 
 
-    for(let y=0;y<vertical.length;y++){
+
+
+    /*for(let y=0;y<vertical.length;y++){
         for(let x=0;x<vertical[y].length;x++){
 
 
@@ -44,7 +64,7 @@ export default function(maze:IMaze,options:IMazeToBrickOptions,world:World):Box[
                 ));
             }
         }
-    }
+    }*/
 
     return boxes;
 }

@@ -3,7 +3,7 @@ import * as BABYLON from 'babylonjs';
 import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
-import BoxBrick from '../world/classes/bricks/Box';
+//import Box from '../world/classes/bricks/Box';
 import Maze from './maze/Maze';
 import mazeToBricks from './maze/mazeToBricks';
 //import DataModel from '../data-model';
@@ -181,7 +181,7 @@ export default class WorldGenerator{
 
 
         //----------------------------------Domino
-        for (let i = 0; i < 7; i++) {
+        /*for (let i = 0; i < 7; i++) {
 
             new BoxBrick(
                 this.world,
@@ -189,7 +189,7 @@ export default class WorldGenerator{
                 new BABYLON.Vector3(2,40,10),
                 new BABYLON.Vector3(i*25+50, 15, 100)
             );
-        }
+        }*/
         //----------------------------------
 
 
