@@ -3,7 +3,7 @@ import * as BABYLON from 'babylonjs';
 import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
-//import Box from '../world/classes/bricks/Box';
+import Box from '../world/classes/bricks/Box';
 import Maze from './maze/Maze';
 import mazeToBricks from './maze/mazeToBricks';
 //import DataModel from '../data-model';
@@ -41,8 +41,8 @@ export default class WorldGenerator{
 
     generateWorld(){
 
-        this.world.player.mesh.position.x += 5;
-        this.world.player.mesh.position.z += -10;
+        //this.world.player.mesh.position.x += 5;
+        //this.world.player.mesh.position.z += -10;
 
 
         //----------------------------------Billboard
@@ -118,63 +118,66 @@ export default class WorldGenerator{
 
 
         //----------------------------------Building
-        /*!todo const towers = 1;
-        const floors = 6;
-        const size = new BABYLON.Vector3(50,10,50);
-        const pillsInFloor = 5;
-        const pillsThick = 0.2;
+        //const towers = 1;
+        const floors = 8;
+        const size = new BABYLON.Vector3(30,15,30);
+        const pillsInFloor = 3;
+        const pillsThick = 0.3;
 
 
-        for (let tower = 0; tower < towers; tower++) {
+        //for (let tower = 0; tower < towers; tower++) {
+        /*const rotation = tower/towers*Math.PI*2;
+        const center = new BABYLON.Vector3(
+            Math.sin(rotation)*100,
+            -10,
+            Math.cos(rotation)*100
+        );*/
+        const center = new BABYLON.Vector3(
+            0,
+            -10,
+            70
+        );
 
-            const rotation = tower/towers*Math.PI*2;
+        for (let floor = 1; floor < floors; floor++) {
 
-            const center = new BABYLON.Vector3(
-                Math.sin(rotation)*100,
-                -10,
-                Math.cos(rotation)*100
+
+            new Box(
+                this.world,
+                'stone-plain',
+                new BABYLON.Vector3(size.x, 1, size.z),
+                center.add(new BABYLON.Vector3(0, floor * 10 + 9.5, 0))
             );
 
 
-            for (let floor = 1; floor < floors; floor++) {
+            for (let pillX = 0; pillX < pillsInFloor; pillX++) {
+                for (let pillY = 0; pillY < pillsInFloor; pillY++) {
 
 
-                const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
-                mesh1.scaling = new BABYLON.Vector3(size.x, 1, size.z);
-                mesh1.position = center.add(new BABYLON.Vector3(0, floor * 10 + 9.5, 0));
-                this.world.materialFactory.applyMaterial(mesh1);
+                    if (floor === 2 && pillX === 0 && pillY === 2) {
+                    } else {
 
-
-                for (let pillX = 0; pillX < pillsInFloor; pillX++) {
-                    for (let pillY = 0; pillY < pillsInFloor; pillY++) {
-
-
-                        if(floor===2 && pillX===0 && pillY===2){
-                        }else {
-
-                            const mesh1 = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
-                            mesh1.scaling = new BABYLON.Vector3(
+                        new Box(
+                            this.world,
+                            'stone-plain',
+                            new BABYLON.Vector3(
                                 size.x / pillsInFloor * pillsThick,
                                 9,
                                 size.z / pillsInFloor * pillsThick
-                            );
-                            mesh1.position = center.add(new BABYLON.Vector3(
+                            ),
+                            center.add(new BABYLON.Vector3(
                                 (pillX / (pillsInFloor - 1) - .5) * size.x * (1 - 1 / pillsInFloor * pillsThick),
                                 floor * 10 + 4.5,
                                 (pillY / (pillsInFloor - 1) - .5) * size.z * (1 - 1 / pillsInFloor * pillsThick)
-                            ));
-                            this.world.materialFactory.applyMaterial(mesh1);
-                        }
-
+                            ))
+                        );
                     }
+
                 }
-
-
-
-
-
             }
-        }*/
+
+
+        }
+        //}
         //----------------------------------
 
 
@@ -227,9 +230,10 @@ export default class WorldGenerator{
 
 
         //----------------------------------
-        const maze = new Maze({x:10,y:10});
+        Maze;mazeToBricks;
+        const maze = new Maze({x:8,y:8});
         console.log(maze.toString());
-        mazeToBricks(maze,{mazeHeight:8,wallThick:1.5,cellSize:15},this.world);
+        mazeToBricks(maze, BABYLON.Vector3.Zero(),{mazeHeight:9,wallThick:1.5,cellSize:15},this.world);
         //----------------------------------
 
 

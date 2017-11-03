@@ -10,10 +10,17 @@ interface IMazeToBrickOptions{
     cellSize: number;
 }
 
-export default function(maze:IMaze,options:IMazeToBrickOptions,world:World):Box[]{
+export default function(maze:IMaze,center:BABYLON.Vector3,options:IMazeToBrickOptions,world:World):Box[]{
 
     const boxes:Box[] = [];
     const {horizontal,vertical} = maze.toWalls();
+
+
+    const moveBy = center.add(new BABYLON.Vector3(
+        options.cellSize * horizontal.length,
+        0,
+        options.cellSize * vertical.length,
+    ).scale(-.5));
 
 
     [{walls:horizontal,rotation:0},{walls:vertical,rotation:Math.PI/2}].forEach(({walls,rotation})=>{
@@ -25,16 +32,16 @@ export default function(maze:IMaze,options:IMazeToBrickOptions,world:World):Box[
                 if(walls[y][x]) {
                     boxes.push(new Box(
                         world,
-                        'stone-plain',
+                        'clay-bricks',
                         new BABYLON.Vector3(
-                            options.cellSize - options.wallThick,
+                            options.cellSize,// - options.wallThick,
                             options.mazeHeight,
                             options.wallThick
                         ),
                         new BABYLON.Vector3(
-                            (x + Math.cos(rotation)*.5) * options.cellSize,
-                            options.mazeHeight / 2,
-                            (y + Math.sin(rotation)*.5) * options.cellSize
+                            moveBy.x + (x + Math.cos(rotation)*.5) * options.cellSize,
+                            moveBy.y + options.mazeHeight / 2,
+                            moveBy.z + (y + Math.sin(rotation)*.5) * options.cellSize
                         ),
                         new BABYLON.Vector3(
                             0,
