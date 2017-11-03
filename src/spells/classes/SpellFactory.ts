@@ -1,5 +1,5 @@
 import AbstractSpell from './AbstractSpell';
-import World from '../../scene/classes/World';
+import World from '../../world/classes/World';
 import {getSpellById} from '../tools/index';
 
 class SpellFactory{

@@ -12,14 +12,20 @@ export default class Teleport extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
+
+        this.world.player.mesh.position = this.firstTargetBrick.position.add(
+            new BABYLON.Vector3(
+                0,this.firstTargetBrick.size.y/2+2,0//todo person tall
+            )
+        );
+
+        /*
+        todo teleportation to ground
         if(this.firstTargetMesh.name==='ground'){
-            this.world.playerMesh.position = this.targets[0].pickedPoint.add(new BABYLON.Vector3(0,2,0));
+
+            this.world.player.mesh.position = this.targets[0].pickedPoint.add(new BABYLON.Vector3(0,2,0));
         }else{
-            this.world.playerMesh.position = this.firstTargetMesh.position.add(
-                new BABYLON.Vector3(
-                    0,this.firstTargetMesh.scaling.y/2+2,0
-                )
-            );
-        }
+
+        }*/
     }
 }

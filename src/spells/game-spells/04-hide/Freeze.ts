@@ -18,7 +18,6 @@ export default class Freeze extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
-        this.firstTargetMesh.material = this.world.materialFactory.getMaterial('stone-plain-freezed');
-        this.firstTargetMesh.physicsImpostor.setMass(0);
+        this.firstTargetBrick.materialName = 'stone-plain-freezed';
     }
 }

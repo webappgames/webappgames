@@ -9,7 +9,7 @@ interface IParticleSettings{
     maxLifeTime?:number;
 }
 
-export default function createSpellParticles(fountainMesh:BABYLON.AbstractMesh,settings:IParticleSettings,scene:BABYLON.Scene):BABYLON.ParticleSystem{
+export default function createParticles(fountainMesh:BABYLON.AbstractMesh, settings:IParticleSettings, scene:BABYLON.Scene):BABYLON.ParticleSystem{
 
 
     // Create a particle system

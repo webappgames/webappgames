@@ -1,10 +1,11 @@
 //import log from '../tools/log';
 import * as BABYLON from 'babylonjs';
-import createSpellParticles from '../create-spell-particles';//todo move here or to 1 directory with this file
+import createParticles from '../tools/create-particles';
 
 export default class SpellEffect{
 
     private fountainMesh:BABYLON.AbstractMesh;
+    //private spellSound:BABYLON.Sound;
     private spellParticles:BABYLON.ParticleSystem;
 
     constructor(
@@ -20,7 +21,11 @@ export default class SpellEffect{
         this.fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
         this.fountainMesh.isVisible = false;
         this.fountainMesh.position = startPoint.clone();
-        this.spellParticles = createSpellParticles(this.fountainMesh,colors,scene);
+        this.spellParticles = createParticles(this.fountainMesh,colors,scene);
+
+
+        //this.spellSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/link-key-none.mp3`, scene, undefined, { loop: true, autoplay:true });
+        //this.spellSound.attachToMesh(this.fountainMesh);
     }
 
     public running = true;
@@ -51,6 +56,7 @@ export default class SpellEffect{
 
     stop(){
         this.spellParticles.stop();
+        //this.spellSound.dispose();
         setTimeout(() => {
             try {
                 this.fountainMesh.dispose();

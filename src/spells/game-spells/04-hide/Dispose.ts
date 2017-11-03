@@ -18,6 +18,6 @@ export default class Dispose extends AbstractSpellOnMeshes{
 
     finish() {
         super.finish();
-        this.firstTargetMesh.dispose();
+        this.firstTargetBrick.dispose();
     }
 }

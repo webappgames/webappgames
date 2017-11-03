@@ -20,10 +20,7 @@ export default class Dekinetize extends AbstractSpellOnMeshes{
     finish() {
         super.finish();
 
-        const angularVelocity = this.firstTargetMesh.physicsImpostor.getAngularVelocity();
-        const linearVelocity = this.firstTargetMesh.physicsImpostor.getLinearVelocity();
-
-        this.firstTargetMesh.physicsImpostor.setAngularVelocity(angularVelocity.scale(-1));
-        this.firstTargetMesh.physicsImpostor.setLinearVelocity(linearVelocity.scale(-1));
+        this.firstTargetBrick.angularVelocity = this.firstTargetBrick.angularVelocity.scale(-1);
+        this.firstTargetBrick.linearVelocity = this.firstTargetBrick.linearVelocity.scale(-1);
     }
 }

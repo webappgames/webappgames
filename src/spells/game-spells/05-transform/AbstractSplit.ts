@@ -1,5 +1,6 @@
-import * as BABYLON from 'babylonjs';
+//import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
+import Box from '../../../world/classes/bricks/Box';
 
 export default class AbstractSplit extends AbstractSpellOnMeshes{
 
@@ -33,15 +34,18 @@ export default class AbstractSplit extends AbstractSpellOnMeshes{
                 for (let x = 0; x < parts.x; x++) {
                     const xC = (x + .5) * (1 / parts.x);
 
-                    const boxMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
-                    boxMesh.position = this.firstTargetMesh.position.add(this.firstTargetMesh.scaling.multiplyByFloats(xC - .5,yC - .5,zC - .5));
-                    boxMesh.scaling = this.firstTargetMesh.scaling.multiplyByFloats(1/parts.x,1/parts.y,1/parts.z);
-                    //boxMesh.rotation = this.firstTargetMesh.rotation.clone();
-                    this.world.materialFactory.applyMaterial(boxMesh,this.firstTargetMesh.material.name);
-
+                    new Box(
+                        this.world,
+                        this.firstTargetBrick.materialName,
+                        this.firstTargetBrick.size.multiplyByFloats(1/parts.x,1/parts.y,1/parts.z),
+                        this.firstTargetBrick.position.add(this.firstTargetBrick.size.multiplyByFloats(xC - .5,yC - .5,zC - .5)),
+                        this.firstTargetBrick.rotation.clone(),
+                        this.firstTargetBrick.linearVelocity,
+                        this.firstTargetBrick.angularVelocity
+                    );
                 }
             }
         }
-        this.firstTargetMesh.dispose();
+        this.firstTargetBrick.dispose();
     }
 }

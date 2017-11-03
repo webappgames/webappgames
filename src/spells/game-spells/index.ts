@@ -20,6 +20,10 @@ import chop from './05-transform/Chop';
 import desintegrate from './05-transform/Desintegrate';
 import meteorite from './06-environment/Meteorite';
 import perseids from './06-environment/Perseids';
+import nogravity from './07-gravity/Nogravity';
+import antigravity from './07-gravity/Antigravity';
+import supergravity from './07-gravity/Supergravity';
+
 
 export default {
     subjective: {
@@ -55,6 +59,11 @@ export default {
     },
     environment: {
         meteorite,
-        perseids,
+        perseids
+    },
+    gravity: {
+        nogravity,
+        antigravity,
+        supergravity
     }
 };

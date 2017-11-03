@@ -1,3 +1,4 @@
+//todo create class not singleton
 import log from './log';
 
 class Subscriber{
@@ -102,7 +103,7 @@ export function subscribeKeys(keyCodes:number[],mode:SubscriberModes,callback:Fu
         case SubscriberModes.RELEASE:
             subscribersRelease.push(new Subscriber(keyCodes,callback));
             break;
-        case SubscriberModes.FRAME:
+        case SubscriberModes.FRAME://todo when on Frame send ms as param
             subscribersFrame.push(new Subscriber(keyCodes,callback));
             break;
     }

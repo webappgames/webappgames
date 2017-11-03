@@ -1,5 +1,5 @@
 import * as BABYLON from 'babylonjs';
-import World from '../scene/classes/World';
+import World from '../world/classes/World';
 //import * as download from 'downloadjs';
 import * as xmlBuilder from 'xmlbuilder';
 import {DOMParser} from 'xmldom';
@@ -33,14 +33,14 @@ function findNode(parent:Element,tagName:string):Element{
     throw new Error(`Thare is no child element with tagname "${tagName}".`);
 }
 
-export default class WorldGenerator{
+export default class{
     constructor(
         private world:World,
         private dataModel:DataModel
     ){}
 
 
-    createXml(pretty=true){
+    createXml(pretty=true):string{
 
             this.world;
             this.dataModel;
@@ -56,10 +56,10 @@ export default class WorldGenerator{
 
 
             world.element('player', {
-                position: vectorToString(this.world.playerMesh.position),
+                position: vectorToString(this.world.player.mesh.position),
                 //todo rotation: vectorToString(this.world.playerMesh.rotation),
-                'velocity-linear': vectorToString(this.world.playerMesh.physicsImpostor.getLinearVelocity()),
-                'velocity-angular': vectorToString(this.world.playerMesh.physicsImpostor.getAngularVelocity()),
+                'velocity-linear': vectorToString(this.world.player.mesh.physicsImpostor.getLinearVelocity()),
+                'velocity-angular': vectorToString(this.world.player.mesh.physicsImpostor.getAngularVelocity()),
             });
 
 
@@ -69,7 +69,8 @@ export default class WorldGenerator{
             const scene1 = scenes.element('scene');
             //const scene1materials = scene1.element('materials');
             const scene1objects = scene1.element('objects');
-            for(const mesh of this.world.meshes){
+            scene1objects;
+            /*!todo for(const mesh of this.world.meshes){
                 scene1objects.element('object', {
                     shape: "block",//todo real shape
                     material: mesh.material.name,
@@ -79,7 +80,7 @@ export default class WorldGenerator{
                     'velocity-linear': vectorToString(mesh.physicsImpostor.getLinearVelocity()),
                     'velocity-angular': vectorToString(mesh.physicsImpostor.getAngularVelocity()),
                 });
-            }
+            }*/
 
             return world.end({pretty});
 
@@ -105,7 +106,7 @@ export default class WorldGenerator{
                         switch(child.tagName){
                             case 'player':
                                 //todo DRY
-                                this.world.playerMesh.position = vectorFromString(child.attributes.getNamedItem('position').value);
+                                this.world.player.mesh.position = vectorFromString(child.attributes.getNamedItem('position').value);
                                 //todo this.world.playerMesh.rotation = vectorFromString(child.attributes.getNamedItem('rotation').value);
                                 //todo 2x velocity
                                 break;

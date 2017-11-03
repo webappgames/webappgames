@@ -1,6 +1,5 @@
 import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
-import {countVolume} from '../../../tools/babylon';
 
 export default class Spin extends AbstractSpellOnMeshes{
 
@@ -21,8 +20,8 @@ export default class Spin extends AbstractSpellOnMeshes{
     }*/
     finish(){
         super.finish();
-        const volume = countVolume(this.targets[0].pickedMesh);
-        this.targets[0].pickedMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1000/volume,0));
+        //todo add Angular velocity
+        this.firstTargetBrick.angularVelocity = new BABYLON.Vector3(0,1000/this.firstTargetBrick.volume,0);
     }
 
 }

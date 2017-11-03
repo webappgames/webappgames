@@ -20,7 +20,7 @@ export default class Perseids extends AbstractSpellOnMeshes{
         let limit = 33;
         const interval = setInterval(()=>{
 
-            this.world.setMeteoriteTarget(this.firstTargetMesh.position);
+            this.world.setMeteoriteTarget(this.firstTargetBrick);
             if(limit--<0){
                 clearInterval(interval);
             }

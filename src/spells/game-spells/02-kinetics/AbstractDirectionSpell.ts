@@ -1,5 +1,4 @@
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
-import {countVolume} from '../../../tools/babylon';
 
 export default class Pull extends AbstractSpellOnMeshes{
 
@@ -18,7 +17,7 @@ export default class Pull extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
-        const volume = countVolume(this.targets[0].pickedMesh);
-        this.firstTargetMesh.physicsImpostor.setLinearVelocity(this.direction.scale(this.scale/volume));
+        const volume = this.firstTargetBrick.volume;//countVolume(this.targets[0].pickedMesh);
+        this.firstTargetBrick.linearVelocity = this.direction.scale(this.scale/volume);
     }
 }

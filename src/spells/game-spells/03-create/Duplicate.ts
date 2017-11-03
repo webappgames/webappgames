@@ -15,6 +15,6 @@ export default class Duplicate extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
-        this.firstTargetMesh.clone('box',this.firstTargetMesh.parent);
+        this.firstTargetBrick.clone();
     }
 }

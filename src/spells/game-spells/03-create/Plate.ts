@@ -1,5 +1,6 @@
 import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
+import AbstractBrick from '../../../world/classes/bricks/AbstractBrick';
 
 export default class Plate extends AbstractSpellOnMeshes {
 
@@ -47,8 +48,8 @@ export default class Plate extends AbstractSpellOnMeshes {
         super.finish();
 
 
-        const pillar1 = this.targets[0].pickedMesh;
-        const pillar2 = this.targets[1].pickedMesh;
+        const pillar1 = this.targets[0].pickedBrick as AbstractBrick;
+        const pillar2 = this.targets[1].pickedBrick as AbstractBrick;
         const point1 = pillar1.position;
         const point2 = pillar2.position;
 
@@ -57,11 +58,11 @@ export default class Plate extends AbstractSpellOnMeshes {
         const length = pointDiff.length();
 
         const rotation = Math.atan2(pointDiff.x, pointDiff.z);
-        const width = Math.max(pillar1.scaling.z, pillar2.scaling.z, pillar1.scaling.x, pillar2.scaling.x);
+        const width = Math.max(pillar1.size.z, pillar2.size.z, pillar1.size.x, pillar2.size.x);
 
 
         const boxMesh = BABYLON.Mesh.CreateBox("plate", 1, this.world.scene);
-        boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, pillar1.scaling.y / 2 + 1, 0));
+        boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, pillar1.size.y / 2 + 1, 0));
         boxMesh.scaling = new BABYLON.Vector3(width, 1, length + 2);
         boxMesh.rotation = new BABYLON.Vector3(0, rotation, 0);
         boxMesh.material = this.world.materialFactory.getMaterial('stone-plain');
