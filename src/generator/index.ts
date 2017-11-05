@@ -4,8 +4,8 @@ import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
 import Box from '../world/classes/bricks/Box';
-import Maze from './maze/Maze';
-import mazeToBricks from './maze/mazeToBricks';
+import Maze from './Maze';
+import Building from './Building';
 //import UIDataModel from '../data-model';
 import * as _ from 'lodash';
 
@@ -230,10 +230,24 @@ export default class WorldGenerator{
 
 
         //----------------------------------
-        Maze;mazeToBricks;
-        const maze = new Maze({x:8,y:8});
-        console.log(maze.toString());
-        mazeToBricks(maze, BABYLON.Vector3.Zero(),{mazeHeight:9,wallThick:1.5,cellSize:15},this.world);
+        const building = new Building(
+            new Maze({x:8,y:8}),
+            BABYLON.Vector3.Zero(),
+            {
+                sizes: {
+                    cells: {
+                        width: 15,
+                        height: 9
+                    },
+                    walls: {
+                        width: 1.5,
+                        height: 9
+                    }
+                }
+            },
+            this.world
+        );
+        console.log(building.toString());
         //----------------------------------
 
 

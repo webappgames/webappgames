@@ -2,12 +2,12 @@ import PerfectMaze from './PerfectMaze';
 import IVector2 from '../../interfaces/IVector2';
 
 export default class Maze extends PerfectMaze{
-    createStarts(){
+    static createStarts(){
         return super.createStarts().filter((position)=>Math.random()>.5);
     }
 
 
-    finishGrid(grid:boolean[][],starts:IVector2[]) {
+    static finishGrid(grid:boolean[][],starts:IVector2[]) {
 
         for(let i=0;i<5;i++){
             const randomStart = starts[Math.floor(Math.random() * starts.length)];
