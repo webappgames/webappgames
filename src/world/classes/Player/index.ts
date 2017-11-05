@@ -45,7 +45,7 @@ export default class Player{
         });
 
 
-        setPlayerMouseLock(this.world.canvasElement,this.camera,this.world.dataModel);
+        setPlayerMouseLock(this.world.canvasElement,this.camera,this.world.uiDataModel);
         setPlayerMovement(this);
         setPlayerSpells(this);
 

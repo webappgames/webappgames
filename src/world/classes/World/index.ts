@@ -1,7 +1,7 @@
 //import log from '../tools/log';
 import IPickingInfo from '../../../interfaces/IPickingInfo';
 import * as BABYLON from 'babylonjs';
-import DataModel from '../../../data-model';
+import UIDataModel from '../../../data-model';
 import MaterialFactory from "./../../classes/MaterialFactory";
 import WorldGenerator from "../../../generator";
 import SoundFactory from '../SoundFactory';
@@ -32,7 +32,7 @@ export default class World{
 
     constructor(
         public canvasElement: HTMLCanvasElement,
-        public dataModel:DataModel
+        public uiDataModel:UIDataModel
     ) {
         this.createScene(true);
     }
@@ -44,8 +44,8 @@ export default class World{
         this.engine = new BABYLON.Engine(this.canvasElement, true);
 
         const updateFps = _.throttle(()=>{
-            this.dataModel.stat.fps = this.engine.getFps();
-            this.dataModel.stat.meshes = this.scene.meshes.length;
+            this.uiDataModel.stat.fps = this.engine.getFps();
+            this.uiDataModel.stat.meshes = this.scene.meshes.length;
         },200);
 
         this.engine.runRenderLoop(()=>{

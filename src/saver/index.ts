@@ -3,7 +3,7 @@ import World from '../world/classes/World';
 //import * as download from 'downloadjs';
 import * as xmlBuilder from 'xmlbuilder';
 import {DOMParser} from 'xmldom';
-import DataModel from '../data-model';
+import UIDataModel from '../data-model';
 import {isNull} from "util";
 
 function vectorToString(vector:BABYLON.Vector3):string{
@@ -36,14 +36,14 @@ function findNode(parent:Element,tagName:string):Element{
 export default class{
     constructor(
         private world:World,
-        private dataModel:DataModel
+        private uiDataModel:UIDataModel
     ){}
 
 
     createXml(pretty=true):string{
 
             this.world;
-            this.dataModel;
+            this.uiDataModel;
 
 
             const world = xmlBuilder.create('world');

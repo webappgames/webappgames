@@ -11,13 +11,13 @@ export default function setPlayerSpells(
     const onPointerDown = ()=>{
         //todo only left button ???maybe on spell?
 
-        if(player.world.dataModel.locked) {
+        if(player.world.uiDataModel.locked) {
 
             try {
                 spell.addTarget(player.world.pick());
             } catch (error) {
                 //todo catch only SpellError extended from Error
-                player.world.dataModel.sendMessage(error.message as string);
+                player.world.uiDataModel.sendMessage(error.message as string);
             }
         }
 
@@ -53,13 +53,13 @@ export default function setPlayerSpells(
             spell.release();
         }else {
             spell = spellFactory.createSpell(
-                player.world.dataModel.currentSpellId,
+                player.world.uiDataModel.currentSpellId,
                 (energyCost: number) => {
                     /*todo survival mode
-                     if (energyCost > dataModel.energy) {
+                     if (energyCost > uiDataModel.energy) {
                      throw new Error('Not enough resources.');
                      }
-                     dataModel.energy -= energyCost;
+                     uiDataModel.energy -= energyCost;
                      return true;*/
                 },
                 (energyGain: number) => {
@@ -83,11 +83,11 @@ export default function setPlayerSpells(
     //todo 1 adapter for events
     const onWheel = _.throttle((event:WheelEvent)=>{
         if(event.deltaY>0){
-            player.world.dataModel.currentSpellId = neighbourSpell(player.world.dataModel.currentSpellId,1);
+            player.world.uiDataModel.currentSpellId = neighbourSpell(player.world.uiDataModel.currentSpellId,1);
             createNewSpell();
         }else
         if(event.deltaY<0){
-            player.world.dataModel.currentSpellId = neighbourSpell(player.world.dataModel.currentSpellId,-1);
+            player.world.uiDataModel.currentSpellId = neighbourSpell(player.world.uiDataModel.currentSpellId,-1);
             createNewSpell();
         }
     },50, {leading:true,trailing:false});

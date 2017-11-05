@@ -1,19 +1,19 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import DataModel from '../../data-model';
+import UIDataModel from '../data-model';
 import Saver from '../../saver';
 import './style/Controlls.css';
 
 
 
-export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
+export default observer(({uiDataModel,saver}:{uiDataModel:UIDataModel,saver:Saver})=>{
     return (
         <div id="controlls">
 
-            {/*{dataModel.fps.toFixed(0)}fps*/}
-            <span style={{display:'none'}}>{dataModel.version}</span>
+            {/*{uiDataModel.fps.toFixed(0)}fps*/}
+            <span style={{display:'none'}}>{uiDataModel.version}</span>
 
-            <button onClick={()=>{saver.save();dataModel.version++}}>
+            <button onClick={()=>{saver.save();uiDataModel.version++}}>
                 Save
             </button>
 
@@ -23,10 +23,10 @@ export default observer(({dataModel,saver}:{dataModel:DataModel,saver:Saver})=>{
                         <span className="save-id">
                             {saveId}
                         </span>
-                        <button onClick={()=>{saver.load(saveId);dataModel.version++}}>
+                        <button onClick={()=>{saver.load(saveId);uiDataModel.version++}}>
                             Load
                         </button>
-                        <button onClick={()=>{saver.remove(saveId);dataModel.version++}}>
+                        <button onClick={()=>{saver.remove(saveId);uiDataModel.version++}}>
                             Delete
                         </button>
                     </li>

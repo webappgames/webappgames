@@ -1,11 +1,11 @@
 import {observable,computed} from "mobx";
-import {getCategoryFromSpellId} from '../spells/tools/index';
+import {getCategoryFromSpellId} from '../../spells/tools/index';
 
 interface IMessage{date:Date,text:string}
 interface IVector2{x:number,y:number}
 interface ILinkArea{position:IVector2,size:IVector2,title:string,url:string}
 
-export default class DataModel {
+export default class UIDataModel {
     //@observable currentSpellId = 'trolololololo';
 
     @observable version = 0;
@@ -78,7 +78,7 @@ export default class DataModel {
 /*
 todo
     Game{
-        player: DataModel
+        player: UIDataModel
         spells: Spell[]
         scenes: {...meshes....}[]
     }

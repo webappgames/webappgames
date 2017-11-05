@@ -6,7 +6,7 @@ import World from '../world/classes/World';
 import Box from '../world/classes/bricks/Box';
 import Maze from './maze/Maze';
 import mazeToBricks from './maze/mazeToBricks';
-//import DataModel from '../data-model';
+//import UIDataModel from '../data-model';
 import * as _ from 'lodash';
 
 
@@ -15,7 +15,7 @@ export default class WorldGenerator{
         private world:World
         //private player:Player,
         //private materialFactory:MaterialFactory,
-        //private dataModel:DataModel,
+        //private uiDataModel:UIDataModel,
         //private scene:BABYLON.Scene
     ){}
 
@@ -75,18 +75,18 @@ export default class WorldGenerator{
             title: '',
             url: 'https://www.itnetwork.cz/letni-programatorska-soutez-2017',
         };
-        this.world.dataModel.linkAreas.push(billboardLinkArea);
+        this.world.uiDataModel.linkAreas.push(billboardLinkArea);
 
         const updater = _.throttle(()=>{
 
             if(billboardMesh.isDisposed()){
-                //this.world.dataModel.linkAreas = this.world.dataModel.linkAreas.filter((linkArea)=>linkArea!==billboardLinkArea);
-                this.world.dataModel.linkAreas[0].position.x = -10;
-                this.world.dataModel.linkAreas[0].position.y = -10;
-                this.world.dataModel.linkAreas[0].size.x = 10;
-                this.world.dataModel.linkAreas[0].size.y = 10;
+                //this.world.uiDataModel.linkAreas = this.world.uiDataModel.linkAreas.filter((linkArea)=>linkArea!==billboardLinkArea);
+                this.world.uiDataModel.linkAreas[0].position.x = -10;
+                this.world.uiDataModel.linkAreas[0].position.y = -10;
+                this.world.uiDataModel.linkAreas[0].size.x = 10;
+                this.world.uiDataModel.linkAreas[0].size.y = 10;
                     this.world.scene.unregisterAfterRender(updater);
-                log.send(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.world.dataModel.linkAreas);
+                log.send(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.world.uiDataModel.linkAreas);
                 return;
             }
 
@@ -101,8 +101,8 @@ export default class WorldGenerator{
                 this.world.scene.activeCamera.viewport.toGlobal(canvas.clientWidth, canvas.clientHeight)
             ));
             for(let axis of ['x','y']){
-                this.world.dataModel.linkAreas[0].position[axis] = (corners[0][axis] + corners[1][axis]) / 2;
-                this.world.dataModel.linkAreas[0].size[axis] = Math.abs(corners[0][axis] - corners[1][axis]);
+                this.world.uiDataModel.linkAreas[0].position[axis] = (corners[0][axis] + corners[1][axis]) / 2;
+                this.world.uiDataModel.linkAreas[0].size[axis] = Math.abs(corners[0][axis] - corners[1][axis]);
             };
 
 

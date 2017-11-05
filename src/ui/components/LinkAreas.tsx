@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import DataModel from '../../data-model';
+import UIDataModel from '../data-model';
 import './style/LinkAreas.css';
 
 
-export default observer(({dataModel}:{dataModel:DataModel})=> {
+export default observer(({uiDataModel}:{uiDataModel:UIDataModel})=> {
     return (
         <div id="link-areas" style={{
-            display: dataModel.locked?'none':'block'
+            display: uiDataModel.locked?'none':'block'
         }}>
 
-            {dataModel.linkAreas
+            {uiDataModel.linkAreas
                 .map((linkArea,iterator)=>(
                     <a key={iterator} href={linkArea.url} target="_blank" className="link-area" style={{
                         zIndex: 30,
