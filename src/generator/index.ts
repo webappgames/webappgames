@@ -3,10 +3,10 @@ import * as BABYLON from 'babylonjs';
 import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
-import Box from '../world/classes/bricks/Box';
-import Maze from './Maze';
+//import Box from '../world/classes/bricks/Box';
+import ExtendedMaze from './Maze/ExtendedMaze';
 import Building from './Building';
-//import UIDataModel from '../data-model';
+//import UIDataModel from '../UIDataModel';
 import * as _ from 'lodash';
 
 
@@ -118,6 +118,7 @@ export default class WorldGenerator{
 
 
         //----------------------------------Building
+        /*
         //const towers = 1;
         const floors = 8;
         const size = new BABYLON.Vector3(30,15,30);
@@ -125,13 +126,6 @@ export default class WorldGenerator{
         const pillsThick = 0.3;
 
 
-        //for (let tower = 0; tower < towers; tower++) {
-        /*const rotation = tower/towers*Math.PI*2;
-        const center = new BABYLON.Vector3(
-            Math.sin(rotation)*100,
-            -10,
-            Math.cos(rotation)*100
-        );*/
         const center = new BABYLON.Vector3(
             0,
             -10,
@@ -177,7 +171,7 @@ export default class WorldGenerator{
 
 
         }
-        //}
+        */
         //----------------------------------
 
 
@@ -231,7 +225,7 @@ export default class WorldGenerator{
 
         //----------------------------------
         const building = new Building(
-            new Maze({x:8,y:8}),
+            new ExtendedMaze({x:8,y:8}),
             BABYLON.Vector3.Zero(),
             {
                 sizes: {
@@ -250,31 +244,6 @@ export default class WorldGenerator{
         console.log(building.toString());
         //----------------------------------
 
-
-        /*setInterval(()=>{
-
-
-            const boxMesh = BABYLON.Mesh.CreateSphere("box", 16,1, this.world.scene);
-            boxMesh.scaling = new BABYLON.Vector3(3,3,3);
-            boxMesh.position = new BABYLON.Vector3(0, 100 , 0);
-            boxMesh.material = this.world.materialFactory.getSound('stone-plain');
-
-
-            boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.SphereImpostor, {
-                mass: 1000,
-                restitution: 0.2
-            }, this.world.scene);
-            boxMesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,-5,100));
-
-
-
-        },4000);*/
-
-
-
     }
-
-
-
 
 }

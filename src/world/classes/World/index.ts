@@ -1,7 +1,7 @@
 //import log from '../tools/log';
 import IPickingInfo from '../../../interfaces/IPickingInfo';
 import * as BABYLON from 'babylonjs';
-import UIDataModel from '../../../data-model';
+import UIDataModel from '../../../ui/UIDataModel';
 import MaterialFactory from "./../../classes/MaterialFactory";
 import WorldGenerator from "../../../generator";
 import SoundFactory from '../SoundFactory';
