@@ -18,7 +18,23 @@ export default class BuildingDataModel{
         const horizontal:boolean[][] = [];
         const vertical:boolean[][] = [];
 
-        //todo DRY
+
+
+        for(let y = 0; y < floor.length/2-1; y++) {
+            horizontal[y] = [];
+            vertical[y] = [];
+            for (let x = 0; x < floor[y].length/2-1; x++) {
+
+
+                horizontal[y][x] = floor[y*2+0][x*2+1];
+                vertical[y][x] = floor[y*2+1][x*2+0];
+
+
+            }
+        }
+
+
+        /*//todo DRY
         for(let y = 0; y < floor.length/2+1; y++) {
             horizontal[y] = [];
             for (let x = 0; x < floor[y].length/2; x++) {
@@ -31,7 +47,7 @@ export default class BuildingDataModel{
             for (let x = 0; x < floor[y].length/2+1; x++) {
                 vertical[y][x] = floor[y*2+1][x*2+0];
             }
-        }
+        }*/
 
         return {horizontal,vertical}
 

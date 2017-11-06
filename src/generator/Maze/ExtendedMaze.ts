@@ -18,8 +18,8 @@ function finishGridExtended(grid:boolean[][],starts:IVector2[]) {
 export default class ExtendedMaze extends BuildingData{
     constructor(size:IVector2) {
         const grid = createGrid(size);
-        finishGridExtended;createStartsExtended;
-        //!todo finishGridExtended(grid,createStartsExtended(size));
+        //finishGridExtended;createStartsExtended;
+        finishGridExtended(grid,createStartsExtended(size));
         super([grid]);
     }
 }
