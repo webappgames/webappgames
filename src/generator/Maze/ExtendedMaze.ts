@@ -1,5 +1,5 @@
 import {createGrid, createStarts, finishGrid} from './PerfectMaze';
-import IVector2 from '../../interfaces/IVector2';
+import { IVector2 } from '../../interfaces/IVectors';
 import BuildingData from '../BuildingDataModel';
 
 function createStartsExtended(size:IVector2){

@@ -6,6 +6,7 @@ import World from '../world/classes/World';
 //import Box from '../world/classes/bricks/Box';
 import ExtendedMaze from './Maze/ExtendedMaze';
 import Building from './Building';
+import { BUILDING1 } from './BuildingDataModel/samples';
 //import UIDataModel from '../UIDataModel';
 import * as _ from 'lodash';
 
@@ -224,8 +225,31 @@ export default class WorldGenerator{
 
 
         //----------------------------------
-        const building = new Building(
+        ExtendedMaze;
+        /*const building = new Building(
             new ExtendedMaze({x:8,y:8}),
+            BABYLON.Vector3.Zero(),
+            {
+                sizes: {
+                    cells: {
+                        width: 15,
+                        height: 9
+                    },
+                    walls: {
+                        width: 1.5,
+                        height: 9
+                    }
+                }
+            },
+            this.world
+        );
+        console.log(building.toString());*/
+        //----------------------------------
+
+
+        //----------------------------------
+        const building = new Building(
+            BUILDING1,
             BABYLON.Vector3.Zero(),
             {
                 sizes: {
