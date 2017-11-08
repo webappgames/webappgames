@@ -2,11 +2,11 @@ import { IVector2 } from '../../interfaces/IVectors';
 
 export default class BuildingDataModel {
 
-    private _floorSizes: IVector2[];
+    //private _floorSizes: IVector2[];
 
     constructor(private _grid: boolean[][][]) {
 
-        this._floorSizes =
+        /*this._floorSizes =
         this._grid.map((floorGrid)=>{
 
             if(!(
@@ -22,18 +22,22 @@ export default class BuildingDataModel {
             };
 
 
-        });
-
+        });*/
 
 
     }
 
-
     getSubgrid(floorNumber: number, offset: IVector2): boolean[][] {
+
+        const floorSize = {
+            y: (this._grid[floorNumber].length - 1) / 2,
+            x: (this._grid[floorNumber][0].length - 1) / 2
+        };
+
         const subgrid: boolean[][] = [];
-        for (let y = 0; y < this._floorSizes[floorNumber].y; y++) {
+        for (let y = 0; y < floorSize.y+offset.x; y++) {
             subgrid[y] = [];
-            for (let x = 0; x < this._floorSizes[floorNumber].x; x++) {
+            for (let x = 0; x < floorSize.x+offset.y; x++) {
                 subgrid[y][x] = this._grid
                     [floorNumber]
                     [y * 2 + offset.y]
@@ -42,6 +46,7 @@ export default class BuildingDataModel {
         }
         return subgrid;
     }
+
 
     getPillars(floorNumber: number) {
         return this.getSubgrid(floorNumber, {x: 0, y: 0});
