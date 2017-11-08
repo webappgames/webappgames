@@ -34,13 +34,17 @@ function splitFloor(floorString: string): string[][]{
 
 export default function(buildingString:string[]):BuildingDataModel{
 
+    const grid: boolean[][][] = [];
     for(const floorString of buildingString){
+        const floorGrid: boolean[][] = [];
+        grid.push(floorGrid);
 
         console.log(floorString);
         const floorArray = splitFloor(floorString);
         console.log(floorArray);
 
         for(let y=0;y<floorArray.length;y++){
+            floorGrid[y] = [];
             for(let x=0;x<floorArray[y].length;x++){
 
 
@@ -51,8 +55,11 @@ export default function(buildingString:string[]):BuildingDataModel{
                     case '+':
                     case '-':
                     case '|':
+                        floorGrid[y][x] = true;
                         break;
-
+                    default:
+                        floorGrid[y][x] = false
+                        break;
                 }
 
 
@@ -60,14 +67,8 @@ export default function(buildingString:string[]):BuildingDataModel{
         }
 
 
-
-
-
-
-
-
     }
 
 
-    return new BuildingDataModel([[[]]]);
+    return new BuildingDataModel(grid);
 }
