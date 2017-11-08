@@ -36,7 +36,7 @@ export default function(buildingString:string[]):BuildingDataModel{
 
     for(const floorString of buildingString){
 
-
+        console.log(floorString);
         const floorArray = splitFloor(floorString);
         console.log(floorArray);
 
@@ -69,5 +69,5 @@ export default function(buildingString:string[]):BuildingDataModel{
     }
 
 
-    return new BuildingDataModel([[]]);
+    return new BuildingDataModel([[[]]]);
 }

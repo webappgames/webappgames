@@ -1,123 +1,89 @@
-import { IVector3 } from '../../interfaces/IVectors';
+import { IVector2 } from '../../interfaces/IVectors';
 
-export default class BuildingDataModel{
+export default class BuildingDataModel {
 
-    private _size: IVector3;
+    private _floorSizes: IVector2[];
 
-    constructor(private _grid: boolean[][][]){
+    constructor(private _grid: boolean[][][]) {
 
-        this._size = {
-            x: (_grid.length-1)/2,
-            y: (_grid[0].length-1)/2,
-            z: (_grid[0][0].length-1)/2
-        }
+        this._floorSizes =
+        this._grid.map((floorGrid)=>{
 
-        if(!(
-            !isNaN(this._size.x) && this._size.x>0 && this._size.x===Math.floor( this._size.x ) &&
-            !isNaN(this._size.y) && this._size.y>0 && this._size.y===Math.floor( this._size.y ) &&
-            !isNaN(this._size.z) && this._size.z>0 && this._size.z===Math.floor( this._size.z ) &&
-        )){
-            throw new Error(`Size of grid must be odd number >=3 in every dimension. Current size is ${JSON.stringify(this._size)}.`);
-        }
+            if(!(
+                floorGrid.length>=3 && floorGrid.length%2===1
+            )){
+                throw new Error(`Size of floor must be odd number >=3 in every dimension.`);
+                //todo check also whole grid
+            }
 
-        //todo maybe check also whole grid
+            return {
+                x: (floorGrid.length - 1) / 2,
+                y: (floorGrid[0].length - 1) / 2
+            };
+
+
+        });
+
+
 
     }
 
 
-    getSubgrid(offset:IVector3): boolean[][][]{
-
-        const subgrid: boolean[][][] = [];
-
-        for(let z=0;z<this._size.z;z++){
-            subgrid[z] = [];
-            for(let y=0;y<this._size.y;y++){
-                subgrid[z][y] = [];
-                for(let x=0;x<this._size.x;x++){
-
-                    subgrid[z][y][x] = false;
-
-
-                }
+    getSubgrid(floorNumber: number, offset: IVector2): boolean[][] {
+        const subgrid: boolean[][] = [];
+        for (let y = 0; y < this._floorSizes[floorNumber].y; y++) {
+            subgrid[y] = [];
+            for (let x = 0; x < this._floorSizes[floorNumber].x; x++) {
+                subgrid[y][x] = this._grid
+                    [floorNumber]
+                    [y * 2 + offset.y]
+                    [x * 2 + offset.x];
             }
         }
-
         return subgrid;
     }
 
-
-    /*
-     getPlates(){
-     }
-
-     /*getPillars(){
-     }*/
-
-
-    getWalls(floorNumber: number){
-
-        const floor = this._grid[floorNumber];
-
-        const horizontal:boolean[][] = [];
-        const vertical:boolean[][] = [];
-
-
-
-        for(let y = 0; y < floor.length/2; y++) {
-            horizontal[y] = [];
-            vertical[y] = [];
-            for (let x = 0; x < floor[0].length/2; x++) {
-
-
-                if(floor[0].length>x*2+1){
-                    horizontal[y][x] = floor[y*2+0][x*2+1];
-                }
-                if(floor.length>y*2+1){
-                    vertical[y][x] = floor[y*2+1][x*2+0];
-                }
-
-
-
-            }
-        }
-
-
-        /*//todo DRY
-        for(let y = 0; y < floor.length/2+1; y++) {
-            horizontal[y] = [];
-            for (let x = 0; x < floor[y].length/2; x++) {
-                horizontal[y][x] = floor[y*2+0][x*2+1];
-            }
-        }
-
-        for(let y = 0; y < floor.length/2; y++) {
-            vertical[y] = [];
-            for (let x = 0; x < floor[y].length/2+1; x++) {
-                vertical[y][x] = floor[y*2+1][x*2+0];
-            }
-        }*/
-
-        return {horizontal,vertical}
-
+    getPillars(floorNumber: number) {
+        return this.getSubgrid(floorNumber, {x: 0, y: 0});
     }
 
+    getPlates(floorNumber: number) {
+        this.getSubgrid(floorNumber, {x: 1, y: 1});
+    }
 
-    toString():string{
+    getWalls(floorNumber: number) {
+        const horizontal = this.getSubgrid(floorNumber, {x: 1, y: 0});
+        const vertical = this.getSubgrid(floorNumber, {x: 0, y: 1});
+        return {horizontal, vertical}
+    }
+
+    toString(): string {
+
+        const CHARS = {
+            full: [
+                ['+','---'],
+                ['|','   ']
+            ],
+            none: [
+                [' ','   '],
+                [' ','   ']
+            ],
+        };
+
         return this._grid
-            .map((floorGrid)=>BuildingDataModel.gridToString(floorGrid))
+            .map((floorGrid)=>{
+
+                let output = '';
+                for (let y = 0; y < floorGrid.length; y++) {
+                    for (let x = 0; x < floorGrid[y].length; x++) {
+                        output += floorGrid[y][x] ? CHARS.full[y%2][x%2] : CHARS.none[y%2][x%2];
+                    }
+                    output += '\n';
+                }
+                return output;
+
+            })
             .join('/n/n');
-    }
-
-
-    static gridToString(grid:boolean[][]):string {
-        let output = '';
-        for (let y = 0; y < grid.length; y++) {
-            for (let x = 0; x < grid[y].length; x++) {
-                output+=grid[y][x]?'██':'  ';
-            }
-            output+='\n';
-        }
-        return output;
     }
 
 }

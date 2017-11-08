@@ -14,6 +14,7 @@ const FLOOR0 = `
 +   +   +   +   +   +
 
 `;
+FLOOR0;
 
 
 const FLOOR1 = `
@@ -40,7 +41,7 @@ const FLOOR1 = `
 
 const BUILDING1 = fromFloorStrings([
     FLOOR1,
-    FLOOR0
+    //FLOOR0
 ]);
 
 export { BUILDING1 };
