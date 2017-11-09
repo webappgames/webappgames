@@ -11,7 +11,7 @@ import Ground from '../bricks/Ground';
 import createParticles from '../../tools/create-particles';
 import createScene from './createScene';
 import createLights from './createLights';
-import createGroundMesh from './createGroundBrick';
+import createGroundBrick from './createGroundBrick';
 import createSkyboxMesh from './createSkyboxMesh';
 import * as _ from "lodash";
 
@@ -63,8 +63,8 @@ export default class World{
         this.soundFactory = new SoundFactory(this.scene);
         this.materialFactory = new MaterialFactory(this.soundFactory,this.scene);
         this.player = new Player(this);
-        this.skyboxMesh = createSkyboxMesh(this.scene);
-        this.groundBrick = createGroundMesh(this);
+        this.skyboxMesh = createSkyboxMesh(this.scene,this.player);
+        this.groundBrick = createGroundBrick(this);
 
 
 

@@ -1,6 +1,10 @@
 import * as BABYLON from 'babylonjs';
+import Player from '../Player';
 
-export default function createSkyboxMesh(scene:BABYLON.Scene):BABYLON.AbstractMesh{
+export default function createSkyboxMesh(
+    scene: BABYLON.Scene,
+    player: Player
+):BABYLON.AbstractMesh{
     const skyboxMesh = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
     const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
@@ -10,5 +14,10 @@ export default function createSkyboxMesh(scene:BABYLON.Scene):BABYLON.AbstractMe
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     skyboxMaterial.disableLighting = true;
     skyboxMesh.material = skyboxMaterial;
+
+    scene.registerBeforeRender(()=>{
+        skyboxMesh.position = player.mesh.position;
+    });
+
     return skyboxMesh;
 }
