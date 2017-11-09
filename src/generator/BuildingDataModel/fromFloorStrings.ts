@@ -1,27 +1,42 @@
 import BuildingDataModel from './index';
 
-function splitFloor(floorString: string): string[][]{
+
+const CHARS = {
+    full: [
+        ['+','---'],
+        ['|','   ']
+    ],
+    none: [
+        [' ','   '],
+        [' ','   ']
+    ],
+};CHARS;
+
+
+function fromFroorString(floorString: string): boolean[][]{
 
     floorString = floorString.trim();
 
-    const array: string[][] = [];
+    const array: boolean[][] = [];
     let y=0;
     for(let rowString of floorString.split('\n')){
 
         array[y] = [];
         let x=0;
 
-        for(let i=0;i<rowString.length;i++){
+        for(let i=0;i<rowString.length;i+=x%2===0?3:1) {
 
-            if(array[y][x-1]!==rowString[i]){
-                array[y][x] = rowString[i];
-                x++;
+            const substring = rowString.substring(i,i+(x%2===0?1:3));
+
+            if(CHARS.full[y%2][x%2]===substring){
+                array[y][x] = true;
+
+            }else{
+                array[y][x] = false;
             }
 
+            x++;
         }
-
-
-
 
         y++;
     }
@@ -36,14 +51,14 @@ export default function(buildingString:string[]):BuildingDataModel{
 
     const grid: boolean[][][] = [];
     for(const floorString of buildingString){
-        const floorGrid: boolean[][] = [];
-        grid.push(floorGrid);
+        //const floorGrid: boolean[][] = [];
+        //grid.push(floorGrid);
 
-        console.log(floorString);
-        const floorArray = splitFloor(floorString);
-        console.log(floorArray);
+        //console.log(floorString);
+        grid.push(fromFroorString(floorString));
+        //console.log('floorArray',floorGrid);
 
-        for(let y=0;y<floorArray.length;y++){
+        /*for(let y=0;y<floorArray.length;y++){
             floorGrid[y] = [];
             for(let x=0;x<floorArray[y].length;x++){
 
@@ -64,7 +79,7 @@ export default function(buildingString:string[]):BuildingDataModel{
 
 
             }
-        }
+        }*/
 
 
     }

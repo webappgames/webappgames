@@ -33,9 +33,9 @@ export default class Building extends AbstractMultiBrick{
         const {horizontal, vertical} = building.getWalls(0);
 
         const moveBy = center.add(new BABYLON.Vector3(
-            options.sizes.cells.width * horizontal.length,
+            options.sizes.cells.width * (horizontal.length-1),
             0,
-            options.sizes.cells.width * vertical.length,
+            options.sizes.cells.width * (vertical.length-1),
         ).scale(-.5));
 
 
@@ -55,7 +55,7 @@ export default class Building extends AbstractMultiBrick{
                                 options.sizes.walls.width
                             ),
                             new BABYLON.Vector3(
-                                moveBy.x + (x + Math.cos(rotation) * .5) * options.sizes.cells.width,
+                                -moveBy.x - (x + Math.cos(rotation) * .5) * options.sizes.cells.width,
                                 moveBy.y + options.sizes.walls.height / 2,
                                 moveBy.z + (y + Math.sin(rotation) * .5) * options.sizes.cells.width
                             ),
