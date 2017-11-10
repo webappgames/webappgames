@@ -86,12 +86,12 @@ export default class Building extends AbstractMultiBrick{
                         'clay-bricks',
                         new BABYLON.Vector3(
                             options.sizes.walls.width,
-                            options.sizes.walls.height,
+                            options.sizes.cells.height,
                             options.sizes.walls.width
                         ),
                         new BABYLON.Vector3(
                             -moveBy.x - x * options.sizes.cells.width,
-                            moveBy.y  + options.sizes.walls.height / 2,
+                            moveBy.y  + options.sizes.cells.height / 2,
                             moveBy.z  + y * options.sizes.cells.width
                         )
                     ));
@@ -103,28 +103,30 @@ export default class Building extends AbstractMultiBrick{
 
 
         //---------------------------Plates
-        /*const plates = building.getFloorPlates(0);
-        for (let y = 0; y < pillars.length; y++) {
-            for (let x = 0; x < pillars[y].length; x++) {
-                if(pillars[y][x]){
+        const plateSize = new BABYLON.Vector3(
+            options.sizes.cells.width+options.sizes.walls.width,
+            options.sizes.walls.height,
+            options.sizes.cells.width+options.sizes.walls.width
+        );
+
+        const plates = building.getFloorPlates(0);
+        for (let y = 0; y < plates.length; y++) {
+            for (let x = 0; x < plates[y].length; x++) {
+                if(plates[y][x]){
                     boxes.push(new Box(
                         world,
                         'clay-bricks',
+                        plateSize,
                         new BABYLON.Vector3(
-                            options.sizes.walls.width,
-                            options.sizes.walls.height,
-                            options.sizes.walls.width
-                        ),
-                        new BABYLON.Vector3(
-                            -moveBy.x - x * options.sizes.cells.width,
-                            moveBy.y  + options.sizes.walls.height / 2,
-                            moveBy.z  + y * options.sizes.cells.width
+                            -moveBy.x - x * options.sizes.cells.width - plateSize.x/2,
+                            moveBy.y  + options.sizes.cells.height + plateSize.y/2,
+                            moveBy.z  + y * options.sizes.cells.width + plateSize.z/2
                         )
                     ));
 
                 }
             }
-        }*/
+        }
         //---------------------------
 
 

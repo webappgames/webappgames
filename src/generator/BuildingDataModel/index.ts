@@ -44,7 +44,7 @@ export default class BuildingDataModel {
     }
 
     getFloorPlates(floorNumber: number) {
-        this._getFloorSubgrid(floorNumber, {x: 1, y: 1});
+        return this._getFloorSubgrid(floorNumber, {x: 1, y: 1});
     }
 
     getFloorWalls(floorNumber: number) {
@@ -55,15 +55,30 @@ export default class BuildingDataModel {
 
     private _getFloorSubgrid(floorNumber: number, offset: IVector2): boolean[][] {
 
-        const floorSize = {
-            y: (this._grid[floorNumber].length - 1) / 2,
-            x: (this._grid[floorNumber][0].length - 1) / 2
-        };
+        const floorSize = this.getFloorSize(floorNumber);
+
+        let superoffset:number;
+        if(offset.x === 1 && offset.y ===1){
+            superoffset = -1;
+        }else{
+            superoffset = 0;
+        }
 
         const subgrid: boolean[][] = [];
-        for (let y = 0; y < floorSize.y+offset.x; y++) {
+        for (let y = 0; y < floorSize.y+offset.x+superoffset; y++) {
             subgrid[y] = [];
-            for (let x = 0; x < floorSize.x+offset.y; x++) {
+            for (let x = 0; x < floorSize.x+offset.y+superoffset; x++) {
+                /*console.log(
+                    floorSize,
+                    this._grid
+                    ,floorNumber
+                    ,x
+                    ,y
+                    ,y * 2 + offset.y
+                    ,x * 2 + offset.x
+                );*/
+                //(x<floorSize.x)
+
                 subgrid[y][x] = this._grid
                     [floorNumber]
                     [y * 2 + offset.y]

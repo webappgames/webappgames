@@ -259,7 +259,7 @@ export default class WorldGenerator{
                     },
                     walls: {
                         width: 1.5,
-                        height: 9
+                        height: 0.5
                     }
                 }
             },
