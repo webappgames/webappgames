@@ -30,15 +30,18 @@ export default class Building extends AbstractMultiBrick{
 
 
         const boxes: Box[] = [];
-        const {horizontal, vertical} = building.getWalls(0);
 
+        const floorSize = building.getFloorSize(0);
+        console.log('floorSize',floorSize);
         const moveBy = center.add(new BABYLON.Vector3(
-            options.sizes.cells.width * (horizontal.length-1),
+            options.sizes.cells.width * (floorSize.x),
             0,
-            options.sizes.cells.width * (vertical.length-1),
+            options.sizes.cells.width * (floorSize.y),
         ).scale(-.5));
 
 
+        //---------------------------Walls
+        const {horizontal, vertical} = building.getFloorWalls(0);
         [{walls: horizontal, rotation: 0}, {walls: vertical, rotation: Math.PI / 2}].forEach(({walls, rotation}) => {
 
             for (let y = 0; y < walls.length; y++) {
@@ -70,9 +73,11 @@ export default class Building extends AbstractMultiBrick{
             }
 
         });
+        //---------------------------
 
 
-        const pillars = building.getPillars(0);
+        //---------------------------Pillars
+        const pillars = building.getFloorPillars(0);
         for (let y = 0; y < pillars.length; y++) {
             for (let x = 0; x < pillars[y].length; x++) {
                 if(pillars[y][x]){
@@ -94,7 +99,33 @@ export default class Building extends AbstractMultiBrick{
                 }
             }
         }
+        //---------------------------
 
+
+        //---------------------------Plates
+        /*const plates = building.getFloorPlates(0);
+        for (let y = 0; y < pillars.length; y++) {
+            for (let x = 0; x < pillars[y].length; x++) {
+                if(pillars[y][x]){
+                    boxes.push(new Box(
+                        world,
+                        'clay-bricks',
+                        new BABYLON.Vector3(
+                            options.sizes.walls.width,
+                            options.sizes.walls.height,
+                            options.sizes.walls.width
+                        ),
+                        new BABYLON.Vector3(
+                            -moveBy.x - x * options.sizes.cells.width,
+                            moveBy.y  + options.sizes.walls.height / 2,
+                            moveBy.z  + y * options.sizes.cells.width
+                        )
+                    ));
+
+                }
+            }
+        }*/
+        //---------------------------
 
 
         super(...boxes);

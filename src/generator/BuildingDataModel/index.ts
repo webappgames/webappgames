@@ -28,7 +28,32 @@ export default class BuildingDataModel {
 
     }
 
-    getSubgrid(floorNumber: number, offset: IVector2): boolean[][] {
+    get floors():number{
+        return this._grid.length;
+    }
+
+    getFloorSize(floorNumber: number):IVector2{
+        return {
+            y: (this._grid[floorNumber].length-1)/2,
+            x: (this._grid[floorNumber][0].length-1)/2,
+        };
+    }
+
+    getFloorPillars(floorNumber: number) {
+        return this._getFloorSubgrid(floorNumber, {x: 0, y: 0});
+    }
+
+    getFloorPlates(floorNumber: number) {
+        this._getFloorSubgrid(floorNumber, {x: 1, y: 1});
+    }
+
+    getFloorWalls(floorNumber: number) {
+        const horizontal = this._getFloorSubgrid(floorNumber, {x: 1, y: 0});
+        const vertical = this._getFloorSubgrid(floorNumber, {x: 0, y: 1});
+        return {horizontal, vertical}
+    }
+
+    private _getFloorSubgrid(floorNumber: number, offset: IVector2): boolean[][] {
 
         const floorSize = {
             y: (this._grid[floorNumber].length - 1) / 2,
@@ -46,21 +71,6 @@ export default class BuildingDataModel {
             }
         }
         return subgrid;
-    }
-
-
-    getPillars(floorNumber: number) {
-        return this.getSubgrid(floorNumber, {x: 0, y: 0});
-    }
-
-    getPlates(floorNumber: number) {
-        this.getSubgrid(floorNumber, {x: 1, y: 1});
-    }
-
-    getWalls(floorNumber: number) {
-        const horizontal = this.getSubgrid(floorNumber, {x: 1, y: 0});
-        const vertical = this.getSubgrid(floorNumber, {x: 0, y: 1});
-        return {horizontal, vertical}
     }
 
     toString(): string {
