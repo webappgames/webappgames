@@ -1,17 +1,5 @@
 import BuildingDataModel from './index';
-
-
-const CHARS = {
-    full: [
-        ['+','---'],
-        ['|','   ']
-    ],
-    none: [
-        [' ','   '],
-        [' ','   ']
-    ],
-};CHARS;
-
+import { CHARS } from './config';
 
 function fromFroorString(floorString: string): boolean[][]{
 

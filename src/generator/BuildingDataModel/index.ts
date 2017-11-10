@@ -1,4 +1,5 @@
 import { IVector2 } from '../../interfaces/IVectors';
+import { CHARS } from './config';
 
 export default class BuildingDataModel {
 
@@ -63,18 +64,6 @@ export default class BuildingDataModel {
     }
 
     toString(): string {
-
-        const CHARS = {
-            full: [
-                ['+','---'],
-                ['|','   ']
-            ],
-            none: [
-                [' ','   '],
-                [' ','   ']
-            ],
-        };
-
         return this._grid
             .map((floorGrid)=>{
 
@@ -90,5 +79,4 @@ export default class BuildingDataModel {
             })
             .join('/n/n');
     }
-
 }
