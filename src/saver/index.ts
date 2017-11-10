@@ -3,7 +3,7 @@ import World from '../world/classes/World';
 //import * as download from 'downloadjs';
 import * as xmlBuilder from 'xmlbuilder';
 import {DOMParser} from 'xmldom';
-import UIDataModel from '../data-model';
+import UIDataModel from '../ui/UIDataModel';
 import {isNull} from "util";
 
 function vectorToString(vector:BABYLON.Vector3):string{

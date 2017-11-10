@@ -1,5 +1,5 @@
 import {observable,computed} from "mobx";
-import {getCategoryFromSpellId} from '../../spells/tools/index';
+import {getCategoryFromSpellId} from '../spells/tools/index';
 
 interface IMessage{date:Date,text:string}
 interface IVector2{x:number,y:number}

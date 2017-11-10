@@ -2,7 +2,7 @@ import World from './world/classes/World';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Root from './ui/components/Root';
-import UIDataModel from './data-model';
+import UIDataModel from './ui/UIDataModel';
 import Saver from './saver';
 //import registerServiceWorker from './registerServiceWorker';
 //registerServiceWorker();

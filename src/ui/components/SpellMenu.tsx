@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {spellCategories,getSpellIdsFromCategory} from '../../spells/tools/index';
-import UIDataModel from '../data-model';
+import UIDataModel from '../UIDataModel';
 import './style/SpellMenu.css';
 
 

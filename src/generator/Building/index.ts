@@ -1,6 +1,5 @@
-//todo where should be this file?
+import BuildingDataModel from '../BuildingDataModel';
 import AbstractMultiBrick from '../AbstractMultiBrick';
-import IBuilding from '../../interfaces/IBuilding';
 import World from '../../world/classes/World';
 import Box from '../../world/classes/bricks/Box';
 import * as BABYLON from 'babylonjs';
@@ -20,10 +19,10 @@ interface IBuildingOptions{
 
 export default class Building extends AbstractMultiBrick{
 
-    private _building: IBuilding;
+    private _building: BuildingDataModel;
 
     constructor(
-        building: IBuilding,
+        building: BuildingDataModel,
         center: BABYLON.Vector3,
         options: IBuildingOptions,
         world: World
@@ -31,12 +30,12 @@ export default class Building extends AbstractMultiBrick{
 
 
         const boxes: Box[] = [];
-        const {horizontal, vertical} = building.toWalls();
+        const {horizontal, vertical} = building.getWalls(0);
 
         const moveBy = center.add(new BABYLON.Vector3(
-            options.sizes.cells.width * horizontal.length,
+            options.sizes.cells.width * (horizontal.length-1),
             0,
-            options.sizes.cells.width * vertical.length,
+            options.sizes.cells.width * (vertical.length-1),
         ).scale(-.5));
 
 
@@ -56,7 +55,7 @@ export default class Building extends AbstractMultiBrick{
                                 options.sizes.walls.width
                             ),
                             new BABYLON.Vector3(
-                                moveBy.x + (x + Math.cos(rotation) * .5) * options.sizes.cells.width,
+                                -moveBy.x - (x + Math.cos(rotation) * .5) * options.sizes.cells.width,
                                 moveBy.y + options.sizes.walls.height / 2,
                                 moveBy.z + (y + Math.sin(rotation) * .5) * options.sizes.cells.width
                             ),
@@ -71,6 +70,33 @@ export default class Building extends AbstractMultiBrick{
             }
 
         });
+
+
+        const pillars = building.getPillars(0);
+        for (let y = 0; y < pillars.length; y++) {
+            for (let x = 0; x < pillars[y].length; x++) {
+                if(pillars[y][x]){
+                    boxes.push(new Box(
+                        world,
+                        'clay-bricks',
+                        new BABYLON.Vector3(
+                            options.sizes.walls.width,
+                            options.sizes.walls.height,
+                            options.sizes.walls.width
+                        ),
+                        new BABYLON.Vector3(
+                            -moveBy.x - x * options.sizes.cells.width,
+                            moveBy.y  + options.sizes.walls.height / 2,
+                            moveBy.z  + y * options.sizes.cells.width
+                        )
+                    ));
+
+                }
+            }
+        }
+
+
+
         super(...boxes);
         this._building = building;
     }

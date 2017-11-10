@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import UIDataModel from '../data-model';
+import UIDataModel from '../UIDataModel';
 //import {formatNumber} from '../../tools/number';
 import './style/Cross.css';
 

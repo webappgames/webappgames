@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import UIDataModel from '../data-model';
+import UIDataModel from '../UIDataModel';
 import './style/Stat.css';
 
 export default observer(({uiDataModel}:{uiDataModel:UIDataModel})=>{

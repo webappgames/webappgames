@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import log from '../../tools/log';
-import UIDataModel from '../data-model';
+import UIDataModel from '../UIDataModel';
 import Saver from '../../saver';
 import Cross from './Cross';
 import SpellCurrent from './SpellCurrent';

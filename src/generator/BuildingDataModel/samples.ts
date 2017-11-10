@@ -1,4 +1,4 @@
-/*
+import fromFloorStrings from './fromFloorStrings';
 
 const FLOOR0 = `
 +   +   +   +   +   +
@@ -12,36 +12,37 @@ const FLOOR0 = `
 +   +   +   +   +   +
                    
 +   +   +   +   +   +
+
 `;
+FLOOR0;
+
 
 
 const FLOOR1 = `
 +---+---+---+---+---+
-|   |   |   |   |   |
+|       |            
++       +   +---+---+
+|       |   |   |   |
 +---+---+   +---+---+
-|   |   |   |   |   |
+            |   |   |
 +---+---+   +---+---+
-|   |   |   |   |   |
+|       |   |   |   |
++   +   +   +---+---+
+|       |            
 +---+---+   +---+---+
-|   |   |   |   |   |
-+---+---+   +---+---+
-|   |   |   |   |   |
-+---+---+---+---+---+
 `;
 
-const FLOOR2 = `
+/*const FLOOR2 = `
 +   +   +   +   +---+
                     |
 +   +   +   +   +---+
                   
 +   +   +   +   + 
-`;
+`;*/
 
-export const BUILDING = [
-    FLOOR_CLOSED,
-    FLOOR_CLOSED,
-    FLOOR_CLOSED,
-    FLOOR_CLOSED,
-    FLOOR_OPENED
-];
-*/
+const BUILDING1 = fromFloorStrings([
+    FLOOR1,
+    //FLOOR0
+]);
+
+export { BUILDING1 };
