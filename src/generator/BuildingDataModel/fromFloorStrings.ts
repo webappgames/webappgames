@@ -1,11 +1,11 @@
 import BuildingDataModel from './index';
 import { CHARS } from './config';
 
-function fromFroorString(floorString: string): boolean[][]{
+function fromFroorString(floorString: string): string[][]{
 
     floorString = floorString.trim();
 
-    const array: boolean[][] = [];
+    const array: string[][] = [];
     let y=0;
     for(let rowString of floorString.split('\n')){
 
@@ -15,12 +15,13 @@ function fromFroorString(floorString: string): boolean[][]{
         for(let i=0;i<rowString.length;i+=x%2===0?3:1) {
 
             const substring = rowString.substring(i,i+(x%2===0?1:3));
+            const charConfig = CHARS.find((charConfig)=>charConfig.chars[y%2][x%2].indexOf(substring)!==-1);
 
-            if(CHARS.full[y%2][x%2]===substring){
-                array[y][x] = true;
 
+            if(typeof charConfig === 'undefined'){
+                throw new Error(`String "${substring} has no meaning in building ASCII config."`);
             }else{
-                array[y][x] = false;
+                array[y][x] = charConfig.id;
             }
 
             x++;
@@ -37,12 +38,12 @@ function fromFroorString(floorString: string): boolean[][]{
 
 export default function(buildingString:string[]):BuildingDataModel{
 
-    const grid: boolean[][][] = [];
+    const grid: string[][][] = [];
     for(const floorString of buildingString){
         //const floorGrid: boolean[][] = [];
         //grid.push(floorGrid);
 
-        //console.log(floorString);
+        console.log(floorString);
         grid.push(fromFroorString(floorString));
         //console.log('floorArray',floorGrid);
 

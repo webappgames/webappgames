@@ -1,4 +1,4 @@
-import {createGrid, createStarts, finishGrid} from './PerfectMaze';
+/*import {createGrid, createStarts, finishGrid} from './PerfectMaze';
 import { IVector2 } from '../../interfaces/IVectors';
 import BuildingData from '../BuildingDataModel';
 
@@ -22,4 +22,4 @@ export default class ExtendedMaze extends BuildingData{
         finishGridExtended(grid,createStartsExtended(size));
         super([grid]);
     }
-}
+}*/

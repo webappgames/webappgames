@@ -4,7 +4,7 @@ import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
 //import Box from '../world/classes/bricks/Box';
-import ExtendedMaze from './Maze/ExtendedMaze';
+//import ExtendedMaze from './Maze/ExtendedMaze';
 import Building from './Building';
 import { BUILDING1 } from './BuildingDataModel/samples';
 //import UIDataModel from '../UIDataModel';
@@ -225,7 +225,6 @@ export default class WorldGenerator{
 
 
         //----------------------------------
-        ExtendedMaze;
         /*const building = new Building(
             new ExtendedMaze({x:8,y:8}),
             BABYLON.Vector3.Zero(),

@@ -5,7 +5,7 @@ export default class BuildingDataModel {
 
     //private _floorSizes: IVector2[];
 
-    constructor(private _grid: boolean[][][]) {
+    constructor(private _grid: string[][][]) {
 
         /*this._floorSizes =
         this._grid.map((floorGrid)=>{
@@ -40,10 +40,17 @@ export default class BuildingDataModel {
     }
 
     getFloorPillars(floorNumber: number) {
-        return this._getFloorSubgrid(floorNumber, {x: 0, y: 0});
+        return this._getFloorSubgrid(floorNumber, 'PILLAR', {x: 0, y: 0});
     }
 
-    getFloorPlates(floorNumber: number) {
+
+    getFloorWalls(floorNumber: number) {
+        const horizontal = this._getFloorSubgrid(floorNumber, 'HORIZONTAL', {x: -1, y: 0});
+        //const vertical = this._getFloorSubgrid(floorNumber, 'VERTICAL',{x: 0, y: -1});
+        return {horizontal/*, vertical*/}
+    }
+
+    /*getFloorPlates(floorNumber: number) {
         return this._getFloorSubgrid(floorNumber, {x: 1, y: 1});
     }
 
@@ -51,38 +58,45 @@ export default class BuildingDataModel {
         const horizontal = this._getFloorSubgrid(floorNumber, {x: 1, y: 0});
         const vertical = this._getFloorSubgrid(floorNumber, {x: 0, y: 1});
         return {horizontal, vertical}
-    }
+    }*/
 
-    private _getFloorSubgrid(floorNumber: number, offset: IVector2): boolean[][] {
+    private _getFloorSubgrid(floorNumber: number, id:string, offset: IVector2): boolean[][] {
 
         const floorSize = this.getFloorSize(floorNumber);
 
-        let superoffset:number;
+
+        const subgridSize = {
+            y: floorSize.y+offset.x,
+            x: floorSize.x+offset.y
+        };
+
+
         if(offset.x === 1 && offset.y ===1){
-            superoffset = -1;
-        }else{
-            superoffset = 0;
+            subgridSize.y -= 1;
+            subgridSize.x -= 1;
+        }
+        if(offset.x === -1){
+            subgridSize.x = (floorSize.x*2)+1;
+        }
+        if(offset.y === -1){
+            subgridSize.y = (floorSize.y*2)+1;
         }
 
         const subgrid: boolean[][] = [];
-        for (let y = 0; y < floorSize.y+offset.x+superoffset; y++) {
+        for (let y = 0; y < subgridSize.y; y++) {
             subgrid[y] = [];
-            for (let x = 0; x < floorSize.x+offset.y+superoffset; x++) {
-                /*console.log(
-                    floorSize,
-                    this._grid
-                    ,floorNumber
-                    ,x
-                    ,y
-                    ,y * 2 + offset.y
-                    ,x * 2 + offset.x
-                );*/
+            for (let x = 0; x < subgridSize.x; x++) {
                 //(x<floorSize.x)
 
-                subgrid[y][x] = this._grid
+                console.log(this._grid
                     [floorNumber]
-                    [y * 2 + offset.y]
-                    [x * 2 + offset.x];
+                    [subgridSize.y===-1?y:y * 2 + offset.y]
+                    [subgridSize.x===-1?x:x * 2 + offset.x]
+                );
+                subgrid[y][x] = id===this._grid
+                    [floorNumber]
+                    [subgridSize.y===-1?y:y * 2 + offset.y]
+                    [subgridSize.x===-1?x:x * 2 + offset.x];
             }
         }
         return subgrid;
@@ -95,7 +109,11 @@ export default class BuildingDataModel {
                 let output = '';
                 for (let y = 0; y < floorGrid.length; y++) {
                     for (let x = 0; x < floorGrid[y].length; x++) {
-                        output += floorGrid[y][x] ? CHARS.full[y%2][x%2] : CHARS.none[y%2][x%2];
+
+                        const charConfig = CHARS.find((charConfig)=>charConfig.id===floorGrid[y][x])||CHARS[0];
+                        //console.log(charConfig,y,x);
+                        output += charConfig.chars[y%2][x%2][0];
+
                     }
                     output += '\n';
                 }

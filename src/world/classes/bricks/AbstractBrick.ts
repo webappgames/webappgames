@@ -6,6 +6,7 @@ import World from '../World';
 export default class AbstractBrick{
 
     public mesh:BABYLON.AbstractMesh;
+    private _isDisposed:boolean = false;
 
     constructor(
         public world:World,
@@ -55,7 +56,11 @@ export default class AbstractBrick{
         this.world.bricks = this.world.bricks.filter((mesh)=>mesh!==this);
         //todo delete spells targeting to this Brick.
         this.mesh.dispose();
+        this._isDisposed=true;
+    }
 
+    get isDisposed():boolean{
+        return this._isDisposed;
     }
 
     replaceBy(brick:AbstractBrick){
