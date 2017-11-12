@@ -70,9 +70,19 @@ export default class Grid<T> {
     getBooleanSubgrid(testValue: T): Grid<boolean> {
         const booleanGrid = new Grid<boolean>([]);
         this.iterate((value, position) => {
-            booleanGrid.setCell({x: position.y, y: position.x}, value === testValue);
+            booleanGrid.setCell({x: position.x, y: position.y}, value === testValue);
         });
         return booleanGrid;
+    }
+
+    toString():string{
+        let output = '';
+        this.iterate((val,pos)=>{
+            output += val?'██':'  ';
+        },()=>{
+            output += '\n';
+        });
+        return output;
     }
 
 }

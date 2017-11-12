@@ -48,12 +48,14 @@ export default class BuildingDataModel {
         const verticalWalls =
         this._grids[floorNumber]
             .filterSubgrid(
-                (position) => position.x % 2===0,
-                (position) => ({x: position.x / 2, y: position.y})
+                (position) => position.y % 2===0,
+                (position) => ({x: position.x, y: position.y/2})
             )
-            .getBooleanSubgrid('VERTICAL');
+            .getBooleanSubgrid('HORIZONTAL');
 
         console.log(verticalWalls);
+        console.log(this.toString());
+        console.log(verticalWalls.toString());
 
 
         const walls:IWall[] = [];
@@ -87,7 +89,7 @@ export default class BuildingDataModel {
 
 
         return (
-            verticalWalls
+            walls
         );
     }
 
