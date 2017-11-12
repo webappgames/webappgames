@@ -5,6 +5,10 @@ export default class Grid<T> {
     constructor(private _grid: T[][]) {
     }
 
+    get array(){
+        return this._grid;
+    }
+
     get length(): IVector2 {
         return {
             x: this.lengthX,

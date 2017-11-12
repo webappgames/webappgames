@@ -1,7 +1,12 @@
 import {IVector2} from '../../interfaces/IVectors';
 import {CHARS} from './config';
 import Grid from './Grid';
+import {isNull} from "util";
 
+interface IWall{
+    from:IVector2;
+    to:IVector2;
+}
 
 export default class BuildingDataModel {
 
@@ -25,8 +30,6 @@ export default class BuildingDataModel {
     }
 
     getFloorPillars(floorNumber: number) {
-        //return this._getFloorSubgrid(floorNumber, 'PILLAR', {x: 0, y: 0});
-
         return (
             this._grids[floorNumber]
                 .filterSubgrid(
@@ -37,6 +40,55 @@ export default class BuildingDataModel {
         );
 
 
+    }
+
+
+    getFloorWalls(floorNumber: number) {
+
+        const verticalWalls =
+        this._grids[floorNumber]
+            .filterSubgrid(
+                (position) => position.x % 2===0,
+                (position) => ({x: position.x / 2, y: position.y})
+            )
+            .getBooleanSubgrid('VERTICAL');
+
+        console.log(verticalWalls);
+
+
+        const walls:IWall[] = [];
+        let newWall:null|IWall = null;
+        const commitNewWall = ()=>{
+            if(!isNull(newWall)) {
+                walls.push(newWall);
+                newWall = null;
+            }
+        };
+
+        verticalWalls.iterate((val,pos)=>{
+
+            if(val){
+                if(isNull(newWall)){
+                    newWall = {from:pos,to:pos};
+                }else{
+                    newWall = {from:newWall.from,to:pos};
+                }
+
+            }else{
+                commitNewWall();
+            }
+
+        },commitNewWall);
+
+
+
+
+        console.log(walls);
+
+
+        return (
+            verticalWalls
+        );
     }
 
 
