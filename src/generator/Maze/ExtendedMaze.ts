@@ -1,6 +1,6 @@
 /*import {createGrid, createStarts, finishGrid} from './PerfectMaze';
 import { IVector2 } from '../../interfaces/IVectors';
-import BuildingData from '../BuildingDataModel';
+import BuildingDataModel from '../BuildingDataModel';
 
 function createStartsExtended(size:IVector2){
     return createStarts(size).filter((position)=>Math.random()>.5);
@@ -15,7 +15,7 @@ function finishGridExtended(grid:boolean[][],starts:IVector2[]) {
 }
 
 
-export default class ExtendedMaze extends BuildingData{
+export default class ExtendedMaze extends BuildingDataModel{
     constructor(size:IVector2) {
         const grid = createGrid(size);
         //finishGridExtended;createStartsExtended;

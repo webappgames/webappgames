@@ -68,9 +68,9 @@ export default class Building extends AbstractMultiBrick{
 
 
         //---------------------------Walls
-        const {horizontal} = building.getFloorWalls(0);
+        /*const {horizontal} = building.getFloorWalls(0);
         console.log('horizontal',horizontal);
-        /*[{walls: horizontal, rotation: 0}].forEach(({walls, rotation}) => {
+        [{walls: horizontal, rotation: 0}].forEach(({walls, rotation}) => {
 
             for (let y = 0; y < walls.length; y++) {
                 for (let x = 0; x < walls[y].length; x++) {
