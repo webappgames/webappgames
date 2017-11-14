@@ -42,7 +42,7 @@ export default class Building extends AbstractMultiBrick{
 
 
         //---------------------------Pillars
-        building.getFloorPillars(0).iterate((val,pos)=>{
+        /*building.getFloorPillars(0).iterate((val,pos)=>{
             if(val){
                 boxes.push(new Box(
                     world,
@@ -60,14 +60,14 @@ export default class Building extends AbstractMultiBrick{
                 ));
             }
 
-        });
+        });*/
         //---------------------------
 
         //---------------------------Walls
         function wallPosition(x:number){
             let position = Math.floor(x/2) * (options.sizes.cells.width + options.sizes.walls.width);
             if(x%2===1){
-                position += options.sizes.cells.width;
+                position += options.sizes.walls.width;
             }
             return position;
         }
@@ -75,9 +75,12 @@ export default class Building extends AbstractMultiBrick{
 
         building.getFloorWalls(0).forEach(({from,to})=>{
 
-            const fromX = wallPosition(from.x-1);
-            const toX = wallPosition(to.x);
-            console.log(fromX,toX);
+            const fromX = wallPosition(from.x);
+            const toX = wallPosition(to.x+1);
+
+            const fromY = wallPosition(from.y);
+            const toY = wallPosition(to.y+1);
+
 
             boxes.push(new Box(
                 world,
@@ -85,12 +88,12 @@ export default class Building extends AbstractMultiBrick{
                 new BABYLON.Vector3(
                     toX-fromX,
                     options.sizes.cells.height,
-                    options.sizes.walls.width
+                    toY-fromY//options.sizes.walls.width
                 ),
                 new BABYLON.Vector3(
                     moveBy.x + (fromX+toX)/2,
                     moveBy.y +  options.sizes.walls.height / 2,
-                    -(moveBy.z +  (from.y) * options.sizes.cells.width)
+                    -(moveBy.z +  (fromY+toY)/2)//(from.y) * options.sizes.cells.width)
                 ),
                 new BABYLON.Vector3(
                     0,

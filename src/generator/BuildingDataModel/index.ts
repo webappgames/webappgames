@@ -3,9 +3,9 @@ import {CHARS} from './config';
 import Grid from './Grid';
 import {isNull} from "util";
 
-interface IWall{
-    from:IVector2;
-    to:IVector2;
+interface IWall {
+    from: IVector2;
+    to: IVector2;
 }
 
 export default class BuildingDataModel {
@@ -29,7 +29,7 @@ export default class BuildingDataModel {
         }
     }
 
-    getFloorPillars(floorNumber: number) {
+    /*getFloorPillars(floorNumber: number) {
         return (
             this._grids[floorNumber]
                 .filterSubgrid(
@@ -40,53 +40,56 @@ export default class BuildingDataModel {
         );
 
 
-    }
+    }*/
 
 
     getFloorWalls(floorNumber: number) {
 
-        const verticalWalls =
-        this._grids[floorNumber]
-            .filterSubgrid(
-                (position) => position.y % 2===0,
-                (position) => ({x: position.x, y: position.y/2})
-            )
-            .getBooleanSubgrid('HORIZONTAL');
+        const walls: IWall[] = [];
 
-        console.log(verticalWalls);
-        console.log(this.toString());
-        console.log(verticalWalls.toString());
+        ['HORIZONTAL','VERTICAL', 'PILLAR'].forEach((cellType) => {
 
 
-        const walls:IWall[] = [];
-        let newWall:null|IWall = null;
-        const commitNewWall = ()=>{
-            if(!isNull(newWall)) {
-                walls.push(newWall);
-                newWall = null;
-            }
-        };
+            const verticalWalls =
+                this._grids[floorNumber]
+                /*.filterSubgrid(
+                    (position) => position.y % 2===0,
+                    (position) => ({x: position.x, y: position.y/2})
+                )*/
+                    .getBooleanSubgrid(cellType);
 
-        verticalWalls.iterate((val,pos)=>{
+            console.log(verticalWalls);
+            console.log(this.toString());
+            console.log(verticalWalls.toString());
 
-            if(val){
-                if(isNull(newWall)){
-                    newWall = {from:pos,to:pos};
-                }else{
-                    newWall = {from:newWall.from,to:pos};
+
+            let newWall: null | IWall = null;
+            const commitNewWall = () => {
+                if (!isNull(newWall)) {
+                    walls.push(newWall);
+                    newWall = null;
+                }
+            };
+
+            verticalWalls.iterate((val, pos) => {
+
+                if (val) {
+                    if (isNull(newWall)) {
+                        newWall = {from: pos, to: pos};
+                    } else {
+                        newWall = {from: newWall.from, to: pos};
+                    }
+
+                } else {
+                    commitNewWall();
                 }
 
-            }else{
-                commitNewWall();
-            }
-
-        },commitNewWall);
+            }, commitNewWall);
 
 
+        });
 
-
-        console.log(walls);
-
+        //console.log(walls);
 
         return (
             walls
@@ -161,13 +164,13 @@ export default class BuildingDataModel {
                 let output = '';
 
 
-                floorGrid.iterate((val,pos)=>{
+                floorGrid.iterate((val, pos) => {
 
 
                     const charConfig = CHARS.find((charConfig) => charConfig.id === val) || CHARS[0];
                     //console.log(charConfig,y,x);
                     output += charConfig.chars[pos.y % 2][pos.x % 2][0];
-                },()=>{
+                }, () => {
                     output += '\n';
                 });
 
