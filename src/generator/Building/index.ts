@@ -53,9 +53,9 @@ export default class Building extends AbstractMultiBrick{
                         options.sizes.walls.width
                     ),
                     new BABYLON.Vector3(
-                        -moveBy.x - pos.x * options.sizes.cells.width,
+                        moveBy.x + pos.x * options.sizes.cells.width,
                         moveBy.y  + options.sizes.cells.height / 2,
-                        moveBy.z  + pos.y * options.sizes.cells.width
+                        -(moveBy.z  + pos.y * options.sizes.cells.width)
                     )
                 ));
             }
@@ -65,7 +65,7 @@ export default class Building extends AbstractMultiBrick{
 
         //---------------------------Walls
         function wallPosition(x:number){
-            let position = Math.floor(x/2) * (options.sizes.cells.width * options.sizes.walls.width);
+            let position = Math.floor(x/2) * (options.sizes.cells.width + options.sizes.walls.width);
             if(x%2===1){
                 position += options.sizes.cells.width;
             }
@@ -88,9 +88,9 @@ export default class Building extends AbstractMultiBrick{
                     options.sizes.walls.width
                 ),
                 new BABYLON.Vector3(
-                    -moveBy.x - (fromX+toX)/2,
+                    moveBy.x + (fromX+toX)/2,
                     moveBy.y +  options.sizes.walls.height / 2,
-                    moveBy.z +  (from.y) * options.sizes.cells.width
+                    -(moveBy.z +  (from.y) * options.sizes.cells.width)
                 ),
                 new BABYLON.Vector3(
                     0,
