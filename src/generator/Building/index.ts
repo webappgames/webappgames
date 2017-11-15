@@ -40,30 +40,6 @@ export default class Building extends AbstractMultiBrick{
         ).scale(-.5));
         moveBy;
 
-
-        //---------------------------Pillars
-        /*building.getFloorPillars(0).iterate((val,pos)=>{
-            if(val){
-                boxes.push(new Box(
-                    world,
-                    'clay-bricks',
-                    new BABYLON.Vector3(
-                        options.sizes.walls.width,
-                        options.sizes.cells.height,
-                        options.sizes.walls.width
-                    ),
-                    new BABYLON.Vector3(
-                        moveBy.x + pos.x * options.sizes.cells.width,
-                        moveBy.y  + options.sizes.cells.height / 2,
-                        -(moveBy.z  + pos.y * options.sizes.cells.width)
-                    )
-                ));
-            }
-
-        });*/
-        //---------------------------
-
-        //---------------------------Walls
         function wallPosition(x:number){
             let position = Math.floor(x/2) * (options.sizes.cells.width + options.sizes.walls.width);
             if(x%2===1){
@@ -72,33 +48,32 @@ export default class Building extends AbstractMultiBrick{
             return position;
         }
 
+        //---------------------------Walls
+        building.getFloorWalls(0).forEach((wall)=>{
 
-        building.getFloorWalls(0).forEach(({from,to})=>{
+            const from = {
+                x: wallPosition(wall.from.x),
+                y: wallPosition(wall.from.y),
+            };
 
-            const fromX = wallPosition(from.x);
-            const toX = wallPosition(to.x+1);
-
-            const fromY = wallPosition(from.y);
-            const toY = wallPosition(to.y+1);
+            const to = {
+                x: wallPosition(wall.to.x+1),
+                y: wallPosition(wall.to.y+1),
+            };
 
 
             boxes.push(new Box(
                 world,
                 'clay-bricks',
                 new BABYLON.Vector3(
-                    toX-fromX,
+                    to.x-from.x,
                     options.sizes.cells.height,
-                    toY-fromY//options.sizes.walls.width
+                    to.y-from.y//options.sizes.walls.width
                 ),
                 new BABYLON.Vector3(
-                    moveBy.x + (fromX+toX)/2,
-                    moveBy.y +  options.sizes.walls.height / 2,
-                    -(moveBy.z +  (fromY+toY)/2)//(from.y) * options.sizes.cells.width)
-                ),
-                new BABYLON.Vector3(
-                    0,
-                    0,
-                    0
+                    moveBy.x + (from.x+to.x)/2,
+                    moveBy.y +  options.sizes.cells.height / 2,
+                    -(moveBy.z +  (from.y+to.y)/2)
                 )
             ));
 
@@ -107,76 +82,37 @@ export default class Building extends AbstractMultiBrick{
         //---------------------------
 
 
-        //---------------------------Walls
-        /*const {horizontal} = building.getFloorWalls(0);
-        console.log('horizontal',horizontal);
-        [{walls: horizontal, rotation: 0}].forEach(({walls, rotation}) => {
-
-            for (let y = 0; y < walls.length; y++) {
-                for (let x = 0; x < walls[y].length; x++) {
-
-
-                    if (walls[y][x]) {
-                        boxes.push(new Box(
-                            world,
-                            'clay-bricks',
-                            new BABYLON.Vector3(
-                                options.sizes.cells.width,// - options.wallThick,
-                                options.sizes.cells.height,
-                                options.sizes.walls.width
-                            ),
-                            new BABYLON.Vector3(
-                                -moveBy.x - (x + Math.cos(rotation) * .5) * options.sizes.cells.width,
-                                moveBy.y + options.sizes.walls.height / 2,
-                                moveBy.z + (y + Math.sin(rotation) * .5) * options.sizes.cells.width
-                            ),
-                            new BABYLON.Vector3(
-                                0,
-                                rotation,
-                                0
-                            )
-                        ));
-                    }
-                }
-            }
-
-        });*/
-        //---------------------------
-
 
         //---------------------------Walls
-        /*const {horizontal, vertical} = building.getFloorWalls(0);
-        [{walls: horizontal, rotation: 0}, {walls: vertical, rotation: Math.PI / 2}].forEach(({walls, rotation}) => {
+        building.getFloorPlates(0).forEach((wall)=>{
 
-            for (let y = 0; y < walls.length; y++) {
-                for (let x = 0; x < walls[y].length; x++) {
+            const from = {
+                x: (wallPosition(wall.from.x)+wallPosition(wall.from.x-1))/2,
+                y: (wallPosition(wall.from.y)+wallPosition(wall.from.y-1))/2
+            };
+
+            const to = {
+                x: (wallPosition(wall.to.x+1)+wallPosition(wall.to.x+2))/2,
+                y: (wallPosition(wall.to.y+1)+wallPosition(wall.to.y+2))/2
+            };
+
+            boxes.push(new Box(
+                world,
+                'clay-bricks',
+                new BABYLON.Vector3(
+                    to.x-from.x,
+                    options.sizes.walls.height,
+                    to.y-from.y
+                ),
+                new BABYLON.Vector3(
+                    moveBy.x + (from.x+to.x)/2,
+                    moveBy.y +  options.sizes.cells.height + options.sizes.walls.height / 2,
+                    -(moveBy.z +  (from.y+to.y)/2)
+                )
+            ));
 
 
-                    if (walls[y][x]) {
-                        boxes.push(new Box(
-                            world,
-                            'clay-bricks',
-                            new BABYLON.Vector3(
-                                options.sizes.cells.width,// - options.wallThick,
-                                options.sizes.cells.height,
-                                options.sizes.walls.width
-                            ),
-                            new BABYLON.Vector3(
-                                -moveBy.x - (x + Math.cos(rotation) * .5) * options.sizes.cells.width,
-                                moveBy.y + options.sizes.walls.height / 2,
-                                moveBy.z + (y + Math.sin(rotation) * .5) * options.sizes.cells.width
-                            ),
-                            new BABYLON.Vector3(
-                                0,
-                                rotation,
-                                0
-                            )
-                        ));
-                    }
-                }
-            }
-
-        });*/
+        });
         //---------------------------
 
 

@@ -18,13 +18,13 @@ FLOOR0;
 
 
 const FLOOR1 = `
-+---+-------+
-|            
-+   +   +    
-|            
+|------------
+|::: ::: :::
 |   +   +   +
-|           |
-+---+---+---+
+|:::         
+|   +   
+|:::        
+-----
 `;
 
 
@@ -58,6 +58,7 @@ const FLOOR1 = `
 `;*/
 
 const BUILDING1 = fromFloorStrings([
+    FLOOR1,
     FLOOR1,
     //FLOOR0
 ]);

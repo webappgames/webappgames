@@ -43,7 +43,7 @@ export default class BuildingDataModel {
     }*/
 
 
-    getFloorWalls(floorNumber: number) {
+    getFloorWalls(floorNumber: number): IWall[] {
 
         const walls: IWall[] = [];
 
@@ -58,9 +58,9 @@ export default class BuildingDataModel {
                 )*/
                     .getBooleanSubgrid(cellType);
 
-            console.log(verticalWalls);
-            console.log(this.toString());
-            console.log(verticalWalls.toString());
+            //console.log(verticalWalls);
+            //console.log(this.toString());
+            //console.log(verticalWalls.toString());
 
 
             let newWall: null | IWall = null;
@@ -89,11 +89,35 @@ export default class BuildingDataModel {
 
         });
 
-        //console.log(walls);
+        return walls;
+    }
 
-        return (
-            walls
-        );
+
+
+    getFloorPlates(floorNumber: number): IWall[] {
+        const walls: IWall[] = [];
+
+
+        const plateGrid =
+            this._grids[floorNumber]
+            /*.filterSubgrid(
+                (position) => position.x % 2===1&&position.y % 2===1,
+                (position) => ({x: (position.x-1)/2, y: (position.y-1)/2})
+            )*/
+                .getBooleanSubgrid('PLATE');
+
+
+        plateGrid.iterate((val,pos)=>{
+            if(val){
+                walls.push({
+                  from: pos,
+                  to: pos
+                });
+            }
+        });
+
+
+        return walls;
     }
 
 
