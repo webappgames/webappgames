@@ -1,6 +1,6 @@
-import {IVector2} from '../../interfaces/IVectors';
+/*import {IVector2} from '../../interfaces/IVectors';
 
-export default class Grid<T> {
+export default class Grid2D<T> {
 
     constructor(private _grid: T[][]) {
     }
@@ -43,8 +43,8 @@ export default class Grid<T> {
         }
     }
 
-    filterSubgrid(filterCallback: (position: IVector2) => boolean, remapCallback: (position: IVector2) => IVector2): Grid<T> {
-        const newGrid = new Grid<T>([]);
+    filterSubgrid(filterCallback: (position: IVector2) => boolean, remapCallback: (position: IVector2) => IVector2): Grid2D<T> {
+        const newGrid = new Grid2D<T>([]);
         this.iterate((value, position) => {
             if (filterCallback(position)) {
                 newGrid.setCell(remapCallback(position), value);
@@ -54,21 +54,16 @@ export default class Grid<T> {
     }
 
 
-    /*getVerticalSubgrid(grid: (string | boolean)[][],offset:number) {
-    }
-    getHorizontalSubgrid(grid: (string | boolean)[][],offset:number) {
-    }*/
-
-    rotate(): Grid<T> {
-        const rotatedGrid = new Grid<T>([]);
+    rotate(): Grid2D<T> {
+        const rotatedGrid = new Grid2D<T>([]);
         this.iterate((value, position) => {
             rotatedGrid.setCell({x: position.y, y: position.x}, value);
         });
         return rotatedGrid;
     }
 
-    getBooleanSubgrid(testValue: T): Grid<boolean> {
-        const booleanGrid = new Grid<boolean>([]);
+    getBooleanGrid(testValue: T): Grid2D<boolean> {
+        const booleanGrid = new Grid2D<boolean>([]);
         this.iterate((value, position) => {
             booleanGrid.setCell({x: position.x, y: position.y}, value === testValue);
         });
@@ -85,4 +80,4 @@ export default class Grid<T> {
         return output;
     }
 
-}
+}*/

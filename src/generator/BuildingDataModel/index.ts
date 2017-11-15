@@ -1,66 +1,21 @@
-import {IVector2} from '../../interfaces/IVectors';
+import {IVector3} from '../../interfaces/IVectors';
 import {CHARS} from './config';
-import Grid from './Grid';
+import Grid3D from './Grid3D';
 import {isNull} from "util";
 
 interface IWall {
-    from: IVector2;
-    to: IVector2;
+    from: IVector3;
+    to: IVector3;
 }
 
-export default class BuildingDataModel {
-
-    private _grids: Grid<string>[]
-
-    constructor(grid3D: string[][][]) {
-        this._grids = grid3D.map((grid2D) => new Grid(grid2D));
-    }
-
-    get floors(): number {
-        return this._grids.length;
-    }
-
-    getFloorSize(floorNumber: number): IVector2 {
-
-        const length = this._grids[floorNumber].length;
-        return {
-            x: (length.x - 1) / 2,
-            y: (length.y - 1) / 2
-        }
-    }
-
-    /*getFloorPillars(floorNumber: number) {
-        return (
-            this._grids[floorNumber]
-                .filterSubgrid(
-                    (position) => position.x % 2 === 0 && position.y % 2 === 0,
-                    (position) => ({x: position.x / 2, y: position.y / 2})
-                )
-                .getBooleanSubgrid('PILLAR')
-        );
+export default class BuildingDataModel extends Grid3D<string>{
 
 
-    }*/
-
-
-    getFloorWalls(floorNumber: number): IWall[] {
+    getWalls(): IWall[] {
 
         const walls: IWall[] = [];
 
-        ['HORIZONTAL','VERTICAL', 'PILLAR'].forEach((cellType) => {
-
-
-            const verticalWalls =
-                this._grids[floorNumber]
-                /*.filterSubgrid(
-                    (position) => position.y % 2===0,
-                    (position) => ({x: position.x, y: position.y/2})
-                )*/
-                    .getBooleanSubgrid(cellType);
-
-            //console.log(verticalWalls);
-            //console.log(this.toString());
-            //console.log(verticalWalls.toString());
+        ['HORIZONTAL','VERTICAL', 'PILLAR', 'PLATE'].forEach((cellType) => {
 
 
             let newWall: null | IWall = null;
@@ -71,7 +26,7 @@ export default class BuildingDataModel {
                 }
             };
 
-            verticalWalls.iterate((val, pos) => {
+            this.getBooleanGrid(cellType).iterate((val, pos) => {
 
                 if (val) {
                     if (isNull(newWall)) {
@@ -84,7 +39,7 @@ export default class BuildingDataModel {
                     commitNewWall();
                 }
 
-            }, commitNewWall);
+            }, commitNewWall, commitNewWall);
 
 
         });
@@ -93,125 +48,22 @@ export default class BuildingDataModel {
     }
 
 
-
-    getFloorPlates(floorNumber: number): IWall[] {
-        const walls: IWall[] = [];
-
-
-        const plateGrid =
-            this._grids[floorNumber]
-            /*.filterSubgrid(
-                (position) => position.x % 2===1&&position.y % 2===1,
-                (position) => ({x: (position.x-1)/2, y: (position.y-1)/2})
-            )*/
-                .getBooleanSubgrid('PLATE');
-
-
-        plateGrid.iterate((val,pos)=>{
-            if(val){
-                walls.push({
-                  from: pos,
-                  to: pos
-                });
-            }
-        });
-
-
-        return walls;
-    }
-
-
-    /*getFloorWalls(floorNumber: number) {
-        const horizontal = this._getFloorSubgrid(floorNumber, 'HORIZONTAL', {x: -1, y: 0});
-        //const vertical = this._getFloorSubgrid(floorNumber, 'VERTICAL',{x: 0, y: -1});
-        return {horizontal/*, vertical* /}
-    }
-
-    /*getFloorPlates(floorNumber: number) {
-        return this._getFloorSubgrid(floorNumber, {x: 1, y: 1});
-    }
-
-    getFloorWalls(floorNumber: number) {
-        const horizontal = this._getFloorSubgrid(floorNumber, {x: 1, y: 0});
-        const vertical = this._getFloorSubgrid(floorNumber, {x: 0, y: 1});
-        return {horizontal, vertical}
-    }*/
-
-
-    /*private _getFloorSubgrid(floorNumber: number, id: string, offset: IVector2): boolean[][] {
-
-
-        const floorSize = this.getFloorSize(floorNumber);
-
-
-        const subgridSize = {
-            y: floorSize.y + offset.x,
-            x: floorSize.x + offset.y
-        };
-
-
-        if (offset.x === 1 && offset.y === 1) {
-            subgridSize.y -= 1;
-            subgridSize.x -= 1;
-        }
-        if (offset.x === -1) {
-            subgridSize.x = (floorSize.x * 2) + 1;
-        }
-        if (offset.y === -1) {
-            subgridSize.y = (floorSize.y * 2) + 1;
-        }
-
-        const subgrid: boolean[][] = [];
-        for (let y = 0; y < subgridSize.y; y++) {
-            subgrid[y] = [];
-            for (let x = 0; x < subgridSize.x; x++) {
-                //(x<floorSize.x)
-
-                console.log(this._grids
-                    [floorNumber]
-                    [subgridSize.y === -1 ? y : y * 2 + offset.y]
-                    [subgridSize.x === -1 ? x : x * 2 + offset.x]
-                );
-                subgrid[y][x] = id === this._grids
-                    [floorNumber]
-                    [subgridSize.y === -1 ? y : y * 2 + offset.y]
-                    [subgridSize.x === -1 ? x : x * 2 + offset.x];
-            }
-        }
-        return subgrid;
-    }*/
 
     toString(): string {
-        return this._grids
-            .map((floorGrid) => {
+        let output = '';
 
-                let output = '';
-
-
-                floorGrid.iterate((val, pos) => {
+        this.iterate((val, pos) => {
 
 
-                    const charConfig = CHARS.find((charConfig) => charConfig.id === val) || CHARS[0];
-                    //console.log(charConfig,y,x);
-                    output += charConfig.chars[pos.y % 2][pos.x % 2][0];
-                }, () => {
-                    output += '\n';
-                });
+            const charConfig = CHARS.find((charConfig) => charConfig.id === val) || CHARS[0];
+            //console.log(charConfig,y,x);
+            output += charConfig.chars[pos.x % 2];
+        }, () => {
+            output += '\n';
+        }, () => {
+            output += '\n\n\n';
+        });
 
-
-                /*for (let y = 0; y < floorGrid.lengthY; y++) {
-                    for (let x = 0; x < floorGrid.lengthX; x++) {
-
-                        const charConfig = CHARS.find((charConfig) => charConfig.id === floorGrid[y][x]) || CHARS[0];
-                        //console.log(charConfig,y,x);
-                        output += charConfig.chars[y % 2][x % 2][0];
-
-                    }
-                    output += '\n';
-                }*/
-                return output;
-
-            })
-            .join('/n/n');
+        return output;
     }
 }
