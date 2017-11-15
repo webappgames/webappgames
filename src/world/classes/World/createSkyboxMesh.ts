@@ -1,9 +1,7 @@
 import * as BABYLON from 'babylonjs';
-import Player from '../Player';
 
 export default function createSkyboxMesh(
-    scene: BABYLON.Scene,
-    player: Player
+    scene: BABYLON.Scene
 ):BABYLON.AbstractMesh{
     const skyboxMesh = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
     const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -15,9 +13,16 @@ export default function createSkyboxMesh(
     skyboxMaterial.disableLighting = true;
     skyboxMesh.material = skyboxMaterial;
 
-    scene.registerBeforeRender(()=>{
+    //skyboxMesh.renderingGroupId = 1;
+    //skyboxMesh.applyFog = false;
+    skyboxMesh.infiniteDistance = true;
+    skyboxMaterial.disableLighting = true;
+
+
+
+    /*scene.registerBeforeRender(()=>{
         skyboxMesh.position = player.mesh.position;
-    });
+    });*/
 
     return skyboxMesh;
 }

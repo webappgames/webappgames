@@ -63,7 +63,7 @@ export default class World{
         this.soundFactory = new SoundFactory(this.scene);
         this.materialFactory = new MaterialFactory(this.soundFactory,this.scene);
         this.player = new Player(this);
-        this.skyboxMesh = createSkyboxMesh(this.scene,this.player);
+        this.skyboxMesh = createSkyboxMesh(this.scene);
         this.groundBrick = createGroundBrick(this);
 
 
