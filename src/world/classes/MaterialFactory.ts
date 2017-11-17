@@ -60,6 +60,11 @@ export default class MaterialFactory{
             //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
             material.emissiveTexture = texture;
 
+            if(materialName==='stone-bricks') {
+                material.bumpTexture = new BABYLON.Texture(process.env.PUBLIC_URL +`/assets/textures/${materialName}-bump.png`, this._scene);
+            }
+
+
             this._materialsCache.push(material);
             return material;
         }

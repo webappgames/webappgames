@@ -18,32 +18,40 @@ FLOOR0;
 
 
 const FLOOR1 = `
-|------------
-|            
-|   +   +   +
-|            
-|   +        
-|            
------        
++----        
+|::::        
+|:::+        
+|::::        
+|:::+        
+|::::        
+|:::+:::+:::+
+|::::::::::::
++:::+:::+:::+
+|::::::::::::
+|:::+:::+:::+
+|::::        
+|:::+        
+|::::        
++----        
 `;
 
 
-const FLOOR1c = `
-#############
-#############
-#############
-####         
-####         
-####         
-####           
-`;
+function createPlateString(floorString: string) {
+    let deskString = '';
+    for (let i = 0; i < floorString.length; i++) {
+        if (floorString[i] === ' ') {
+            deskString += floorString[i];
+        } else if (floorString[i] === '\n') {
+            deskString += floorString[i];
+        } else {
+            deskString += '#';
+        }
+    }
+    return deskString;
+}
 
 
-
-
-
-
-
+const FLOOR1c = createPlateString(FLOOR1);
 
 
 /*const FLOOR1 = `
@@ -77,12 +85,18 @@ const FLOOR1c = `
 const BUILDING1 = fromFloorStrings([
     FLOOR1c,
     FLOOR1,
-    FLOOR1c
+    FLOOR1c,
+    FLOOR1,
+    FLOOR1c,
+    /*FLOOR1,
+    FLOOR1c,
+    FLOOR1,
+    FLOOR1c*/
     //FLOOR0
 ]);
 
 console.log(BUILDING1);
 
-export { BUILDING1 };
+export {BUILDING1};
 
 //█

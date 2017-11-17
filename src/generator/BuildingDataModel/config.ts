@@ -1,7 +1,7 @@
 export const CHARS = [
     {
         id: 'NONE',
-        chars: [' ', '   ']
+        chars: [' ', '   ',':', ':::']
     },
     {
         id: 'PILLAR',

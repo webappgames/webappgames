@@ -68,7 +68,7 @@ export default class Building extends AbstractMultiBrick {
 
             boxes.push(new Box(
                 world,
-                'clay-bricks',
+                'stone-bricks',
                 new BABYLON.Vector3(
                     to.x - from.x,
                     to.z - from.z,
