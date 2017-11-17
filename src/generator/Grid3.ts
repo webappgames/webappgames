@@ -1,6 +1,6 @@
-import {IVector3} from '../../interfaces/IVectors';
+import {IVector3} from '../interfaces/IVectors';
 
-export default class Grid3D<T> {
+export default class Grid3<T> {
 
     constructor(private _grid: T[][][]) {
     }
@@ -46,7 +46,6 @@ export default class Grid3D<T> {
             floorCallback?: (z: number) => void) {
         for (let z = 0; z < this._grid.length; z++) {
             for (let y = 0; y < this._grid[z].length; y++) {
-                console.log(this._grid[z][y]);
                 for (let x = 0; x < this._grid[z][y].length; x++) {
                     callback(this._grid[z][y][x], {x, y, z});
                 }
@@ -56,26 +55,8 @@ export default class Grid3D<T> {
         }
     }
 
-    /*filterSubgrid(filterCallback: (position: IVector2) => boolean, remapCallback: (position: IVector2) => IVector2): Grid<T> {
-        const newGrid = new Grid<T>([]);
-        this.iterate((value, position) => {
-            if (filterCallback(position)) {
-                newGrid.setCell(remapCallback(position), value);
-            }
-        });
-        return newGrid;
-    }*/
-
-    /*rotate(): Grid<T> {
-        const rotatedGrid = new Grid<T>([]);
-        this.iterate((value, position) => {
-            rotatedGrid.setCell({x: position.y, y: position.x}, value);
-        });
-        return rotatedGrid;
-    }*/
-
-    getBooleanGrid(testValue: T): Grid3D<boolean> {
-        const booleanGrid = new Grid3D<boolean>([]);
+    getBooleanGrid(testValue: T): Grid3<boolean> {
+        const booleanGrid = new Grid3<boolean>([]);
         this.iterate((value, position) => {
             booleanGrid.setCell({x: position.x, y: position.y, z: position.z}, value === testValue);
         });

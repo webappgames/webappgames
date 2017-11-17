@@ -1,52 +1,27 @@
-import {IVector3} from '../../interfaces/IVectors';
 import {CHARS} from './config';
-import Grid3D from './Grid3D';
-import {isNull} from "util";
+import Grid3 from '../Grid3';
+import Wall from '../Wall';
 
-interface IWall {
-    from: IVector3;
-    to: IVector3;
-}
+export default class BuildingDataModel extends Grid3<string> {
+    getWalls(): Wall[] {
 
-export default class BuildingDataModel extends Grid3D<string>{
+        let wallsMixed: Wall[] = [];
 
-
-    getWalls(): IWall[] {
-
-        const walls: IWall[] = [];
-
-        ['HORIZONTAL','VERTICAL', 'PILLAR', 'PLATE'].forEach((cellType) => {
-
-
-            let newWall: null | IWall = null;
-            const commitNewWall = () => {
-                if (!isNull(newWall)) {
-                    walls.push(newWall);
-                    newWall = null;
-                }
-            };
-
-            this.getBooleanGrid(cellType).iterate((val, pos) => {
-
-                if (val) {
-                    if (isNull(newWall)) {
-                        newWall = {from: pos, to: pos};
-                    } else {
-                        newWall = {from: newWall.from, to: pos};
+        CHARS
+            .filter((charConfig) => charConfig.id !== 'NONE')
+            .forEach((charConfig) => {
+                const walls: Wall[] = [];
+                this.getBooleanGrid(charConfig.id).iterate((val, pos) => {
+                    if (val) {
+                        walls.push(new Wall(pos, pos));
                     }
+                });
+                const joinedWalls = Wall.joinWalls(walls);
+                wallsMixed = wallsMixed.concat(joinedWalls);
+            });
 
-                } else {
-                    commitNewWall();
-                }
-
-            }, commitNewWall, commitNewWall);
-
-
-        });
-
-        return walls;
+        return wallsMixed;
     }
-
 
 
     toString(): string {
