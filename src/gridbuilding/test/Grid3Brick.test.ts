@@ -1,4 +1,4 @@
-import Wall from './Wall';
+import Wall from './Grid3Brick';
 
 const wall1 = new Wall(
     {x: 0,y: 0,z: 0},

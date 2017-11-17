@@ -1,8 +1,8 @@
 import {CHARS} from './config';
 import Grid3 from '../Grid3';
-import Wall from '../Wall';
+import Wall from '../Grid3Brick';
 
-export default class BuildingDataModel extends Grid3<string> {
+export default class Building extends Grid3<string> {
     getWalls(): Wall[] {
 
         let wallsMixed: Wall[] = [];

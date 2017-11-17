@@ -56,7 +56,7 @@ const FLOOR1c = createPlateString(FLOOR1);
 
 /*const FLOOR1 = `
 --------|---+---+---+
-|:::|   |            
+|:::|   |
 +---+   |   +---+---+
             |   |   |
             +---+---|
@@ -64,7 +64,7 @@ const FLOOR1c = createPlateString(FLOOR1);
 +---+---+   +--- ---+
 |::: :::|   |   |   |
 +   +   +   +---+---+
-|::: :::|            
+|::: :::|
 +---+---+   +---+---+
             |   |   |
             +---+---+
@@ -78,8 +78,8 @@ const FLOOR1c = createPlateString(FLOOR1);
 +   +   +   +   +---+
                     |
 +   +   +   +   +---+
-                  
-+   +   +   +   + 
+
++   +   +   +   +
 `;*/
 
 const BUILDING1 = fromFloorStrings([

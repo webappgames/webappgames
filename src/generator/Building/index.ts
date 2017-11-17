@@ -1,4 +1,4 @@
-import BuildingDataModel from '../BuildingDataModel';
+import * as GridBuilding from '../../gridbuilding';
 import AbstractMultiBrick from '../AbstractMultiBrick';
 import World from '../../world/classes/World';
 import Box from '../../world/classes/bricks/Box';
@@ -19,9 +19,9 @@ interface IBuildingOptions {
 
 export default class Building extends AbstractMultiBrick {
 
-    private _building: BuildingDataModel;
+    private _building: GridBuilding.BuildingDataModel;
 
-    constructor(building: BuildingDataModel,
+    constructor(building: GridBuilding.BuildingDataModel,
                 center: BABYLON.Vector3,
                 options: IBuildingOptions,
                 world: World) {

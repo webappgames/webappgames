@@ -98,35 +98,5 @@ export default class Wall {
         }
         return newWalls;
 
-
-        /*console.log(`Joining ${originalWalls.length} walls.`);
-
-        let unaffectedWalls: Wall[] = [];
-        let newJoinedWalls:  Wall[] = [];
-
-
-        for (const originalWall of originalWalls) {
-
-            const joinableWall = unaffectedWalls.find((wall) => wall.isJoinable(originalWall));
-
-            if (typeof joinableWall === 'undefined') {
-                unaffectedWalls.push(originalWall);
-            } else {
-                console.log(`Joining`,originalWall,joinableWall);
-
-                unaffectedWalls = unaffectedWalls.filter((wall)=>wall!==joinableWall);
-
-                const newJoinedWall = originalWall.joinWith(joinableWall);
-                newJoinedWalls.push(newJoinedWall);
-
-                console.log(`Into`,newJoinedWalls);
-            }
-        }
-
-        if(newJoinedWalls.length>1){
-             newJoinedWalls = Wall.joinWalls(newJoinedWalls);
-        }
-
-        return unaffectedWalls.concat(newJoinedWalls);*/
     }
 }
