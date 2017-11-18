@@ -1,12 +1,12 @@
 import * as BABYLON from 'babylonjs';
-//import log from '../tools/log';
+import * as GridBuilding from '../gridbuilding';
 import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
 //import Box from '../world/classes/bricks/Box';
 //import ExtendedMaze from './Maze/ExtendedMaze';
 import Building from './Building';
-import { BUILDING1 } from './BuildingDataModel/samples';
+
 //import UIDataModel from '../UIDataModel';
 import * as _ from 'lodash';
 
@@ -248,22 +248,11 @@ export default class WorldGenerator{
 
         //----------------------------------
         const building = new Building(
-            BUILDING1,
+            GridBuilding.samples.BUILDING1,
             BABYLON.Vector3.Zero(),
-            {
-                sizes: {
-                    cells: {
-                        width: 15,
-                        height: 9
-                    },
-                    walls: {
-                        width: 1.5,
-                        height: 0.5
-                    }
-                }
-            },
             this.world
         );
+
         console.log(building.toString());
         //----------------------------------
 

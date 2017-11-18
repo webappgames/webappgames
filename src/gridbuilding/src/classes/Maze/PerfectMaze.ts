@@ -1,4 +1,4 @@
-import { IVector2 } from '../../interfaces/IVectors';
+/*import Vector3 from '../Vector3';
 //import BuildingData from '../BuildingDataModel';
 
 export function createGrid(size:IVector2):boolean[][]{

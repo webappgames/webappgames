@@ -1,3 +1,5 @@
+//todo remove
+
 export const CHARS = [
     {
         id: 'NONE',

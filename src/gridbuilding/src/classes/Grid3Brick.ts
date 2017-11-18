@@ -1,8 +1,9 @@
-import {IVector3} from '../interfaces/IVectors';
+import Vector3 from './Vector3';
 
+//todo name Wall vs Grid3Brick ?????????????
 export default class Wall {
-    constructor(public from: IVector3,
-                public to: IVector3) {
+    constructor(public from: Vector3,
+                public to: Vector3) {
     }
 
     isJoinable(wall2: Wall): boolean {
@@ -53,15 +54,15 @@ export default class Wall {
     joinWith(wall2: Wall): Wall {
         const wall1 = this;
         return new Wall(
-            {
-                x: Math.min(wall1.from.x, wall2.from.x),
-                y: Math.min(wall1.from.y, wall2.from.y),
-                z: Math.min(wall1.from.z, wall2.from.z),
-            }, {
-                x: Math.max(wall1.to.x, wall2.to.x),
-                y: Math.max(wall1.to.y, wall2.to.y),
-                z: Math.max(wall1.to.z, wall2.to.z),
-            }
+            new Vector3(
+                Math.min(wall1.from.x, wall2.from.x),
+                Math.min(wall1.from.y, wall2.from.y),
+                Math.min(wall1.from.z, wall2.from.z),
+            ), new Vector3(
+                Math.max(wall1.to.x, wall2.to.x),
+                Math.max(wall1.to.y, wall2.to.y),
+                Math.max(wall1.to.z, wall2.to.z),
+            )
         );
     }
 

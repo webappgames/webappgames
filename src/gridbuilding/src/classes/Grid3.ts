@@ -1,4 +1,4 @@
-import {IVector3} from '../interfaces/IVectors';
+import Vector3 from './Vector3';
 
 export default class Grid3<T> {
 
@@ -9,12 +9,12 @@ export default class Grid3<T> {
         return this._grid;
     }
 
-    get length(): IVector3 {
-        return {
-            x: this.lengthX,
-            y: this.lengthY,
-            z: this.lengthZ
-        };
+    get length(): Vector3 {
+        return new Vector3(
+            this.lengthX,
+            this.lengthY,
+            this.lengthZ
+        );
     }
 
     get lengthY(): number {
@@ -29,7 +29,7 @@ export default class Grid3<T> {
         return this._grid[0][0].length;//todo better
     }
 
-    setCell(position: IVector3, value: T) {
+    setCell(position: Vector3, value: T) {
         this._grid[position.z] = this._grid[position.z] || [];
         this._grid[position.z][position.y] = this._grid[position.z][position.y] || [];
         this._grid[position.z][position.y][position.x] = value;
@@ -41,13 +41,13 @@ export default class Grid3<T> {
         return grid1d[position.x];
     }*/
 
-    iterate(callback: (value: T, position: IVector3) => void,
+    iterate(callback: (value: T, position: Vector3) => void,
             rowCallback?: (y: number) => void,
             floorCallback?: (z: number) => void) {
         for (let z = 0; z < this._grid.length; z++) {
             for (let y = 0; y < this._grid[z].length; y++) {
                 for (let x = 0; x < this._grid[z][y].length; x++) {
-                    callback(this._grid[z][y][x], {x, y, z});
+                    callback(this._grid[z][y][x], new Vector3(x, y, z));
                 }
                 if (typeof rowCallback !== 'undefined') rowCallback(y);
             }
@@ -57,8 +57,8 @@ export default class Grid3<T> {
 
     getBooleanGrid(testValue: T): Grid3<boolean> {
         const booleanGrid = new Grid3<boolean>([]);
-        this.iterate((value, position) => {
-            booleanGrid.setCell({x: position.x, y: position.y, z: position.z}, value === testValue);
+        this.iterate((val, pos) => {
+            booleanGrid.setCell(pos, val === testValue);
         });
         return booleanGrid;
     }

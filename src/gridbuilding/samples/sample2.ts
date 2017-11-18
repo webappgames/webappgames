@@ -1,4 +1,4 @@
-import fromFloorStrings from './fromFloorStrings';
+import fromFloorStrings from '../src/classes/Building/fromFloorStrings';
 
 const FLOOR0 = `
 +   +   +   +   +   +
