@@ -1,5 +1,20 @@
+import Vector2 from '../Vector2';
 import BuildingDataModel from './index';
 import {CHARS} from './config';
+
+function createPlateString(floorString: string) {
+    let deskString = '';
+    for (let i = 0; i < floorString.length; i++) {
+        if (floorString[i] === ' ') {
+            deskString += floorString[i];
+        } else if (floorString[i] === '\n') {
+            deskString += floorString[i];
+        } else {
+            deskString += '#';
+        }
+    }
+    return deskString;
+}
 
 function fromFroorString(floorString: string): string[][] {
 
@@ -34,18 +49,16 @@ function fromFroorString(floorString: string): string[][] {
 
 }
 
-
 export default function (buildingString: string[]): BuildingDataModel {
 
     const grid: string[][][] = [];
-    for (const floorString of buildingString) {
 
-
+    buildingString.forEach((floorString,i)=>{
+        const plate = fromFroorString(createPlateString(floorString));
+        if(i===0)grid.push(plate);
         grid.push(fromFroorString(floorString));
-
-
-    }
-
+        grid.push(plate);
+    });
 
     return new BuildingDataModel(
         grid,
@@ -53,6 +66,7 @@ export default function (buildingString: string[]): BuildingDataModel {
             x: [3, 10],
             y: [3, 10],
             z: [0.5, 10],
-        }
+        },
+        new Vector2(5,5)
     );
 }

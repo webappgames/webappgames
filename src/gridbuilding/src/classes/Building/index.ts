@@ -1,4 +1,5 @@
 import {CHARS} from './config';
+import Vector2 from '../Vector2';
 import Vector3 from '../Vector3';
 import Grid3 from '../Grid3';
 import Wall from '../Grid3Brick';
@@ -13,7 +14,8 @@ interface IGridSize {
 export default class Building extends Grid3<string> {
 
     constructor(grid: string[][][],
-                public size: IGridSize) {
+                public size: IGridSize,
+                public center: Vector2) {
         super(grid);
     }
 
@@ -43,27 +45,34 @@ export default class Building extends Grid3<string> {
         if (gridCellPosition % 2 === 1) {
             position += this.size[axis][0];
         }
+        if(axis==='y'){
+            position = -position;//todo max position
+        }
         return position;
     }
 
     getBricks(): Brick[] {
 
+        const center = new Vector3(
+            //todo maybe between
+            this.positionOnGrid('x', this.center.x),
+            this.positionOnGrid('y', this.center.y),
+            0
+        )
 
         const bricks: Brick[] = [];
-
-
         this.getWalls().forEach((wall) => {
             bricks.push(new Brick(
                 new Vector3(
                     this.positionOnGrid('x', wall.from.x),
                     this.positionOnGrid('y', wall.from.y),
                     this.positionOnGrid('z', wall.from.z),
-                ),
+                ).subtract(center),
                 new Vector3(
                     this.positionOnGrid('x', wall.to.x + 1),
                     this.positionOnGrid('y', wall.to.y + 1),
                     this.positionOnGrid('z', wall.to.z + 1),
-                )
+                ).subtract(center)
             ));
         });
 
