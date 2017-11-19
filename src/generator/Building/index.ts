@@ -22,8 +22,8 @@ export default class Building extends AbstractMultiBrick {
             boxes.push(new Box(
                 world,
                 'stone-bricks',
-                BABYLON.Vector3.FromArray(brick.size.toArray()).add(moveBy),
-                BABYLON.Vector3.FromArray(brick.position.toArray()).add(moveBy)
+                new BABYLON.Vector3(brick.size.x, brick.size.z, brick.size.y).add(moveBy),
+                new BABYLON.Vector3(brick.center.x, brick.center.z, brick.center.y).add(moveBy)
             ));
         });
 

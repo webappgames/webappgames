@@ -4,7 +4,20 @@ import Grid3 from '../Grid3';
 import Wall from '../Grid3Brick';
 import Brick from '../Brick';
 
+interface IGridSize {
+    x: number[],
+    y: number[],
+    z: number[]
+}
+
 export default class Building extends Grid3<string> {
+
+    constructor(grid: string[][][],
+                public size: IGridSize) {
+        super(grid);
+    }
+
+
     getWalls(): Wall[] {
 
         let wallsMixed: Wall[] = [];
@@ -25,53 +38,33 @@ export default class Building extends Grid3<string> {
         return wallsMixed;
     }
 
-    getBricks(): Brick[]{
+    positionOnGrid(axis: string, gridCellPosition: number) {
+        let position = Math.floor(gridCellPosition / 2) * (this.size[axis][0] + this.size[axis][1]);
+        if (gridCellPosition % 2 === 1) {
+            position += this.size[axis][0];
+        }
+        return position;
+    }
 
-        const sizes = {
-          x: [1,10],
-          y: [1,10],
-          z: [1,10],
-        };
+    getBricks(): Brick[] {
+
 
         const bricks: Brick[] = [];
 
-        function wallPosition(x: number) {
-            let position = Math.floor(x / 2) * (sizes.x[0] + sizes.x[1]);
-            if (x % 2 === 1) {
-                position += sizes.x[0];
-            }
-            return position;
-        }
 
         this.getWalls().forEach((wall) => {
-
-            const from = {
-                x: wallPosition(wall.from.x),
-                y: wallPosition(wall.from.y),
-                z: wallPosition(wall.from.z),
-            };
-
-            const to = {
-                x: wallPosition(wall.to.x + 1),
-                y: wallPosition(wall.to.y + 1),
-                z: wallPosition(wall.to.z + 1),
-            };
-
-
             bricks.push(new Brick(
                 new Vector3(
-                    to.x - from.x,
-                    to.z - from.z,
-                    to.y - from.y//options.sizes.walls.width
+                    this.positionOnGrid('x', wall.from.x),
+                    this.positionOnGrid('y', wall.from.y),
+                    this.positionOnGrid('z', wall.from.z),
                 ),
                 new Vector3(
-                    +(from.x + to.x) / 2,
-                    +(from.z + to.z) / 2,
-                    -(from.y + to.y) / 2
+                    this.positionOnGrid('x', wall.to.x + 1),
+                    this.positionOnGrid('y', wall.to.y + 1),
+                    this.positionOnGrid('z', wall.to.z + 1),
                 )
             ));
-
-
         });
 
         return bricks;

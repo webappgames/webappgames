@@ -1,26 +1,26 @@
 import BuildingDataModel from './index';
-import { CHARS } from './config';
+import {CHARS} from './config';
 
-function fromFroorString(floorString: string): string[][]{
+function fromFroorString(floorString: string): string[][] {
 
     floorString = floorString.trim();
 
     const array: string[][] = [];
-    let y=0;
-    for(let rowString of floorString.split('\n')){
+    let y = 0;
+    for (let rowString of floorString.split('\n')) {
 
         array[y] = [];
-        let x=0;
+        let x = 0;
 
-        for(let i=0;i<rowString.length;i+=x%2===0?3:1) {
+        for (let i = 0; i < rowString.length; i += x % 2 === 0 ? 3 : 1) {
 
-            const substring = rowString.substring(i,i+(x%2===0?1:3));
-            const charConfig = CHARS.find((charConfig)=>charConfig.chars.indexOf(substring)!==-1);
+            const substring = rowString.substring(i, i + (x % 2 === 0 ? 1 : 3));
+            const charConfig = CHARS.find((charConfig) => charConfig.chars.indexOf(substring) !== -1);
 
 
-            if(typeof charConfig === 'undefined'){
+            if (typeof charConfig === 'undefined') {
                 throw new Error(`String "${substring}" has no meaning in building ASCII config."`);
-            }else{
+            } else {
                 array[y][x] = charConfig.id;
             }
 
@@ -35,11 +35,10 @@ function fromFroorString(floorString: string): string[][]{
 }
 
 
-
-export default function(buildingString:string[]):BuildingDataModel{
+export default function (buildingString: string[]): BuildingDataModel {
 
     const grid: string[][][] = [];
-    for(const floorString of buildingString){
+    for (const floorString of buildingString) {
 
 
         grid.push(fromFroorString(floorString));
@@ -48,5 +47,12 @@ export default function(buildingString:string[]):BuildingDataModel{
     }
 
 
-    return new BuildingDataModel(grid);
+    return new BuildingDataModel(
+        grid,
+        {
+            x: [3, 10],
+            y: [3, 10],
+            z: [0.5, 10],
+        }
+    );
 }
