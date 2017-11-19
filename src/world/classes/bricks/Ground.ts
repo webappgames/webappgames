@@ -49,7 +49,7 @@ export default class Brick extends AbstractBrick{
 
 
     set materialName(materialName:string){
-        this.mesh.material = this.world.materialFactory.getMaterial(materialName);
+        this.mesh.material = this.world.materialFactory.getBabylonMaterial(materialName);
     }
 
 }

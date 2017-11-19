@@ -23,7 +23,7 @@ export default class Pillar extends AbstractSpellOnMeshes{
         boxMesh.position = this.targets[0].pickedPoint.add(new BABYLON.Vector3(0,5,0));
         boxMesh.scaling = new BABYLON.Vector3(1,10,1);
         //boxMesh.rotation = this.targetMesh.rotation.clone();
-        boxMesh.material = this.world.materialFactory.getMaterial('stone-plain');
+        boxMesh.material = this.world.materialFactory.getBabylonMaterial('stone-plain');
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {

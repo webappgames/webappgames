@@ -65,7 +65,7 @@ export default class Plate extends AbstractSpellOnMeshes {
         boxMesh.position = middlePoint.add(new BABYLON.Vector3(0, pillar1.size.y / 2 + 1, 0));
         boxMesh.scaling = new BABYLON.Vector3(width, 1, length + 2);
         boxMesh.rotation = new BABYLON.Vector3(0, rotation, 0);
-        boxMesh.material = this.world.materialFactory.getMaterial('stone-plain');
+        boxMesh.material = this.world.materialFactory.getBabylonMaterial('stone-plain');
 
 
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {

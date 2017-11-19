@@ -1,4 +1,4 @@
-import log from '../../tools/log';
+import request from '../../tools/request';
 import * as BABYLON from 'babylonjs';
 import * as _ from 'lodash';
 import SoundFactory from './SoundFactory';
@@ -13,110 +13,151 @@ soundSettings
 
 */
 
+interface IMaterial {
+    id: string;
+    babylonMaterial: BABYLON.StandardMaterial;
+    physicsOptions: {
+        mass: number,
+        restitution: number,
+        friction: number
+    }
+}
 
 
-
-export default class MaterialFactory{
-
-
-    private _materialsCache:BABYLON.StandardMaterial[];
+export default class MaterialFactory {
 
 
-    constructor(
-        private _soundFactory:SoundFactory,
-        private _scene:BABYLON.Scene
-    ){
+    private _materialsCache: IMaterial[];
+
+
+    constructor(private _soundFactory: SoundFactory,
+                private _scene: BABYLON.Scene) {
         this._materialsCache = [];
     }
 
 
-    getMaterial(
-        materialName:string
-    ){
+    private _getMaterial(materialId: string): IMaterial {
 
+        const cashedMaterial = this._materialsCache.find((material) => material.id === materialId) || null;
 
-
-        const cashedMaterial = this._materialsCache.find((material)=>material.name === materialName)||null;
-
-        if(cashedMaterial){
+        if (cashedMaterial) {
             return cashedMaterial;
-        }else {
-            log.send(`Creating material "${materialName}".`);
+        } else {
+            console.log(`Creating material "${materialId}".`);
 
 
-            let textureScale=1;
-            if(materialName==='grass'){
-                textureScale=100;
-            }
-
-            const material = new BABYLON.StandardMaterial(materialName, this._scene);
+            const material = new BABYLON.StandardMaterial(materialId, this._scene);
             material.backFaceCulling = false;
-            const texture = new BABYLON.Texture(process.env.PUBLIC_URL +`/assets/textures/${materialName}.jpg`, this._scene);
-            texture.uScale = textureScale;
-            texture.vScale = textureScale;
-            material.diffuseTexture = texture;
-
-            material.specularColor = BABYLON.Color3.FromHexString('#ffeacb');
-            //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
-            material.emissiveTexture = texture;
-
-            if(materialName==='stone-bricks') {
-                material.bumpTexture = new BABYLON.Texture(process.env.PUBLIC_URL +`/assets/textures/${materialName}-bump.png`, this._scene);
-            }
 
 
-            this._materialsCache.push(material);
+            request(process.env.PUBLIC_URL + `/assets/materials/${materialId}/material.json`).then((result) => {
+
+                const materialConfig = JSON.parse(result);
+
+                if ('textures' in materialConfig) {
+
+
+                    for (const textureType of ['ambient', 'diffuse', 'specular', 'emissive', 'bump']) {
+                        if (textureType in materialConfig.textures) {
+
+
+                        }
+                    }
+
+
+                }
+
+
+                if ('physics' in materialConfig) {
+
+                    materialConfig.physics.mass || 1;
+
+
+                }
+
+                /*let textureScale=1;
+           if(materialId==='grass'){
+               textureScale=100;
+           }
+
+           const material = new BABYLON.StandardMaterial(materialId, this._scene);
+           material.backFaceCulling = false;
+           const texture = new BABYLON.Texture(process.env.PUBLIC_URL +`/assets/textures/${materialId}.jpg`, this._scene);
+           texture.uScale = textureScale;
+           texture.vScale = textureScale;
+           material.diffuseTexture = texture;
+
+           material.specularColor = BABYLON.Color3.FromHexString('#ffeacb');
+           //material.emissiveColor = BABYLON.Color3.FromHexString('#00ff00');
+           material.emissiveTexture = texture;
+
+           if(materialId==='stone-bricks') {
+               material.bumpTexture = new BABYLON.Texture(process.env.PUBLIC_URL +`/assets/textures/${materialId}-bump.png`, this._scene);
+           }
+
+
+           this._materialsCache.push(material);
+           return material;*/
+
+
+            });
             return material;
+
         }
-
-
     }
 
 
-    applyMaterial(mesh:BABYLON.AbstractMesh,materialName='stone-plain',impostor=BABYLON.PhysicsImpostor.BoxImpostor){
-        mesh.material = this.getMaterial(materialName);
-        if('physicsImpostor' in mesh) {
+    getBabylonMaterial(materialId: string): BABYLON.StandardMaterial {
+        return this._getMaterial(materialId).babylonMaterial;
+    }
+
+
+    applyMaterial(mesh: BABYLON.AbstractMesh, materialName = 'stone-plain', impostor = BABYLON.PhysicsImpostor.BoxImpostor) {
+        const material = this._getMaterial(materialName);
+        mesh.material = material.babylonMaterial;
+
+        if ('physicsImpostor' in mesh) {
             if (!mesh.physicsImpostor.isDisposed) {
                 mesh.physicsImpostor.dispose();
             }
         }
 
-        if(materialName==='stone-plain-ghost')return;
+        if (materialName === 'stone-plain-ghost') return;
 
         const materialPhysicOptions = {
             mass: 100,
-            restitution:0.002,
-            friction:1
+            restitution: 0.002,
+            friction: 1
         };
 
 
-        if(materialName==='stone-plain-freezed'){
+        if (materialName === 'stone-plain-freezed') {
             materialPhysicOptions.mass = 0;
         }
 
-        if(materialName==='meteorite'){
+        if (materialName === 'meteorite') {
             materialPhysicOptions.mass = 200;
         }
 
-        if(materialName==='itnetwork_summer_2017'){
+        if (materialName === 'itnetwork_summer_2017') {
             materialPhysicOptions.mass = 1;
         }
 
 
-        if(materialName==='wood-fence'){
+        if (materialName === 'wood-fence') {
             materialPhysicOptions.mass = 10;
             //materialPhysicOptions.restitution = 0;
             //materialPhysicOptions.friction = 100;
         }
 
 
-
         mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, impostor/*BABYLON.PhysicsImpostor.BoxImpostor*/, materialPhysicOptions, this._scene);
 
 
-        const stepSound = this._soundFactory.getMeshSound('step-stairs',mesh);
+        const stepSound = this._soundFactory.getMeshSound('step-stairs', mesh);
 
-        _;stepSound;
+        _;
+        stepSound;
         /*!todo const playSound = _.throttle((volume:number,playbackRate:number)=>{
 
             stepSound.setVolume(volume);
@@ -147,14 +188,10 @@ export default class MaterialFactory{
         })/**/
 
 
-
-
-
         /*sphereImpostor.registerOnPhysicsCollide(undefined, function(main, collided) {
             console.log('boom');
             stepSound.play();
         });*/
-
 
 
         /*mesh.physicsImpostor.registerBeforePhysicsStep(()=>{
@@ -162,8 +199,6 @@ export default class MaterialFactory{
             //mesh.physicsImpostor.setAngularVelocity(angularVelocity.add(new BABYLON.Vector3(.1,0,0)));
             mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,0,0));
         });*/
-
-
 
 
         /*mesh.physicsImpostor.registerBeforePhysicsStep(()=>{
@@ -189,13 +224,7 @@ export default class MaterialFactory{
         });*/
 
 
-
     }
-
-
-
-
-
 
 
 }

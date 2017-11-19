@@ -28,7 +28,7 @@ export default class SoundFactory{
 
 
         }else {
-            log.send(`Creating sound "${soundName}".`);
+            console.log(`Creating sound "${soundName}".`);
 
             const sound = new BABYLON.Sound(soundName, `${process.env.PUBLIC_URL}/assets/sound/${soundName}.mp3`, this._scene, undefined, {
                 loop: false,

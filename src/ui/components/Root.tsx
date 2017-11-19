@@ -14,7 +14,7 @@ import Stat from './Stat';
 import './style/Root+index.css';
 
 export default observer(({uiDataModel,saver}:{uiDataModel:UIDataModel,saver:Saver})=>{
-    log.send('Rendring UI.');
+    console.log('Rendring UI.');
     return(
         <div>
             <Cross uiDataModel={uiDataModel}/>{/*todo maybe use provider*/}

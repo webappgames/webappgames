@@ -15,6 +15,6 @@ export default class Bridge extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
-        //log.send('AbstractSpell!');
+        //console.log('AbstractSpell!');
     }
 }

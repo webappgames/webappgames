@@ -29,7 +29,7 @@ export default class WorldGenerator{
         mesh0.scaling.y = 1000;
         mesh0.scaling.z *= scale;
         mesh0.position = mesh1.position.subtract(new BABYLON.Vector3(0,mesh1.scaling.y/2+mesh0.scaling.y/2,0));
-        mesh0.material = this.world.materialFactory.getMaterial('clay-bricks');
+        mesh0.material = this.world.materialFactory.getBabylonMaterial('clay-bricks');
 
 
         mesh0.physicsImpostor = new BABYLON.PhysicsImpostor(mesh0, BABYLON.PhysicsImpostor.BoxImpostor, {
@@ -87,7 +87,7 @@ export default class WorldGenerator{
                 this.world.uiDataModel.linkAreas[0].size.x = 10;
                 this.world.uiDataModel.linkAreas[0].size.y = 10;
                     this.world.scene.unregisterAfterRender(updater);
-                log.send(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.world.uiDataModel.linkAreas);
+                console.log(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.world.uiDataModel.linkAreas);
                 return;
             }
 

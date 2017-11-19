@@ -52,7 +52,7 @@ window.addEventListener('keydown', function (event) {
                 !executeSubscribers(subscribersRelease,event.keyCode,false) &&
                 !executeSubscribers(subscribersFrame,event.keyCode,false)
             ){
-                log.send('Pressed unknown key.',event.keyCode);
+                console.log('Pressed unknown key.',event.keyCode);
             }
 
         }

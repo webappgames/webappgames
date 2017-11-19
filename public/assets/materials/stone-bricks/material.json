@@ -1,0 +1,14 @@
+{
+  "textures": {
+    "ambient": null,
+    "diffuse": null,
+    "specular": "stone-bricks.png",
+    "emissive": null,
+    "bump": "stone-bricks-bump.png"
+  },
+  "physics": {
+    "mass": 100,
+    "--friction": 0,
+    "--restitution": 0
+  }
+}
