@@ -1,6 +1,5 @@
-import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
-import AbstractBrick from '../../../world/classes/bricks/AbstractBrick';
+//import AbstractBrick from '../../../world/classes/bricks/AbstractBrick';
 
 export default class Plate extends AbstractSpellOnMeshes {
 
@@ -47,8 +46,8 @@ export default class Plate extends AbstractSpellOnMeshes {
     finish() {
         super.finish();
 
-
-        const pillar1 = this.targets[0].pickedBrick as AbstractBrick;
+        //!todo
+        /*const pillar1 = this.targets[0].pickedBrick as AbstractBrick;
         const pillar2 = this.targets[1].pickedBrick as AbstractBrick;
         const point1 = pillar1.position;
         const point2 = pillar2.position;
@@ -71,7 +70,7 @@ export default class Plate extends AbstractSpellOnMeshes {
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 10,
             restitution: 0.2
-        }, this.world.scene);
+        }, this.world.scene);*/
 
     }
 }

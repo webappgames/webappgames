@@ -1,4 +1,3 @@
-import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Wall extends AbstractSpellOnMeshes {
@@ -33,7 +32,8 @@ export default class Wall extends AbstractSpellOnMeshes {
     finish() {
         super.finish();
 
-
+        //!todo
+        /*
         const middlePoint = this.targets[0].pickedPoint.add(this.targets[1].pickedPoint).scale(1 / 2);
         const pointDiff = this.targets[1].pickedPoint.subtract(this.targets[0].pickedPoint);
         const length = pointDiff.length();
@@ -53,7 +53,7 @@ export default class Wall extends AbstractSpellOnMeshes {
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 10,
             restitution: 0.2
-        }, this.world.scene);
+        }, this.world.scene);*/
 
 
     }

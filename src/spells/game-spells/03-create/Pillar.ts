@@ -1,4 +1,3 @@
-import * as BABYLON from 'babylonjs';
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Pillar extends AbstractSpellOnMeshes{
@@ -19,6 +18,9 @@ export default class Pillar extends AbstractSpellOnMeshes{
 
     finish(){
         super.finish();
+
+        //!todo
+        /*
         const boxMesh = BABYLON.Mesh.CreateBox("pillar", 1, this.world.scene);
         boxMesh.position = this.targets[0].pickedPoint.add(new BABYLON.Vector3(0,5,0));
         boxMesh.scaling = new BABYLON.Vector3(1,10,1);
@@ -29,6 +31,6 @@ export default class Pillar extends AbstractSpellOnMeshes{
         boxMesh.physicsImpostor = new BABYLON.PhysicsImpostor(boxMesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 100,
             restitution: 0.2
-        }, this.world.scene);
+        }, this.world.scene);*/
     }
 }

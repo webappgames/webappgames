@@ -1,12 +1,12 @@
 {
   "textures": {
     "ambient": null,
-    "diffuse": null,
-    "specular": {
+    "diffuse": {
       "src": "grass.jpg",
       "uScale": 100,
       "vScale": 100
     },
+    "specular": null,
     "emissive": null,
     "bump": null
   }

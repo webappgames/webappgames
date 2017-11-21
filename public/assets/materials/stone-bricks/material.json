@@ -1,8 +1,8 @@
 {
   "textures": {
     "ambient": null,
-    "diffuse": null,
-    "specular": "stone-bricks.png",
+    "diffuse": "stone-bricks.png",
+    "specular": null,
     "emissive": null,
     "bump": "stone-bricks-bump.png"
   },

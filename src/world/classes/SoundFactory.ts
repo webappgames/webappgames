@@ -1,4 +1,3 @@
-import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
 //import * as _ from 'lodash';
 //import {countVolume} from '../../tools/babylon';

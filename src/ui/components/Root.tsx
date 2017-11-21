@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import log from '../../tools/log';
 import UIDataModel from '../UIDataModel';
 import Saver from '../../saver';
 import Cross from './Cross';

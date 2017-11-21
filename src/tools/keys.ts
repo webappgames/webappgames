@@ -1,5 +1,4 @@
 //todo create class not singleton
-import log from './log';
 
 class Subscriber{
     constructor(public keyCodes:number[],public callback:Function){

@@ -20,26 +20,6 @@ export default class WorldGenerator{
         //private scene:BABYLON.Scene
     ){}
 
-
-    createMesh0(mesh1:BABYLON.AbstractMesh, scale=1){
-
-        const mesh0 = BABYLON.Mesh.CreateBox("box0", 1, this.world.scene);
-        mesh0.scaling = mesh1.scaling.clone();
-        mesh0.scaling.x *= scale;
-        mesh0.scaling.y = 1000;
-        mesh0.scaling.z *= scale;
-        mesh0.position = mesh1.position.subtract(new BABYLON.Vector3(0,mesh1.scaling.y/2+mesh0.scaling.y/2,0));
-        mesh0.material = this.world.materialFactory.getBabylonMaterial('clay-bricks');
-
-
-        mesh0.physicsImpostor = new BABYLON.PhysicsImpostor(mesh0, BABYLON.PhysicsImpostor.BoxImpostor, {
-            mass: 0
-        }, this.world.scene);
-
-
-    }
-
-
     generateWorld(){
 
         //this.world.player.mesh.position.x += 5;

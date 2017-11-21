@@ -12,7 +12,7 @@ const uiElement = document.getElementById("ui") as any;
 const uiDataModel = new UIDataModel();
 
 const world = new World(canvasElement, uiDataModel);
-const saver = new Saver(world,uiDataModel);
+const saver = new Saver(world, uiDataModel);
 
 ReactDOM.render(
     <Root uiDataModel={uiDataModel} saver={saver}/>,
