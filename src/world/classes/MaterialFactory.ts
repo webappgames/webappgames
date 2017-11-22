@@ -4,6 +4,7 @@ import * as BABYLON from 'babylonjs';
 import SoundFactory from './SoundFactory';
 import {isNull} from "util";
 
+//todo class Structure
 /*
 todo material props
 
@@ -67,38 +68,24 @@ export default class MaterialFactory {
             };
 
 
-
             try {
                 const result = await request(process.env.PUBLIC_URL + `/assets/materials/${materialId}/material.json`);
                 const materialConfig = JSON.parse(result);
                 console.log(materialConfig);
 
+                const root = process.env.PUBLIC_URL + `/assets/materials/${materialId}/`;
+                const defaultTexture = parseTextureConfig(materialConfig.textures.default, root, this._scene, null);
+
                 if ('textures' in materialConfig) {
                     for (const textureType of ['ambient', 'diffuse', 'specular', 'emissive', 'bump']) {
                         if (textureType in materialConfig.textures) {
-
-                            console.log(materialConfig.textures[textureType]);
-
-                            if (typeof materialConfig.textures[textureType] === 'string') {
-                                materialConfig.textures[textureType] = {
-                                    src: materialConfig.textures[textureType]
-                                }
+                            const colorOrTexture = parseTextureConfig(materialConfig.textures[textureType], root, this._scene, defaultTexture);
+                            if(colorOrTexture instanceof BABYLON.Color3){
+                                material.babylonMaterial[textureType + 'Color'] = colorOrTexture;
+                            }else
+                            if(colorOrTexture instanceof BABYLON.Texture){
+                                material.babylonMaterial[textureType + 'Texture'] = colorOrTexture;
                             }
-                            if (isNull(materialConfig.textures[textureType])) {
-                                materialConfig.textures[textureType] = {};
-                            }
-                            if (typeof materialConfig.textures[textureType] === 'object') {
-                                if ('src' in materialConfig.textures[textureType]) {
-                                    material.babylonMaterial[textureType + 'Texture'] = new BABYLON.Texture(process.env.PUBLIC_URL + `/assets/materials/${materialId}/` + materialConfig.textures[textureType].src, this._scene);
-                                }
-
-
-                                //todo color
-                                //todo offset
-
-
-                            }
-
                         }
                     }
                 }
@@ -134,13 +121,53 @@ export default class MaterialFactory {
         this.getMaterial(materialName).then((material) => {
 
             mesh.material = material.babylonMaterial;
-            mesh.physicsImpostor.setMass(material.physicsOptions.mass);
+            //mesh.physicsImpostor.setMass(material.physicsOptions.mass);
             //todo is it ok?
-            mesh.physicsImpostor.restitution = material.physicsOptions.restitution;
-            mesh.physicsImpostor.friction = material.physicsOptions.friction;
+            //mesh.physicsImpostor.restitution = material.physicsOptions.restitution;
+            //mesh.physicsImpostor.friction = material.physicsOptions.friction;
 
         });
     }
+}
+
+
+function parseTextureConfig(textureConfig: null | string | { src?: string, color?: string, uScale?: number, vScale?: number, uOffset?: number, vOffset?: number }, root: string, scene: BABYLON.Scene, defaultTexture: BABYLON.Color3 | BABYLON.Texture | null): BABYLON.Color3 | BABYLON.Texture | null {
+    if (typeof textureConfig === 'string') {
+        if (textureConfig === 'default') {
+            return defaultTexture;
+        }
+        if (textureConfig.substring(0, 1) === '#') {
+            textureConfig = {
+                color: textureConfig
+            }
+        } else {
+            textureConfig = {
+                src: textureConfig
+            }
+        }
+    }
+    if (isNull(textureConfig)) {
+        textureConfig = {};
+    }
+    if (typeof textureConfig === 'object') {
+        if ('color' in textureConfig) {
+            return BABYLON.Color3.FromHexString(textureConfig.color as string);
+        } else if ('src' in textureConfig) {
+
+            const texture = new BABYLON.Texture(root + textureConfig.src, scene);
+            for (const textureParam of ['uScale', 'vScale', 'uOffset', 'vOffset']) {
+                if (textureParam in textureConfig) {
+                    texture[textureParam] = textureConfig[textureParam];
+                }
+            }
+
+            return texture;
+
+        }
+
+    }
+
+    return null;
 }
 
 

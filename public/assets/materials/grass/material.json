@@ -1,13 +1,8 @@
 {
   "textures": {
-    "ambient": null,
-    "diffuse": {
-      "src": "grass.jpg",
-      "uScale": 100,
-      "vScale": 100
-    },
-    "specular": null,
-    "emissive": null,
-    "bump": null
+    "default": "grass.jpg",
+    "diffuse": "default",
+    "specular": "#ffeacb",
+    "emissive": "default"
   }
 }
