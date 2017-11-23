@@ -7,6 +7,6 @@ export default function createGroundMesh(
 
     return new Ground(
         world,
-        'grass'
+        'DirtyIcySnow'
     );
 }
