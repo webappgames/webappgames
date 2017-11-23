@@ -10,10 +10,10 @@ import pillar from './03-create/Pillar';
 import wall from './03-create/Wall';
 import plate from './03-create/Plate';
 //import bridge from './03-create/Bridge';
-import freeze from './04-hide/Freeze';
+//import freeze from './04-hide/Freeze';
 import dispose from './04-hide/Dispose';
-import ghost from './04-hide/Ghost';
-import revive from './04-hide/Revive';
+//import ghost from './04-hide/Ghost';
+//import revive from './04-hide/Revive';
 import reduce from './05-transform/Reduce';
 import grow from './05-transform/Grow';
 import chop from './05-transform/Chop';
@@ -46,10 +46,10 @@ export default {
         //bridge,
     },
     hide: {
-        freeze,
+        //freeze,
         dispose,
-        ghost,
-        revive,
+        //ghost,
+        //revive,
     },
     transform: {
         reduce,

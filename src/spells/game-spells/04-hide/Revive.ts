@@ -1,4 +1,4 @@
-//import * as BABYLON from 'babylonjs';
+/*todo!
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Revive extends AbstractSpellOnMeshes{
@@ -18,4 +18,4 @@ export default class Revive extends AbstractSpellOnMeshes{
         super.finish();
         this.firstTargetBrick.materialName = 'stone-plain';//todo original material
     }
-}
+}*/

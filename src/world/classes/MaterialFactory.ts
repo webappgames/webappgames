@@ -2,6 +2,7 @@ import request from '../../tools/request';
 import * as BABYLON from 'babylonjs';
 //import * as _ from 'lodash';
 import SoundFactory from './SoundFactory';
+import Structure from "./Structure";
 import {isNull} from "util";
 
 //todo class Structure
@@ -31,68 +32,66 @@ const DEFAULT_PHYSICS_OPTIONS = {
     friction: 1
 };
 
-
+//todo rename to StructuresFactory
 export default class MaterialFactory {
 
 
-    private _materialsCache: IMaterial[];
+    private _structuresCache: Structure[];
 
 
     constructor(private _soundFactory: SoundFactory,
                 private _scene: BABYLON.Scene) {
         this._soundFactory;//todo remove
-        this._materialsCache = [];
+        this._structuresCache = [];
     }
 
 
-    async getMaterial(materialId: string): Promise<IMaterial> {
+    async getStructure(materialId: string): Promise<Structure> {
 
-        const cashedMaterial = this._materialsCache.find((material) => material.id === materialId) || null;
+        const cashedMaterial = this._structuresCache.find((material) => material.id === materialId) || null;
 
         if (cashedMaterial) {
             return cashedMaterial;
         } else {
-            console.log(`Creating material "${materialId}".`);
+            console.log(`Creating structure "${materialId}".`);
 
             const babylonMaterial = new BABYLON.StandardMaterial(materialId, this._scene);
             babylonMaterial.backFaceCulling = false;//todo repair mesh builder
 
-            let material: IMaterial = {
+            let structure: IMaterial = {
                 id: materialId,
                 babylonMaterial,
-                physicsOptions: {
-                    mass: 1,
-                    restitution: 0.002,
-                    friction: 1
-                }
+                physicsOptions: Object.assign({},DEFAULT_PHYSICS_OPTIONS)
             };
 
 
             try {
                 const result = await request(process.env.PUBLIC_URL + `/assets/materials/${materialId}/material.json`);
-                const materialConfig = JSON.parse(result);
-                console.log(materialConfig);
+                const structureConfig = JSON.parse(result);
+                console.log(structureConfig);
 
                 const root = process.env.PUBLIC_URL + `/assets/materials/${materialId}/`;
-                const defaultTexture = parseTextureConfig(materialConfig.textures.default, root, this._scene, null);
+                const defaultTexture = parseTextureConfig(structureConfig.textures.default, root, this._scene, null);
 
-                if ('textures' in materialConfig) {
+                if ('textures' in structureConfig) {
                     for (const textureType of ['ambient', 'diffuse', 'specular', 'emissive', 'bump']) {
-                        if (textureType in materialConfig.textures) {
-                            const colorOrTexture = parseTextureConfig(materialConfig.textures[textureType], root, this._scene, defaultTexture);
+                        if (textureType in structureConfig.textures) {
+                            const colorOrTexture = parseTextureConfig(structureConfig.textures[textureType], root, this._scene, defaultTexture);
                             if(colorOrTexture instanceof BABYLON.Color3){
-                                material.babylonMaterial[textureType + 'Color'] = colorOrTexture;
+                                structure.babylonMaterial[textureType + 'Color'] = colorOrTexture;
                             }else
                             if(colorOrTexture instanceof BABYLON.Texture){
-                                material.babylonMaterial[textureType + 'Texture'] = colorOrTexture;
+                                structure.babylonMaterial[textureType + 'Texture'] = colorOrTexture;
                             }
                         }
                     }
                 }
 
 
-                if ('physics' in materialConfig) {
-                    //materialConfig.physics.mass || 1;
+                if ('physics' in structureConfig) {
+                    for (const physicsOption of ['mass', 'restitution', 'friction']) {
+                        structure.physicsOptions[physicsOption] = structureConfig.physics[physicsOption] || structure.physicsOptions[physicsOption];
+                    }
                 }
 
             } catch (error) {
@@ -101,14 +100,14 @@ export default class MaterialFactory {
             }
 
 
-            this._materialsCache.push(material);
-            return material;
+            this._structuresCache.push(structure);
+            return structure;
 
         }
     }
 
 
-    applyMaterial(mesh: BABYLON.AbstractMesh, materialName = 'stone-plain', impostor = BABYLON.PhysicsImpostor.BoxImpostor) {
+    /*applyMaterial(mesh: BABYLON.AbstractMesh, materialName = 'stone-plain', impostor = BABYLON.PhysicsImpostor.BoxImpostor) {
 
         if ('physicsImpostor' in mesh) {
             if (!mesh.physicsImpostor.isDisposed) {
@@ -118,7 +117,7 @@ export default class MaterialFactory {
         mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, impostor, DEFAULT_PHYSICS_OPTIONS, this._scene);
 
 
-        this.getMaterial(materialName).then((material) => {
+        this.getStructure(materialName).then((material) => {
 
             mesh.material = material.babylonMaterial;
             //mesh.physicsImpostor.setMass(material.physicsOptions.mass);
@@ -127,7 +126,8 @@ export default class MaterialFactory {
             //mesh.physicsImpostor.friction = material.physicsOptions.friction;
 
         });
-    }
+    }*/
+
 }
 
 

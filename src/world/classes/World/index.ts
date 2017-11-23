@@ -164,6 +164,8 @@ export default class World{
     //todo create class Disaster, or move to worldGenerator - move to separate file
     setMeteoriteTarget(target:BABYLON.Vector3|AbstractBrick){
 
+        createParticles;
+        /*todo!
         let targetPoint: BABYLON.Vector3;
         if(target instanceof BABYLON.Vector3){
             targetPoint = target;
@@ -224,6 +226,8 @@ export default class World{
             }, 500);
 
         },2000);
+
+        */
 
     }
 

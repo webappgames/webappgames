@@ -1,49 +1,58 @@
 //import log from '../../tools/log';
 import * as BABYLON from 'babylonjs';
 import World from '../World';
+import Structure from '../Structure';
 
 //todo maybe extend from BABYLON.AbstractMesh
-export default class AbstractBrick{
+export default class AbstractBrick {
 
-    public mesh:BABYLON.AbstractMesh;
-    private _isDisposed:boolean = false;
+    public mesh: BABYLON.AbstractMesh;
+    private _isDisposed: boolean = false;
 
-    constructor(
-        public world:World,
-        private _originalMaterialName:string,
-        private _size:BABYLON.Vector3 = BABYLON.Vector3.Zero()
-
-    ){
+    constructor(public world: World,
+                public materialId: string,
+                private _size: BABYLON.Vector3 = BABYLON.Vector3.Zero()) {
         this.createBabylonMesh();
-        this.materialName = this._originalMaterialName;
         this.world.bricks.push(this);
+        this.world.materialFactory.getStructure(materialId).then((structure) => {
+            this.applyStructure(structure);
+        });
     }
 
-    get size():BABYLON.Vector3{
+    applyStructure(structure: Structure) {
+        this.mesh.material = structure.babylonMaterial;
+        this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.mesh, this.physicsImpostor, structure.physicsOptions, this.world.scene);
+    }
+
+    get physicsImpostor():number {
+        throw new Error('This getter should be overwritten.');
+    }
+
+    get size(): BABYLON.Vector3 {
         return this._size;
     }
 
-    get position():BABYLON.Vector3{
+    get position(): BABYLON.Vector3 {
         return BABYLON.Vector3.Zero();
     }
 
-    get rotation():BABYLON.Vector3{
+    get rotation(): BABYLON.Vector3 {
         return BABYLON.Vector3.Zero();
     }
 
-    get linearVelocity():BABYLON.Vector3{
+    get linearVelocity(): BABYLON.Vector3 {
         return BABYLON.Vector3.Zero();
     }
 
-    get angularVelocity():BABYLON.Vector3{
+    get angularVelocity(): BABYLON.Vector3 {
         return BABYLON.Vector3.Zero();
     }
 
-    set linearVelocity(linearVelocity:BABYLON.Vector3){
+    set linearVelocity(linearVelocity: BABYLON.Vector3) {
         throw new Error('Cannot set linearVelocity of AbstractBrick.');
     }
 
-    set angularVelocity(angularVelocity:BABYLON.Vector3){
+    set angularVelocity(angularVelocity: BABYLON.Vector3) {
         throw new Error('Cannot set angularVelocity of AbstractBrick.');
     }
 
@@ -52,52 +61,48 @@ export default class AbstractBrick{
         throw new Error('This method should be overwritten.');
     }
 
-    dispose(){
-        this.world.bricks = this.world.bricks.filter((mesh)=>mesh!==this);
+    dispose() {
+        this.world.bricks = this.world.bricks.filter((mesh) => mesh !== this);
         //todo delete spells targeting to this Brick.
         this.mesh.dispose();
-        this._isDisposed=true;
+        this._isDisposed = true;
     }
 
-    get isDisposed():boolean{
+    get isDisposed(): boolean {
         return this._isDisposed;
     }
 
-    replaceBy(brick:AbstractBrick){
+    replaceBy(brick: AbstractBrick) {
         //todo replace spells targeting to this Brick.
         this.dispose();
 
     }
 
-    clone():AbstractBrick{
+    clone(): AbstractBrick {
         throw new Error('This method should be overwritten.');
     }
 
-    set materialName(materialName:string){
-        this.world.materialFactory.applyMaterial(this.mesh,materialName);
-    }
-
-    get volume():number{
+    get volume(): number {
         return NaN;
     }
 
-    get energy():number{
+    get energy(): number {
         return this.energyPotential + this.energyKinetics;
     }
 
-    get energyPotential():number{
+    get energyPotential(): number {
         return NaN;
     }
 
-    get energyKinetics():number{
+    get energyKinetics(): number {
         return this.energyKineticsLinear + this.energyKineticsAngular;
     }
 
-    get energyKineticsLinear():number{
+    get energyKineticsLinear(): number {
         return NaN;
     }
 
-    get energyKineticsAngular():number{
+    get energyKineticsAngular(): number {
         return NaN;
     }
 

@@ -1,4 +1,4 @@
-//import * as BABYLON from 'babylonjs';
+/*todo!
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Ghost extends AbstractSpellOnMeshes{
@@ -16,4 +16,4 @@ export default class Ghost extends AbstractSpellOnMeshes{
         super.finish();
         this.firstTargetBrick.materialName = 'stone-plain-ghost';
     }
-}
+}*/

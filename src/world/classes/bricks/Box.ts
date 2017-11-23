@@ -24,10 +24,14 @@ export default class Box extends AbstractBrickFinite{
         this.mesh = BABYLON.MeshBuilder.CreateBox('BoxBrick', meshOptions, this.world.scene);
     }
 
+    get physicsImpostor():number {
+        return BABYLON.PhysicsImpostor.BoxImpostor;
+    }
+
     clone():AbstractBrick{
         return new Box(
             this.world,
-            this.materialName,
+            this.materialId,
             this.size.clone(),
             this.position.clone(),
             this.rotation.clone(),

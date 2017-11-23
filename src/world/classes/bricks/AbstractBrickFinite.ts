@@ -1,6 +1,7 @@
 import * as BABYLON from 'babylonjs';
 import World from '../World';
 import AbstractBrick from './AbstractBrick';
+import Structure from '../Structure';
 
 export default class AbstractBrickFinite extends AbstractBrick{
     public mesh:BABYLON.AbstractMesh;
@@ -22,10 +23,13 @@ export default class AbstractBrickFinite extends AbstractBrick{
         );
         this.mesh.position = this._position;
         this.mesh.rotation = this._rotation;
-        this.mesh.physicsImpostor.setLinearVelocity(this._linearVelocity);
-        this.mesh.physicsImpostor.setAngularVelocity(this._angularVelocity);
     }
 
+    applyStructure(structure:Structure){
+            super.applyStructure(structure);
+            this.mesh.physicsImpostor.setLinearVelocity(this._linearVelocity);
+            this.mesh.physicsImpostor.setAngularVelocity(this._angularVelocity);
+    }
 
     get position():BABYLON.Vector3{
         return this._position;

@@ -2,17 +2,18 @@
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 import Box from '../../../world/classes/bricks/Box';
 
-export default class AbstractResize extends AbstractSpellOnMeshes{
+export default class AbstractResize extends AbstractSpellOnMeshes {
 
     public EFFECT_COLORS = {
         color1: '#45ff00',
         color2: '#8000ff'
     };
 
-    get price():number{
+    get price(): number {
         return 0;
     }
-    get scaling():number{
+
+    get scaling(): number {
         return 1;
     }
 
@@ -22,7 +23,7 @@ export default class AbstractResize extends AbstractSpellOnMeshes{
         this.firstTargetBrick.replaceBy(
             new Box(
                 this.world,
-                this.firstTargetBrick.materialName,
+                this.firstTargetBrick.materialId,
                 this.firstTargetBrick.size.scale(this.scaling),
                 this.firstTargetBrick.position.clone(),
                 this.firstTargetBrick.rotation.clone(),

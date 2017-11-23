@@ -1,4 +1,4 @@
-//import * as BABYLON from 'babylonjs';
+/*todo!
 import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 
 export default class Freeze extends AbstractSpellOnMeshes{
@@ -20,4 +20,4 @@ export default class Freeze extends AbstractSpellOnMeshes{
         super.finish();
         this.firstTargetBrick.materialName = 'stone-plain-freezed';
     }
-}
+}*/
