@@ -53,9 +53,9 @@ export default function (buildingString: string[]): BuildingDataModel {
 
     const grid: string[][][] = [];
 
-    buildingString.forEach((floorString,i)=>{
+    buildingString.forEach((floorString, i) => {
         const plate = fromFroorString(createPlateString(floorString));
-        if(i===0)grid.push(plate);
+        //if(i===0)grid.push(plate);
         grid.push(fromFroorString(floorString));
         grid.push(plate);
     });
@@ -65,8 +65,8 @@ export default function (buildingString: string[]): BuildingDataModel {
         {
             x: [3, 10],
             y: [3, 10],
-            z: [0.5, 10],
+            z: [10, 0.5],//[0.5, 10],
         },
-        new Vector2(5,5)
+        new Vector2(5, 5)
     );
 }

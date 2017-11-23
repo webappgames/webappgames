@@ -52,7 +52,7 @@ export default class Brick extends AbstractBrick {
         //-------------
         this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.mesh, BABYLON.PhysicsImpostor.BoxImpostor, {
             mass: 0,
-            restitution: 0.1
+            restitution: 0
         }, this.world.scene);
         //-------------
 
