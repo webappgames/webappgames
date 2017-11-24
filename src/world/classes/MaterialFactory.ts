@@ -68,7 +68,7 @@ export default class MaterialFactory {
             try {
                 const result = await request(process.env.PUBLIC_URL + `/assets/materials/${materialId}/material.json`);
                 const structureConfig = JSON.parse(result);
-                console.log(structureConfig);
+                //console.log(structureConfig);
 
                 const root = process.env.PUBLIC_URL + `/assets/materials/${materialId}/`;
                 const defaultTexture = parseTextureConfig(structureConfig.textures.default, root, this._scene, null);

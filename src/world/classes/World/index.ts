@@ -165,7 +165,7 @@ export default class World{
     setMeteoriteTarget(target:BABYLON.Vector3|AbstractBrick){
 
         createParticles;
-        /*todo!
+        /*
         let targetPoint: BABYLON.Vector3;
         if(target instanceof BABYLON.Vector3){
             targetPoint = target;

@@ -21,7 +21,7 @@ export default class Building extends AbstractMultiBrick {
         building.getBricks().forEach((brick) => {
             boxes.push(new Box(
                 world,
-                'DamagedConcrete',
+                'SloppyBricks',
                 new BABYLON.Vector3(brick.size.x, brick.size.z, brick.size.y).add(moveBy),
                 new BABYLON.Vector3(brick.center.x, brick.center.z, brick.center.y).add(moveBy)
             ));
