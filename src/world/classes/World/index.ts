@@ -8,6 +8,7 @@ import SoundFactory from '../SoundFactory';
 import Player from '../Player';
 import AbstractBrick from '../bricks/AbstractBrick';
 import Ground from '../bricks/Ground';
+import Sphere from '../bricks/Sphere';
 import createParticles from '../../tools/create-particles';
 import createScene from './createScene';
 import createLights from './createLights';
@@ -164,8 +165,7 @@ export default class World{
     //todo create class Disaster, or move to worldGenerator - move to separate file
     setMeteoriteTarget(target:BABYLON.Vector3|AbstractBrick){
 
-        createParticles;
-        /*
+
         let targetPoint: BABYLON.Vector3;
         if(target instanceof BABYLON.Vector3){
             targetPoint = target;
@@ -176,9 +176,6 @@ export default class World{
             return;
         }
 
-        const meteoriteMesh = BABYLON.Mesh.CreateSphere("box", 1, 1, this.scene);
-        //meteoriteMesh.isVisible = false;
-        meteoriteMesh.scaling = new BABYLON.Vector3(4,4,4);
 
         const awayRotation = Math.random()*Math.PI*2;
 
@@ -187,15 +184,15 @@ export default class World{
             Math.random()*100,
             Math.sin(awayRotation)*100
         );
-        meteoriteMesh.position = targetPoint.add(away);
 
 
-        this.materialFactory.applyMaterial(meteoriteMesh,'meteorite');
-
-        meteoriteMesh.physicsImpostor.setLinearVelocity(
-            away.scale(-2).add(new BABYLON.Vector3(0,30,0))
-        );
-        meteoriteMesh.physicsImpostor.setAngularVelocity(
+        const meteorite = new Sphere(
+            this,
+            'Meteorite',
+            new BABYLON.Vector3(4,4,4),
+            away,
+            BABYLON.Vector3.Zero(),
+            away.scale(-2).add(new BABYLON.Vector3(0,30,0)),
             new BABYLON.Vector3(
                 Math.random()*Math.PI*2*7,
                 Math.random()*Math.PI*2*7,
@@ -203,8 +200,9 @@ export default class World{
             )
         );
 
+
         const particles = createParticles(
-            meteoriteMesh,
+            meteorite.mesh,
             {
                 color1: '#ff0000',
                 color2: '#ffd32d',
@@ -216,18 +214,20 @@ export default class World{
             this.scene
         );
 
+
+
         setTimeout(()=> {
 
             particles.stop();
 
             setTimeout(() => {
                 particles.dispose();
-                meteoriteMesh.dispose();
+                meteorite.dispose();
             }, 500);
 
         },2000);
 
-        */
+
 
     }
 
