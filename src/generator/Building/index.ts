@@ -1,4 +1,4 @@
-import * as GridBuilding from '../../gridbuilding';
+import * as GridBuilding from 'gridbuilding';
 import AbstractMultiBrick from '../AbstractMultiBrick';
 import World from '../../world/classes/World';
 import Box from '../../world/classes/bricks/Box';
