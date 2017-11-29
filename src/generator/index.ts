@@ -1,12 +1,11 @@
 import * as BABYLON from 'babylonjs';
-import * as GridBuilding from '../gridbuilding';
+import * as GridBuilding from 'gridbuilding';
 import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
 //import Box from '../world/classes/bricks/Box';
 //import ExtendedMaze from './Maze/ExtendedMaze';
 import Building from './Building';
-
 //import UIDataModel from '../UIDataModel';
 import * as _ from 'lodash';
 
@@ -227,8 +226,91 @@ export default class WorldGenerator{
 
 
         //----------------------------------
+        const FLOOR1 = `
++:::+:::+:::+:::+:::+:::+::::::::
+::::::::::::::::::::::::::::::::|
++:::+:::+:::+:::+:::+:::+::::::::
+:::::        
+::::+        
+:::::        
++:::+:::+:::+
+:::::::::::::
++:::+:::+:::+
+:::::::::::::
++:::+:::+:::+
+:::::        
+:::::        
+:::::       
++:::+        
+`;
+
+
+        const FLOOR2 = `
+|-------------------------------|
+|:::::::::::::::::::::::::::::::|
+|:::|---------------------------|
+|:::|        
+|:::|        
+|:::|        
+|:::|--------
+|:::::::::::|
+|:::+:::+:::|
+|:::::::::::|
+|:::|--------
+|:::|        
+:::::        
+:::::       
+-----        
+`;
+
+
+
+        const FLOOR3 = `
+:        
+         
+         
+         
+         
+         
+---------
+|:::::::|
+|:::::::|
+|:::::::| 
+--------- 
+`;
+
+
+        const FLOOR4 = `
+:        
+         
+         
+         
+         
+         
++:::+:::+
+:::::::::
++:::+:::+
+:::::::::
++:::+:::+
+`;
+        FLOOR4;
+
+
+
+
+
+        const BUILDING1 = GridBuilding.Building.fromFloorStrings([
+            FLOOR1,
+            FLOOR2,
+            FLOOR2,
+            FLOOR3,
+            //FLOOR3,
+            //FLOOR3,
+            //FLOOR4,
+        ]);
+
         const building = new Building(
-            GridBuilding.samples.BUILDING1,
+            BUILDING1,
             BABYLON.Vector3.Zero(),
             this.world
         );
