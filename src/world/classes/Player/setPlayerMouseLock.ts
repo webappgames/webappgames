@@ -41,19 +41,21 @@ export default function setPlayerMouseLock(
     }
 
     //todo to config
-    const cameraRotationXLimitMin = Math.PI * -.5*.9,
-        cameraRotationXLimitMax = Math.PI * 0.5*.9;
+    const cameraRotationAlphaLimitMin = Math.PI * -.5 * .9;
+    const cameraRotationAlphaLimitMax = Math.PI * 0.5 * .9;
 
     function mouseMoveLocked(event:MouseEvent) {
-            const x = event.movementX,
-                  y = event.movementY;
-            const alpha = y/500,
-                  beta = x/500;
+        const x = event.movementX;
+        const    y = event.movementY;
+        let alpha = y / 1500;
+        let  beta = x / 1500;
 
-            camera.rotation.x += alpha;
-            camera.rotation.y += beta;
-            if(camera.rotation.x<cameraRotationXLimitMin)camera.rotation.x=cameraRotationXLimitMin;
-            if(camera.rotation.x>cameraRotationXLimitMax)camera.rotation.x=cameraRotationXLimitMax;
+        if (alpha < cameraRotationAlphaLimitMin) alpha = cameraRotationAlphaLimitMin;
+        if (alpha > cameraRotationAlphaLimitMax) alpha = cameraRotationAlphaLimitMax;
+        alpha;beta;
+
+        camera.cameraRotation.x += alpha;
+        camera.cameraRotation.y += beta;
 
     }
 
