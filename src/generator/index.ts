@@ -243,6 +243,7 @@ export default class WorldGenerator{
 :::::       
 +:::+        
 `;
+        FLOOR1;
 
 
         const FLOOR2 = `
@@ -262,6 +263,7 @@ export default class WorldGenerator{
 :::::       
 -----        
 `;
+        FLOOR2;
 
 
 
@@ -278,6 +280,7 @@ export default class WorldGenerator{
 |:::::::| 
 --------- 
 `;
+        FLOOR3;
 
 
         const FLOOR4 = `
@@ -300,13 +303,13 @@ export default class WorldGenerator{
 
 
         const BUILDING1 = GridBuilding.Building.fromFloorStrings([
-            FLOOR1,
-            FLOOR2,
-            FLOOR2,
-            FLOOR3,
+            //FLOOR1,
+            //FLOOR2,
+            //FLOOR2,
             //FLOOR3,
             //FLOOR3,
-            //FLOOR4,
+            //FLOOR3,
+            FLOOR4,
         ]);
 
         const building = new Building(

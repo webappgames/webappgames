@@ -1,7 +1,7 @@
 {
   "name": "babylon-react-app",
   "version": "0.1.0",
-  "homepage": "http://misc.pavolhejny.com/barcamp",
+  "homepage": "http://hejny.guthub.io/webappgames",
   "private": false,
   "dependencies": {
     "@types/downloadjs": "^1.4.0",

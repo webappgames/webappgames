@@ -14,6 +14,8 @@ const uiDataModel = new UIDataModel();
 const world = new World(canvasElement, uiDataModel);
 const saver = new Saver(world, uiDataModel);
 
+console.log(world);
+
 ReactDOM.render(
     <Root uiDataModel={uiDataModel} saver={saver}/>,
     uiElement

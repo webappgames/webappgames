@@ -21,7 +21,7 @@ export default class Player{
         public world:World
     ){
 
-        this.camera = createCamera(world.scene);
+        this.camera = createCamera(world);
 
         this.mesh = BABYLON.Mesh.CreateSphere("player", 16,1, world.scene);
         this.mesh.isVisible = false;
@@ -45,8 +45,11 @@ export default class Player{
         });
 
 
-        setPlayerMouseLock(this.world.canvasElement,this.camera,this.world.uiDataModel);
-        setPlayerMovement(this);
+        if (!this.world.webVR) {
+            setPlayerMouseLock(this.world.canvasElement, this.camera, this.world.uiDataModel);
+            setPlayerMovement(this);
+        }
+
         setPlayerSpells(this);
 
 

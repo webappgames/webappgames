@@ -1,8 +1,8 @@
 #current-spell{
     z-index: 20;
     position: fixed;
-    left: 25vw;
-    bottom: 50vh;
+    right: 10px;
+    bottom: 10px;
 
     text-transform: uppercase;
 
