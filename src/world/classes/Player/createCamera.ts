@@ -51,10 +51,26 @@ export default function createCamera(world: World): BABYLON.FreeCamera {
                 const controllerMesh = BABYLON.Mesh.CreateSphere("SphereBrick", 16, 0.1, world.scene);
                 controllerMesh.scaling.z = 10;
 
+                controllerMesh.setPivotMatrix(BABYLON.Matrix.Translation(0, 0, 0.02));
+
                 //controllerMesh.position = controller.devicePosition;
 
                 function updatePositon() {
-                    controllerMesh.position = controller.devicePosition;//.scale(4);
+
+                    /*const {x,y,z,w} = controller.deviceRotationQuaternion.scale(-1);
+                    const direction = new BABYLON.Vector3(
+                       2 * (x * z - w * y),
+                    2 * (y * z + w * x),
+                    1 - 2 * (x * x + y * y)
+                    );*/
+
+
+                    controllerMesh.position =
+                        controller.devicePosition
+                    /* .add(
+                         direction
+                             .scale(1)
+                     );*/
                     controllerMesh.rotationQuaternion = controller.deviceRotationQuaternion;
                     /*drawingTool.update(new DrawingPoint(
                         controller.devicePosition,
