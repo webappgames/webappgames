@@ -8,6 +8,8 @@ export default function setPlayerMouseLock(
     uiDataModel:UIDataModel
 ){
 
+    console.log(`Setting player mouse lock.`);
+
     //todo add event listener
     canvasElement.addEventListener("pointerdown",
         (event)=>{

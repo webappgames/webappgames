@@ -1,12 +1,14 @@
-import {subscribeKeys,SubscriberModes} from '../../../tools/keys';
+import {subscribeKeys, SubscriberModes} from '../../../tools/keys';
 import * as BABYLON from 'babylonjs';
 import Player from './index';
-import {KEYMAP,PLAYER} from '../../../config';
+import {KEYMAP, PLAYER} from '../../../config';
 
 
 export default function setPlayerMovement(
     player:Player
 ){
+
+    console.log(`Setting player movement.`);
 
     subscribeKeys(KEYMAP.FORWARD,SubscriberModes.FRAME,()=>{
 

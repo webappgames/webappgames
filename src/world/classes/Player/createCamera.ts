@@ -48,7 +48,7 @@ export default function createCamera(world: World): BABYLON.FreeCamera {
                 });
 
 
-                const controllerMesh = BABYLON.Mesh.CreateSphere("SphereBrick", 16, 0.2, world.scene);
+                const controllerMesh = BABYLON.Mesh.CreateSphere("SphereBrick", 16, 0.1, world.scene);
                 controllerMesh.scaling.z = 10;
 
                 //controllerMesh.position = controller.devicePosition;

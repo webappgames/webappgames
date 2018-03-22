@@ -22,7 +22,6 @@ export default class Player{
     ){
 
         this.camera = createCamera(world);
-
         this.mesh = BABYLON.Mesh.CreateSphere("player", 16,1, world.scene);
         this.mesh.isVisible = false;
         this.mesh.position =  new BABYLON.Vector3(0, 2, 0);
@@ -38,20 +37,32 @@ export default class Player{
         stepSound.setVolume(2);//todo to global sound config
         this._playStepSound = _.throttle(()=>stepSound.play(),400, {leading:true,trailing:false});
 
-        //todo Is thare better solution for angular friction?
-        this.mesh.physicsImpostor.registerAfterPhysicsStep(()=>{
-            this.camera.position =  this.mesh.position;
-            this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-        });
 
 
         if (!this.world.webVR) {
+
+            //todo Is thare better solution for angular friction?
+            this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
+                this.camera.position = this.mesh.position;
+                this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+            });
+
+
             setPlayerMouseLock(this.world.canvasElement, this.camera, this.world.uiDataModel);
             setPlayerMovement(this);
+
+
+        } else {
+
+            this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
+                this.mesh.position = this.camera.position.clone();
+            });
+
+
         }
 
-        setPlayerSpells(this);
 
+        setPlayerSpells(this);
 
 
     }
