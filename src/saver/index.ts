@@ -30,7 +30,7 @@ function findNode(parent: Element, tagName: string): Element {
         }
     }
     console.log(parent);
-    throw new Error(`Thare is no child element with tagname "${tagName}".`);
+    throw new Error(`There is no child element with tagname "${tagName}".`);
 }
 
 export default class {
@@ -57,8 +57,8 @@ export default class {
         world.element('player', {
             position: vectorToString(this.world.player.mesh.position),
             //todo rotation: vectorToString(this.world.playerMesh.rotation),
-            'velocity-linear': vectorToString(this.world.player.mesh.physicsImpostor.getLinearVelocity()),
-            'velocity-angular': vectorToString(this.world.player.mesh.physicsImpostor.getAngularVelocity()),
+            'velocity-linear': vectorToString(this.world.player.mesh.physicsImpostor!.getLinearVelocity()!),
+            'velocity-angular': vectorToString(this.world.player.mesh.physicsImpostor!.getAngularVelocity()!),
         });
 
 
@@ -94,7 +94,7 @@ export default class {
         } else {
             this.world.cleanScene();
 
-            switch (world.attributes.getNamedItem('version').value) {
+            switch (world.attributes.getNamedItem('version')!.value) {
                 case '0.1':
 
                     //const playerMesh = this.getPlayer();

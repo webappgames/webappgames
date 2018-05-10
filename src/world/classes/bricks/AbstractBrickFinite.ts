@@ -27,8 +27,8 @@ export default class AbstractBrickFinite extends AbstractBrick{
 
     applyStructure(structure:Structure){
             super.applyStructure(structure);
-            this.mesh.physicsImpostor.setLinearVelocity(this._linearVelocity);
-            this.mesh.physicsImpostor.setAngularVelocity(this._angularVelocity);
+            this.mesh.physicsImpostor!.setLinearVelocity(this._linearVelocity);
+            this.mesh.physicsImpostor!.setAngularVelocity(this._angularVelocity);
     }
 
     get position():BABYLON.Vector3{
@@ -36,23 +36,23 @@ export default class AbstractBrickFinite extends AbstractBrick{
     }
 
     get rotation():BABYLON.Vector3{
-        return this.mesh.rotationQuaternion.toEulerAngles();
+        return this.mesh.rotationQuaternion!.toEulerAngles();
     }
 
     get linearVelocity():BABYLON.Vector3{
-        return this.mesh.physicsImpostor.getLinearVelocity();
+        return this.mesh.physicsImpostor!.getLinearVelocity()!;
     }
 
     get angularVelocity():BABYLON.Vector3{
-        return this.mesh.physicsImpostor.getAngularVelocity();
+        return this.mesh.physicsImpostor!.getAngularVelocity()!;
     }
 
     set linearVelocity(linearVelocity:BABYLON.Vector3){
-        this.mesh.physicsImpostor.setLinearVelocity(linearVelocity);
+        this.mesh.physicsImpostor!.setLinearVelocity(linearVelocity);
     }
 
     set angularVelocity(angularVelocity:BABYLON.Vector3){
-        this.mesh.physicsImpostor.setAngularVelocity(angularVelocity);
+        this.mesh.physicsImpostor!.setAngularVelocity(angularVelocity);
     }
 
     get volume():number{
@@ -69,13 +69,13 @@ export default class AbstractBrickFinite extends AbstractBrick{
 
     get energyKineticsLinear():number{
         //todo constants
-        return this.mesh.physicsImpostor.getLinearVelocity().length() * this.volume;
+        return this.mesh.physicsImpostor!.getLinearVelocity()!.length() * this.volume;
     }
 
     get energyKineticsAngular():number{
         //todo constants
         //todo spinning constant for every shape
-        return this.mesh.physicsImpostor.getAngularVelocity().length() * this.volume;
+        return this.mesh.physicsImpostor!.getAngularVelocity()!.length() * this.volume;
     }
 }
 

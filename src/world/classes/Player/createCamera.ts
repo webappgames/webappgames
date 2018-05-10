@@ -14,11 +14,12 @@ export default function createCamera(world: World): BABYLON.FreeCamera {
         console.log(`Creating WebVRFreeCamera.`);
         const camera = new BABYLON.WebVRFreeCamera("camera", BABYLON.Vector3.Zero(), world.scene);
         world.scene.onPointerDown = function () {
+            //todo camera.getEngine().enableVR();
             camera.attachControl(world.canvasElement, true);
         };
+        console.log(camera.onControllersAttachedObservable);
 
-        //todo is thare observable?
-        camera.onControllersAttached = ((controllers) => {
+        camera.onControllersAttachedObservable.add((controllers) => {
 
 
             console.log('controllers', controllers);
@@ -68,9 +69,9 @@ export default function createCamera(world: World): BABYLON.FreeCamera {
                     {
                         points: [
                             new BABYLON.Vector3(0, 0, 0),
-                            new BABYLON.Vector3(0, 0, 1000)
+                            new BABYLON.Vector3(0, 0, -1000)
                             ],
-                        colors: [BABYLON.Color4.FromHexString('#ffff0055')]
+                        //colors: [BABYLON.Color4.FromHexString('#ffff0055')]
                     } as any,//todo color of line
                     world.scene
                 );

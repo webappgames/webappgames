@@ -26,8 +26,8 @@ export default class AbstractGravity extends AbstractSpell{
 
     execute() {
         super.execute();
-        this._normalGravity = this.world.scene.getPhysicsEngine().gravity;
-        this.world.scene.getPhysicsEngine().setGravity(this.modifyGravity(this._normalGravity));
+        this._normalGravity = this.world.scene.getPhysicsEngine()!.gravity;
+        this.world.scene.getPhysicsEngine()!.setGravity(this.modifyGravity(this._normalGravity));
 
         /*setTimeout(()=>{
             this.release();
@@ -43,7 +43,7 @@ export default class AbstractGravity extends AbstractSpell{
     kill(){
         super.kill();
         if(this._normalGravity instanceof BABYLON.Vector3) {
-            this.world.scene.getPhysicsEngine().setGravity(this._normalGravity.scale(1));
+            this.world.scene.getPhysicsEngine()!.setGravity(this._normalGravity.scale(1));
         }
 
     }

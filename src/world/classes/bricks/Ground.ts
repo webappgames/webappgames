@@ -17,13 +17,13 @@ export default class Brick extends AbstractBrick {
             this.world.scene.meshes.forEach((mesh) => {
                 if ('physicsImpostor' in mesh) {
                     if (mesh.position.y < 0) {
-                        mesh.physicsImpostor.sleep();
+                        mesh.physicsImpostor!.sleep();
                         mesh.position = new BABYLON.Vector3(
                             mesh.position.x,
                             0,
                             mesh.position.z
                         );
-                        mesh.physicsImpostor.wakeUp();
+                        mesh.physicsImpostor!.wakeUp();
                     }
                 }
                 ;
@@ -37,7 +37,7 @@ export default class Brick extends AbstractBrick {
 
         //-------------
         for (const textureType of ['diffuse','bump']) {
-            const texture = (this.mesh.material[textureType+'Texture'] as BABYLON.Texture);
+            const texture = (this.mesh.material![textureType+'Texture'] as BABYLON.Texture);
             texture.uScale = GROUND_TEXTURE_SCALE;
             texture.vScale = GROUND_TEXTURE_SCALE;
         }
@@ -49,7 +49,7 @@ export default class Brick extends AbstractBrick {
             this.mesh.position.z = this.world.player.mesh.position.z;
 
             for (const textureType of ['diffuse','bump']) {
-                const texture = (this.mesh.material[textureType + 'Texture'] as BABYLON.Texture);
+                const texture = (this.mesh.material![textureType + 'Texture'] as BABYLON.Texture);
                 texture.uOffset = this.mesh.position.x / GROUND_SIZE * GROUND_TEXTURE_SCALE;
                 texture.vOffset = this.mesh.position.z / GROUND_SIZE * GROUND_TEXTURE_SCALE;
             }

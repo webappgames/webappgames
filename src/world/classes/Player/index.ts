@@ -44,7 +44,7 @@ export default class Player{
             //todo Is thare better solution for angular friction?
             this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
                 this.camera.position = this.mesh.position;
-                this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+                this.mesh.physicsImpostor!.setAngularVelocity(BABYLON.Vector3.Zero());
             });
 
 
@@ -70,7 +70,17 @@ export default class Player{
 
     get direction():BABYLON.Vector3{
         const point1 = this.mesh.position;
-        const point2 = this.world.scene.pick(this.world.canvasElement.width / 2, this.world.canvasElement.height / 2, (mesh)=>mesh === this.world.skyboxMesh).pickedPoint;
+        const pickingInfo = this.world.scene.pick(this.world.canvasElement.width / 2, this.world.canvasElement.height / 2, (mesh)=>mesh === this.world.skyboxMesh);
+
+        if(!pickingInfo){
+            throw new Error(`Can not count direction because can not get skybox picking info.`);
+        }
+
+        const point2 = pickingInfo.pickedPoint;
+
+        if(!point2){
+            throw new Error(`Can not count direction because can not pick skybox point.`);
+        }
 
         return point2.subtract(point1);
     }
@@ -93,7 +103,7 @@ export default class Player{
 
         this._playStepSound();
 
-        const currentVelocity = this.mesh.physicsImpostor.getLinearVelocity();
+        const currentVelocity = this.mesh.physicsImpostor!.getLinearVelocity();
 
         //todo Jumping on flying object
         const onGround = true;//currentVelocity.y<1;//playerMesh.position.y<=2;
@@ -108,7 +118,7 @@ export default class Player{
             Math.sin(rotation)*distance
         );
 
-        const composedVelocity = currentVelocity.add(rotatedVector);
+        const composedVelocity = currentVelocity!.add(rotatedVector);
         const jumpVelocity = new BABYLON.Vector3(0,composedVelocity.y,0);
         const surfaceVelocity = new BABYLON.Vector3(composedVelocity.x,0,composedVelocity.z);
 
@@ -119,7 +129,7 @@ export default class Player{
 
         const composedVelocityTerminated = surfaceVelocity.add(jumpVelocity);
 
-        this.mesh.physicsImpostor.setLinearVelocity(composedVelocityTerminated);
+        this.mesh.physicsImpostor!.setLinearVelocity(composedVelocityTerminated);
 
     }
 
