@@ -9,6 +9,7 @@ const GROUND_TEXTURE_SCALE = 50;
 export default class Brick extends AbstractBrick {
 
     createBabylonMesh() {
+
         this.mesh = BABYLON.Mesh.CreateGround("ground", GROUND_SIZE, GROUND_SIZE, 2, this.world.scene);
 
         //-------------

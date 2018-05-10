@@ -19,7 +19,6 @@ export default function createSkyboxMesh(
     skyboxMaterial.disableLighting = true;
 
 
-
     /*scene.registerBeforeRender(()=>{
         skyboxMesh.position = player.mesh.position;
     });*/

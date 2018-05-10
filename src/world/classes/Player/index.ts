@@ -22,16 +22,18 @@ export default class Player{
     ){
 
         this.camera = createCamera(world);
+
         this.mesh = BABYLON.Mesh.CreateSphere("player", 16,1, world.scene);
         this.mesh.isVisible = false;
         this.mesh.position =  new BABYLON.Vector3(0, 2, 0);
         this.mesh.rotation =  new BABYLON.Vector3(0, 0, 0);
         this.mesh.scaling =  new BABYLON.Vector3(1, 4, 1);
         this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.mesh, BABYLON.PhysicsImpostor.SphereImpostor, {
-            mass: 1,
+            mass: 10,//todo player physical options to config
             restitution: 0.01,
             friction: 100
         }, world.scene);
+        this.camera.position = this.mesh.position.clone();//todo is it needed?
 
         const stepSound = world.soundFactory.getSound('step-ground');
         stepSound.setVolume(2);//todo to global sound config
@@ -41,8 +43,11 @@ export default class Player{
 
         if (!this.world.webVR) {
 
+            
+
             //todo Is thare better solution for angular friction?
             this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
+                //console.log(this.camera.position);
                 this.camera.position = this.mesh.position;
                 this.mesh.physicsImpostor!.setAngularVelocity(BABYLON.Vector3.Zero());
             });
@@ -54,9 +59,9 @@ export default class Player{
 
         } else {
 
-            this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
+            /*this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
                 this.mesh.position = this.camera.position.clone();
-            });
+            });*/
 
 
         }

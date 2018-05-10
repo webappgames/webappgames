@@ -21,7 +21,7 @@ export default class World{
 
     public engine:BABYLON.Engine;
     public scene:BABYLON.Scene;
-    public webVR: boolean;
+    public webVR: boolean;//todo mode instead of this
     public materialFactory:MaterialFactory;
     public soundFactory:SoundFactory;
     public worldGenerator:WorldGenerator;
@@ -68,6 +68,8 @@ export default class World{
         this.player = new Player(this);
         this.skyboxMesh = createSkyboxMesh(this.scene);
         this.groundBrick = createGroundBrick(this);
+
+        console.log(this.bricks);
 
 
 

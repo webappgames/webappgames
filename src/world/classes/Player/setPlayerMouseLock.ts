@@ -42,6 +42,7 @@ export default function setPlayerMouseLock(
         }
     }
 
+
     //todo to config
     const cameraRotationAlphaLimitMin = Math.PI * -.5 * .9;
     const cameraRotationAlphaLimitMax = Math.PI * 0.5 * .9;

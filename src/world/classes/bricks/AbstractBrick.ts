@@ -21,7 +21,7 @@ export default class AbstractBrick {
 
     applyStructure(structure: Structure) {
         this.mesh.material = structure.babylonMaterial;
-        this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.mesh, this.physicsImpostor, structure.physicsOptions, this.world.scene);
+        this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.mesh, this.physicsImpostor, structure.physicsOptions , this.world.scene);
     }
 
     get physicsImpostor():number {

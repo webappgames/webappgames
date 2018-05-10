@@ -1,7 +1,7 @@
 import * as BABYLON from 'babylonjs';
 import World from "../World";
 
-export default function createCamera(world: World): BABYLON.FreeCamera {
+export default function createCamera(world: World): BABYLON.FreeCamera|BABYLON.WebVRFreeCamera {
     if (!world.webVR) {
 
         console.log(`Creating FreeCamera.`);

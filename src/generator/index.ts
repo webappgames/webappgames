@@ -284,7 +284,7 @@ export default class WorldGenerator{
 
 
         const FLOOR4 = `
-:        
++        
          
          
          
