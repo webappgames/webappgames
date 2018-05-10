@@ -63,10 +63,17 @@ export default function createCamera(world: World): BABYLON.FreeCamera {
                 controllerMesh.setPivotMatrix(BABYLON.Matrix.Translation(0, 0, 0.02));
 
 
-                const lines = BABYLON.MeshBuilder.CreateLines("lines", {points: [
-                    new BABYLON.Vector3(0, 0, 0),
-                    new BABYLON.Vector3(0, 0, 1000)
-                ]}, world.scene);
+                const lines = BABYLON.MeshBuilder.CreateLines(
+                    "lines",
+                    {
+                        points: [
+                            new BABYLON.Vector3(0, 0, 0),
+                            new BABYLON.Vector3(0, 0, 1000)
+                            ],
+                        colors: [BABYLON.Color4.FromHexString('#ffff0055')]
+                    } as any,//todo color of line
+                    world.scene
+                );
                 lines.parent = controllerMesh;
 
 
