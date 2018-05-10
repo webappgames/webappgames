@@ -27,24 +27,33 @@ export default function createCamera(world: World): BABYLON.FreeCamera {
                 console.log(`controller ${i}`, controller);
 
                 controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-                    console.log('onTriggerStateChangedObservable', gamepadButton);
+                    //console.log('onTriggerStateChangedObservable', gamepadButton);
+
+                    controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(gamepadButton.value,1000));//todo as type use GamepadHapticActuator
+
+
+                    if(gamepadButton.value===1){
+                        
+
+                        console.log('onTriggerStateChangedObservable', gamepadButton);
+                    }
                 });
 
                 controller.onMainButtonStateChangedObservable.add((gamepadButton) => {
-                    console.log('onMainButtonStateChangedObservable', gamepadButton);
+                    //console.log('onMainButtonStateChangedObservable', gamepadButton);
                 });
 
                 controller.onSecondaryButtonStateChangedObservable.add((gamepadButton) => {
-                    console.log('onSecondaryButtonStateChangedObservable', gamepadButton);
+                    //console.log('onSecondaryButtonStateChangedObservable', gamepadButton);
                 });
 
 
                 controller.onPadStateChangedObservable.add((gamepadButton) => {
-                    console.log('onPadStateChangedObservable', gamepadButton);
+                    //console.log('onPadStateChangedObservable', gamepadButton);
                 });
 
                 controller.onPadValuesChangedObservable.add((gamepadButton) => {
-                    console.log('onPadValuesChangedObservable', gamepadButton);
+                    //console.log('onPadValuesChangedObservable', gamepadButton);
                 });
 
 
