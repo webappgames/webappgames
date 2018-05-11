@@ -27,7 +27,25 @@ export default class Player{
         this.camera = this.vrHelper.currentVRCamera as any;//todo as getter
 
 
+
         this.vrHelper.enableTeleportation({floorMeshName: "ground"});
+        /*this.vrHelper.raySelectionPredicate = (mesh) => {
+            if (mesh.name.indexOf("Flags") !== -1) {
+                return true;
+            }
+            return false;
+        };*/
+        this.vrHelper.onNewMeshSelected.add((mesh)=>{
+
+            mesh.visibility = 0;
+            // Mesh has been selected
+        });
+        this.vrHelper.onNewMeshPicked.add((pickingInfo) => {
+            //Callback receiving ray cast picking info
+        });
+        this.vrHelper.onSelectedMeshUnselected.add((mesh) => {
+            mesh.visibility = 1;
+        });        
 
 
 
