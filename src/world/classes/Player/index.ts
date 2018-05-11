@@ -6,6 +6,7 @@ import setPlayerMovement from './setPlayerMovement';
 import setPlayerSpells from './setPlayerSpells';
 import {PLAYER} from '../../../config';
 import * as _ from "lodash";
+import IPickingInfo from '../../../interfaces/IPickingInfo';
 
 
 export default class Player{
@@ -35,18 +36,57 @@ export default class Player{
             }
             return false;
         };*/
-        this.vrHelper.onNewMeshSelected.add((mesh)=>{
-        });
+   
+
+        let lastPicked:IPickingInfo|null = null;
+
         this.vrHelper.onNewMeshPicked.add((pickingInfo) => {
-            try {
-                spellAddTarget(this.world.convertPickingInfo(pickingInfo) as any);//todo why any?
-            } catch (error) {
-                //todo catch only SpellError extended from Error
-                this.world.uiDataModel.sendMessage(error.message as string);
-            }
+            lastPicked = this.world.convertPickingInfo(pickingInfo);//todo optimize
         });
-        this.vrHelper.onSelectedMeshUnselected.add((mesh) => {
-        });        
+
+
+        
+        
+        this.vrHelper.onControllerMeshLoadedObservable.add((controller)=>{
+
+            console.log( controller);
+
+            controller.onTriggerStateChangedObservable.add((gamepadButton) => {
+                //console.log('onTriggerStateChangedObservable', gamepadButton);
+
+                //controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(gamepadButton.value,1000));//todo as type use GamepadHapticActuator
+
+
+                if(gamepadButton.value===1){
+
+                    try {
+                        spellAddTarget(lastPicked as any);//todo why any?
+                    } catch (error) {
+                        //todo catch only SpellError extended from Error
+                        this.world.uiDataModel.sendMessage(error.message as string);
+                    }
+           
+                }
+            });
+
+            controller.onMainButtonStateChangedObservable.add((gamepadButton) => {
+                //console.log('onMainButtonStateChangedObservable', gamepadButton);
+            });
+
+            controller.onSecondaryButtonStateChangedObservable.add((gamepadButton) => {
+                //console.log('onSecondaryButtonStateChangedObservable', gamepadButton);
+            });
+
+
+            controller.onPadStateChangedObservable.add((gamepadButton) => {
+                //console.log('onPadStateChangedObservable', gamepadButton);
+            });
+
+            controller.onPadValuesChangedObservable.add((gamepadButton) => {
+                //console.log('onPadValuesChangedObservable', gamepadButton);
+            });
+        });
+        
 
 
 
