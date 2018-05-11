@@ -3,33 +3,14 @@ import spellFactory from '../../../spells/classes/SpellFactory';
 import {neighbourSpell} from '../../../spells/tools/index';
 import Player from './index';
 import * as _ from "lodash";
+import IPickingInfo from '../../../interfaces/IPickingInfoPicked';
 
 export default function setPlayerSpells(
     player:Player
-){
-
-    const onPointerDown = ()=>{
-        //todo only left button ???maybe on spell?
-
-        if(player.world.uiDataModel.locked) {
-
-            try {
-                spell.addTarget(player.world.pick());
-            } catch (error) {
-                //todo catch only SpellError extended from Error
-                player.world.uiDataModel.sendMessage(error.message as string);
-            }
-        }
-
-    };
-
-    //todo method on World class to set listeners
-    player.world.canvasElement.addEventListener("pointerdown",onPointerDown);
+):(pick: IPickingInfo)=>void{
 
 
-
-
-
+    
     const allSpells:AbstractSpell[] = [];
     let lastTick = performance.now();
     player.world.scene.registerBeforeRender(()=>{
@@ -96,4 +77,7 @@ export default function setPlayerSpells(
     player.world.canvasElement.addEventListener("wheel", onWheel, false);
 
 
+    return (pick: IPickingInfo)=>{
+        spell.addTarget(pick);
+    }
 }
