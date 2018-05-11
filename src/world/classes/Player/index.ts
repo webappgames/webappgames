@@ -36,15 +36,16 @@ export default class Player{
             return false;
         };*/
         this.vrHelper.onNewMeshSelected.add((mesh)=>{
-
-            mesh.visibility = 0;
-            // Mesh has been selected
         });
         this.vrHelper.onNewMeshPicked.add((pickingInfo) => {
-            //Callback receiving ray cast picking info
+            try {
+                spellAddTarget(this.world.convertPickingInfo(pickingInfo) as any);//todo why any?
+            } catch (error) {
+                //todo catch only SpellError extended from Error
+                this.world.uiDataModel.sendMessage(error.message as string);
+            }
         });
         this.vrHelper.onSelectedMeshUnselected.add((mesh) => {
-            mesh.visibility = 1;
         });        
 
 

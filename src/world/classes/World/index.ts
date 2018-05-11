@@ -116,15 +116,18 @@ export default class World{
 
 
     pick(left:number=.5,top:number=.5):IPickingInfo{
-        const pickingInfo = this.scene.pick(this.canvasElement.width*left, this.canvasElement.height*top, (mesh)=>{
-            return mesh !== this.player.mesh  && 'physicsImpostor' in mesh;
-        })!;
+        return this.convertPickingInfo(
+            this.scene.pick(this.canvasElement.width*left, this.canvasElement.height*top, (mesh)=>{
+                return mesh !== this.player.mesh  && 'physicsImpostor' in mesh;
+            })!
+        );
+    }
 
-
+    convertPickingInfo(babylonPickingInfo: BABYLON.PickingInfo):IPickingInfo{
         return(
             {
-                pickedPoint: pickingInfo.pickedPoint!,
-                pickedBrick: this.findBrickByMesh(pickingInfo.pickedMesh!)
+                pickedPoint: babylonPickingInfo.pickedPoint!,
+                pickedBrick: this.findBrickByMesh(babylonPickingInfo.pickedMesh!)
             }
         );
     }
