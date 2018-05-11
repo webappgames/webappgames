@@ -21,7 +21,7 @@ export default class World{
 
     public engine:BABYLON.Engine;
     public scene:BABYLON.Scene;
-    public webVR: boolean;//todo mode instead of this
+    //public webVR: boolean;//todo mode instead of this
     public materialFactory:MaterialFactory;
     public soundFactory:SoundFactory;
     public worldGenerator:WorldGenerator;
@@ -36,7 +36,7 @@ export default class World{
         public canvasElement: HTMLCanvasElement,
         public uiDataModel:UIDataModel
     ) {
-        this.webVR = !(window.location.pathname === '/novr' || window.location.hash === '#novr');//todo DI
+        //this.webVR = !(window.location.pathname === '/novr' || window.location.hash === '#novr');//todo DI
         this.createScene(true);
     }
 

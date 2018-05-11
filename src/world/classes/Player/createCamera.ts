@@ -1,3 +1,4 @@
+/*
 import * as BABYLON from 'babylonjs';
 import World from "../World";
 
@@ -22,4 +23,4 @@ export default function createCamera(world: World): BABYLON.FreeCamera|BABYLON.W
         return camera;
 
     }
-}
+}*/

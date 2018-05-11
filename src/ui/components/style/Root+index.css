@@ -21,3 +21,10 @@ body{
 #ui{
     z-index: 20;
 }
+
+.babylonVRicon{
+    z-index: 10000;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}

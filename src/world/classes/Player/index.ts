@@ -1,6 +1,6 @@
 import * as BABYLON from 'babylonjs';
 import World from '../World';
-import createCamera from './createCamera';
+//import createCamera from './createCamera';
 import setPlayerMouseLock from './setPlayerMouseLock';
 import setPlayerMovement from './setPlayerMovement';
 import setPlayerSpells from './setPlayerSpells';
@@ -13,6 +13,7 @@ export default class Player{
 
     public mesh:BABYLON.AbstractMesh;
     public camera:BABYLON.FreeCamera|BABYLON.WebVRFreeCamera;
+    public vrHelper: BABYLON.VRExperienceHelper;
     public player:BABYLON.AbstractMesh;
     private _playStepSound:()=>void;
 
@@ -21,7 +22,14 @@ export default class Player{
         public world:World
     ){
 
-        this.camera = createCamera(world);
+        //this.camera = createCamera(world);
+        this.vrHelper = world.scene.createDefaultVRExperience();
+        this.camera = this.vrHelper.currentVRCamera as any;//todo as getter
+
+
+        this.vrHelper.enableTeleportation({floorMeshName: "ground"});
+
+
 
         this.mesh = BABYLON.Mesh.CreateSphere("player", 16,1, world.scene);
         this.mesh.isVisible = false;
@@ -42,6 +50,7 @@ export default class Player{
         const spellAddTarget = setPlayerSpells(this);
 
 
+        if(window.screenX===10000000){//todo
         if (this.camera instanceof BABYLON.WebVRFreeCamera) {
 
             /*this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
@@ -192,6 +201,7 @@ export default class Player{
             this.world.canvasElement.addEventListener("pointerdown",onPointerDown);
 
 
+        }
         }
 
 

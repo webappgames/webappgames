@@ -16,7 +16,7 @@ export default class Brick extends AbstractBrick {
         //todo unregister after dispose
         this.world.scene.registerAfterRender(() => {
             this.world.scene.meshes.forEach((mesh) => {
-                if ('physicsImpostor' in mesh) {
+                if (mesh.physicsImpostor) {
                     if (mesh.position.y < 0) {
                         mesh.physicsImpostor!.sleep();
                         mesh.position = new BABYLON.Vector3(
