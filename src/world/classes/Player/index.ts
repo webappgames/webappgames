@@ -59,18 +59,26 @@ export default class Player{
                     controller.onTriggerStateChangedObservable.add((gamepadButton) => {
                         //console.log('onTriggerStateChangedObservable', gamepadButton);
     
-                        controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(gamepadButton.value,1000));//todo as type use GamepadHapticActuator
+                        //controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(gamepadButton.value,1000));//todo as type use GamepadHapticActuator
     
     
                         if(gamepadButton.value===1){
                             
+                          
+
+
+                            const ib = this.world.bricks.filter(brick=>lines.intersectsMesh(brick.mesh));
+
+                            console.log(ib);
+
+
     
-                            try {
+                            /*try {
                                 spellAddTarget(this.world.pick() as any);//todo why any?
                             } catch (error) {
                                 //todo catch only SpellError extended from Error
                                 this.world.uiDataModel.sendMessage(error.message as string);
-                            }
+                            }*/
                         }
                     });
     
@@ -92,7 +100,7 @@ export default class Player{
                     });
     
     
-                    const controllerMesh = BABYLON.Mesh.CreateSphere("SphereBrick", 16, 0.1, world.scene);
+                    const controllerMesh = BABYLON.Mesh.CreateSphere("sphere", 16, 0.1, world.scene);
                     controllerMesh.scaling.z = 10;
     
                     controllerMesh.setPivotMatrix(BABYLON.Matrix.Translation(0, 0, 0.02));
@@ -114,7 +122,7 @@ export default class Player{
     
                     //controllerMesh.position = controller.devicePosition;
     
-                    function updatePositon() {
+                    const updatePositon = ()=>{                      
     
                         /*const {x,y,z,w} = controller.deviceRotationQuaternion.scale(-1);
                         const direction = new BABYLON.Vector3(
