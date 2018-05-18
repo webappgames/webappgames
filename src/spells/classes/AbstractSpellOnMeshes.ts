@@ -23,11 +23,12 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
     }
 
     get dynamicTargetPoints():BABYLON.Vector3[]{
-        if(this.ALLOW_GROUND){
+        return this.targets.map((target)=>target.pickedPoint);
+        /*if(this.ALLOW_GROUND){
             return this.targets.map((target)=>target.pickedPoint)
         }else{
             return this.targets.map((target)=>(target.pickedBrick as AbstractBrick).position)
-        }
+        }*/
     }
 
     private spellEffects: SpellEffect[];
@@ -91,8 +92,8 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
                 this.dynamicSpeed);
         });
 
-        const spellSound = new BABYLON.Sound("Spell", `${process.env.PUBLIC_URL}/assets/sound/link-teleport.mp3`, this.world.scene, undefined, { loop: false, autoplay: true });
-        spellSound;
+        //todo const spellSound = new BABYLON.Sound("Spell", `${process.env.PUBLIC_URL}/assets/sound/link-teleport.mp3`, this.world.scene, undefined, { loop: false, autoplay: true });
+        //todo spellSound;
 
         this.release();
         super.execute();
