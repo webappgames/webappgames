@@ -13,11 +13,12 @@ export default class Teleport extends AbstractSpellOnMeshes{
     finish(){
         super.finish();
 
+        /*todo player
         this.world.player.mesh.position = this.firstTargetBrick.position.add(
             new BABYLON.Vector3(
                 0,this.firstTargetBrick.size.y/2+2,0//todo person tall
             )
-        );
+        );*/
 
         /*
         todo teleportation to ground

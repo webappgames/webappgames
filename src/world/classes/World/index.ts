@@ -118,7 +118,7 @@ export default class World{
     pick(left:number=.5,top:number=.5):IPickingInfo{
         return this.convertPickingInfo(
             this.scene.pick(this.canvasElement.width*left, this.canvasElement.height*top, (mesh)=>{
-                return mesh !== this.player.mesh  && 'physicsImpostor' in mesh;
+                return /*mesh !== this.player.mesh  && */'physicsImpostor' in mesh;
             })!
         );
     }

@@ -21,7 +21,13 @@ export default class SpellEffect{
         this.fountainMesh = BABYLON.Mesh.CreateBox("fountain", 1, scene);
         this.fountainMesh.isVisible = false;
         this.fountainMesh.position = startPoint.clone();
-        this.spellParticles = createParticles(this.fountainMesh,colors,scene);
+
+        const settings = {
+            direction1: startPoint.subtract(targetPoint).normalize(),
+            direction2: startPoint.subtract(targetPoint).normalize().scale(-1)
+        };
+
+        this.spellParticles = createParticles(this.fountainMesh,Object.assign({},colors,settings),scene);
 
 
         //this.spellSound = new BABYLON.Sound("Step", `${process.env.PUBLIC_URL}/assets/sound/link-key-none.mp3`, scene, undefined, { loop: true, autoplay:true });

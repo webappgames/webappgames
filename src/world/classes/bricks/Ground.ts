@@ -44,6 +44,7 @@ export default class Brick extends AbstractBrick {
         }
 
         //todo unregister after dispose
+        /*todo
         this.world.scene.registerBeforeRender(() => {
 
             this.mesh.position.x = this.world.player.mesh.position.x;
@@ -55,7 +56,7 @@ export default class Brick extends AbstractBrick {
                 texture.vOffset = this.mesh.position.z / GROUND_SIZE * GROUND_TEXTURE_SCALE;
             }
 
-        });
+        });*/
 
         //-------------
 

@@ -18,9 +18,10 @@ export default class Fly extends AbstractSpell{
     }
 
     tick(tickDuration:number) {
+        /*todo
         super.tick(tickDuration);
         this.world.player.mesh.physicsImpostor!.setLinearVelocity(this.world.player.direction1.scale(45));
-        this.costCallback(this.PRICE_PER_SECOND/1000*tickDuration);
+        this.costCallback(this.PRICE_PER_SECOND/1000*tickDuration);*/
     }
 
     release(){

@@ -54,11 +54,12 @@ export default class {
             .attribute('content', window.location.hostname);
 
 
+
         world.element('player', {
-            position: vectorToString(this.world.player.mesh.position),
+            position: vectorToString(this.world.player.position),
             //todo rotation: vectorToString(this.world.playerMesh.rotation),
-            'velocity-linear': vectorToString(this.world.player.mesh.physicsImpostor!.getLinearVelocity()!),
-            'velocity-angular': vectorToString(this.world.player.mesh.physicsImpostor!.getAngularVelocity()!),
+            //todo player 'velocity-linear': vectorToString(this.world.player.mesh.physicsImpostor!.getLinearVelocity()!),
+            //todo player 'velocity-angular': vectorToString(this.world.player.mesh.physicsImpostor!.getAngularVelocity()!),
         });
 
 
@@ -103,7 +104,7 @@ export default class {
                         switch (child.tagName) {
                             case 'player':
                                 //todo DRY
-                                this.world.player.mesh.position = vectorFromString(child.attributes.getNamedItem('position').value);
+                                this.world.player.position = vectorFromString(child.attributes.getNamedItem('position').value);
                                 //todo this.world.playerMesh.rotation = vectorFromString(child.attributes.getNamedItem('rotation').value);
                                 //todo 2x velocity
                                 break;

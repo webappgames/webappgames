@@ -12,8 +12,8 @@ import IPickingInfo from '../../../interfaces/IPickingInfo';
 export default class Player{
 
 
-    public mesh:BABYLON.AbstractMesh;
-    public camera:BABYLON.FreeCamera|BABYLON.WebVRFreeCamera;
+    //public mesh:BABYLON.AbstractMesh;
+    public camera:BABYLON.FreeCamera|BABYLON.WebVRFreeCamera;//todo remove
     public vrHelper: BABYLON.VRExperienceHelper;
     public player:BABYLON.AbstractMesh;
     private _playStepSound:()=>void;
@@ -90,7 +90,7 @@ export default class Player{
 
 
 
-        this.mesh = BABYLON.Mesh.CreateSphere("player", 16,1, world.scene);
+        /*this.mesh = BABYLON.Mesh.CreateSphere("player", 16,1, world.scene);
         this.mesh.isVisible = false;
         this.mesh.position =  new BABYLON.Vector3(0, 2, 0);
         this.mesh.rotation =  new BABYLON.Vector3(0, 0, 0);
@@ -100,177 +100,27 @@ export default class Player{
             restitution: 0.01,
             friction: 100
         }, world.scene);
-        this.camera.position = this.mesh.position.clone();//todo is it needed?
+        this.camera.position = this.mesh.position.clone();//todo is it needed?*/
 
         const stepSound = world.soundFactory.getSound('step-ground');
         stepSound.setVolume(2);//todo to global sound config
         this._playStepSound = _.throttle(()=>stepSound.play(),400, {leading:true,trailing:false});
 
         const spellAddTarget = setPlayerSpells(this);
-
-
-        if(window.screenX===10000000){//todo
-        if (this.camera instanceof BABYLON.WebVRFreeCamera) {
-
-            /*this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
-                this.mesh.position = this.camera.position.clone();
-            });*/
-
-            this.camera.onControllersAttachedObservable.add((controllers) => {
-
-
-                console.log('controllers', controllers);
-                controllers.forEach((controller, i) => {
-    
-                    console.log(`controller ${i}`, controller);
-    
-                    controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-                        //console.log('onTriggerStateChangedObservable', gamepadButton);
-    
-                        //controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(gamepadButton.value,1000));//todo as type use GamepadHapticActuator
-    
-    
-                        if(gamepadButton.value===1){
-                            
-                          
-
-
-                            const ib = this.world.bricks.filter(brick=>lines.intersectsMesh(brick.mesh));
-
-                            console.log(ib);
-
-
-    
-                            /*try {
-                                spellAddTarget(this.world.pick() as any);//todo why any?
-                            } catch (error) {
-                                //todo catch only SpellError extended from Error
-                                this.world.uiDataModel.sendMessage(error.message as string);
-                            }*/
-                        }
-                    });
-    
-                    controller.onMainButtonStateChangedObservable.add((gamepadButton) => {
-                        //console.log('onMainButtonStateChangedObservable', gamepadButton);
-                    });
-    
-                    controller.onSecondaryButtonStateChangedObservable.add((gamepadButton) => {
-                        //console.log('onSecondaryButtonStateChangedObservable', gamepadButton);
-                    });
-    
-    
-                    controller.onPadStateChangedObservable.add((gamepadButton) => {
-                        //console.log('onPadStateChangedObservable', gamepadButton);
-                    });
-    
-                    controller.onPadValuesChangedObservable.add((gamepadButton) => {
-                        //console.log('onPadValuesChangedObservable', gamepadButton);
-                    });
-    
-    
-                    const controllerMesh = BABYLON.Mesh.CreateSphere("sphere", 16, 0.1, world.scene);
-                    controllerMesh.scaling.z = 10;
-    
-                    controllerMesh.setPivotMatrix(BABYLON.Matrix.Translation(0, 0, 0.02));
-    
-    
-                    const lines = BABYLON.MeshBuilder.CreateLines(
-                        "lines",
-                        {
-                            points: [
-                                new BABYLON.Vector3(0, 0, 0),
-                                new BABYLON.Vector3(0, 0, -1000)
-                                ],
-                            //colors: [BABYLON.Color4.FromHexString('#ffff0055')]
-                        } as any,//todo color of line
-                        world.scene
-                    );
-                    lines.parent = controllerMesh;
-    
-    
-                    //controllerMesh.position = controller.devicePosition;
-    
-                    const updatePositon = ()=>{                      
-    
-                        /*const {x,y,z,w} = controller.deviceRotationQuaternion.scale(-1);
-                        const direction = new BABYLON.Vector3(
-                           2 * (x * z - w * y),
-                        2 * (y * z + w * x),
-                        1 - 2 * (x * x + y * y)
-                        );*/
-    
-    
-                        controllerMesh.position =
-                            controller.devicePosition
-                        /* .add(
-                             direction
-                                 .scale(1)
-                         );*/
-                        controllerMesh.rotationQuaternion = controller.deviceRotationQuaternion;
-                        /*drawingTool.update(new DrawingPoint(
-                            controller.devicePosition,
-                            controller.deviceRotationQuaternion,
-                            intensity
-                        ));*/
-                        requestAnimationFrame(updatePositon);
-                    }
-    
-                    updatePositon();
-    
-    
-                });
-    
-    
-                //console.log('onControllersAttachedObservable',controllers);
-            });
-
-
-        }else
-        if (this.camera instanceof BABYLON.FreeCamera) {
-
-            
-
-            //todo Is thare better solution for angular friction?
-            this.mesh.physicsImpostor.registerAfterPhysicsStep(() => {
-                //console.log(this.camera.position);
-                this.camera.position = this.mesh.position;
-                this.mesh.physicsImpostor!.setAngularVelocity(BABYLON.Vector3.Zero());
-            });
-
-
-            setPlayerMouseLock(this.world.canvasElement, this.camera, this.world.uiDataModel);
-            setPlayerMovement(this);
-
-
-            const onPointerDown = ()=>{
-                //todo only left button ???maybe on spell?
-        
-                if(this.world.uiDataModel.locked) {
-        
-                    try {
-                        spellAddTarget(this.world.pick() as any);//todo why any?
-                    } catch (error) {
-                        //todo catch only SpellError extended from Error
-                        this.world.uiDataModel.sendMessage(error.message as string);
-                    }
-                }
-        
-            };
-            //todo method on World class to set listeners
-            this.world.canvasElement.addEventListener("pointerdown",onPointerDown);
-
-
-        }
-        }
-
-
-       
+     
 
 
     }
 
+    get position(){
+        return this.vrHelper.currentVRCamera!.position;
+    }
 
-    get direction():BABYLON.Vector3{
+    set position(position: BABYLON.Vector3){
+        //todo
+    }
+
+    /*get direction():BABYLON.Vector3{
         const point1 = this.mesh.position;
         const pickingInfo = this.world.scene.pick(this.world.canvasElement.width / 2, this.world.canvasElement.height / 2, (mesh)=>mesh === this.world.skyboxMesh);
 
@@ -298,12 +148,12 @@ export default class Player{
         //eg. const cameraRotation = Math.PI/2 - camera.rotation.y;
         const playerDirection = this.direction;
         return Math.atan2(playerDirection.z,playerDirection.x);
-    }
+    }*/
 
     //todo separate jump and walk
     addMovement(vector:BABYLON.Vector3){
 
-        this._playStepSound();
+        /*this._playStepSound();
 
         const currentVelocity = this.mesh.physicsImpostor!.getLinearVelocity();
 
@@ -332,6 +182,7 @@ export default class Player{
         const composedVelocityTerminated = surfaceVelocity.add(jumpVelocity);
 
         this.mesh.physicsImpostor!.setLinearVelocity(composedVelocityTerminated);
+        */
 
     }
 

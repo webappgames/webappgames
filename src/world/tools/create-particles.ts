@@ -7,6 +7,8 @@ interface IParticleSettings{
     maxSize?:number;
     minLifeTime?:number;
     maxLifeTime?:number;
+    direction1?:BABYLON.Vector3;
+    direction2?:BABYLON.Vector3;
 }
 
 export default function createParticles(fountainMesh:BABYLON.AbstractMesh, settings:IParticleSettings, scene:BABYLON.Scene):BABYLON.ParticleSystem{
@@ -29,12 +31,15 @@ export default function createParticles(fountainMesh:BABYLON.AbstractMesh, setti
     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0, 0);
 
     // Size of each particle (random between...
-    particleSystem.minSize = settings.minSize||0.1;
+    particleSystem.minSize = settings.minSize||0.5;
     particleSystem.maxSize = settings.maxSize||2;
 
     // Life time of each particle (random between...
-    particleSystem.minLifeTime = settings.minLifeTime||0.1;
+    particleSystem.minLifeTime = settings.minLifeTime||1;
     particleSystem.maxLifeTime = settings.maxLifeTime||2;
+
+    settings.direction1 = settings.direction1||new BABYLON.Vector3(1, 1, 1);
+    settings.direction2 = settings.direction2||new BABYLON.Vector3(-1, -1, -1);
 
     // Emission rate
     particleSystem.emitRate = 1000;
@@ -46,8 +51,9 @@ export default function createParticles(fountainMesh:BABYLON.AbstractMesh, setti
     //particleSystem.gravity = new BABYLON.Vector3(0, -100, 0);
 
     // Direction of each particle after it has been emitted
-    particleSystem.direction1 = new BABYLON.Vector3(1, 1, 1);
-    particleSystem.direction2 = new BABYLON.Vector3(-1, -1, -1);
+    //const directionScale = 0.1;
+    particleSystem.direction1 = settings.direction1;
+    particleSystem.direction2 = settings.direction2;
 
     // Angular speed, in radians
     particleSystem.minAngularSpeed = 0;
