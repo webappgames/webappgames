@@ -71,10 +71,10 @@ export default class AbstractSpellOnMeshes extends AbstractSpell {
 
 
         this.spellEffects =
-        this.dynamicTargetPoints.map((targetPoint)=>{
+        this.targets.map((target)=>{
             return new SpellEffect(
-                this.world.player.position,
-                targetPoint,
+                target.handPosition,
+                target.pickedPoint,
                 ()=>{
                     const running = this.spellEffects.some((spellEffect)=>spellEffect.running);
                     //console.log(running);

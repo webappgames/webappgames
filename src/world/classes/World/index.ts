@@ -115,17 +115,18 @@ export default class World{
     }
 
 
-    pick(left:number=.5,top:number=.5):IPickingInfo{
+    /*pick(left:number=.5,top:number=.5):IPickingInfo{
         return this.convertPickingInfo(
             this.scene.pick(this.canvasElement.width*left, this.canvasElement.height*top, (mesh)=>{
-                return /*mesh !== this.player.mesh  && */'physicsImpostor' in mesh;
+                return 'physicsImpostor' in mesh;
             })!
         );
-    }
+    }*/
 
-    convertPickingInfo(babylonPickingInfo: BABYLON.PickingInfo):IPickingInfo{
+    convertPickingInfo(babylonPickingInfo: BABYLON.PickingInfo, handPosition: BABYLON.Vector3):IPickingInfo{
         return(
             {
+                handPosition,
                 pickedPoint: babylonPickingInfo.pickedPoint!,
                 pickedBrick: this.findBrickByMesh(babylonPickingInfo.pickedMesh!)
             }

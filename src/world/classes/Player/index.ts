@@ -38,24 +38,29 @@ export default class Player{
         };*/
    
 
-        let lastPicked:IPickingInfo|null = null;
-
-        this.vrHelper.onNewMeshPicked.add((pickingInfo) => {
-            lastPicked = this.world.convertPickingInfo(pickingInfo);//todo optimize
-        });
 
 
-        
+
         
         this.vrHelper.onControllerMeshLoadedObservable.add((controller)=>{
 
             //console.log( controller);
 
+
+            let lastPicked:IPickingInfo|null = null;
+            this.vrHelper.onNewMeshPicked.add((pickingInfo) => {
+                console.log(controller.position);
+                lastPicked = this.world.convertPickingInfo(pickingInfo,controller.devicePosition);//todo optimize
+            });
+
+
+            const MIN_INTERVAL = 150;
+
             let lastFired = performance.now();
             const fireSpell = (intensity:number)=>{
 
                 let duration = 1000*(1-intensity);
-                duration = Math.max(duration,100);
+                duration = Math.max(duration,MIN_INTERVAL);
 
                 //console.log('fire');
                 if(lastFired+duration>performance.now()){
