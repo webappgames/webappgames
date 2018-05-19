@@ -3,7 +3,7 @@ import * as GridBuilding from 'gridbuilding';
 import World from '../world/classes/World';
 //import MaterialFactory from '../world/classes/MaterialFactory';
 //import Player from '../world/classes/Player';
-//import Box from '../world/classes/bricks/Box';
+import Box from '../world/classes/bricks/Box';
 //import ExtendedMaze from './Maze/ExtendedMaze';
 import Building from './Building';
 //import UIDataModel from '../UIDataModel';
@@ -27,69 +27,73 @@ export default class WorldGenerator{
 
         //----------------------------------Billboard
         _;
-        /*!todo const width = 1280/100;
-        const height = 750/100;
-        const pillarSize = new BABYLON.Vector3(1,5,1);
-        const center = new BABYLON.Vector3(0,0,10);
+        /*/
+        {
+            const width = 1280/100;
+            const height = 750/100;
+            const pillarSize = new BABYLON.Vector3(1,5,1);
+            const center = new BABYLON.Vector3(0,0,10);
 
-        const pillar1 = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
-        //const pillar1 = BABYLON.Mesh.CreateCylinder("cylinder", 3, 3, 3, 20, 1, this.world.scene);
-        pillar1.scaling = pillarSize;
-        pillar1.position = center.add(new BABYLON.Vector3(0, pillarSize.y/2, 0));
-        this.world.materialFactory.applyMaterial(pillar1);
+            const pillar1 = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
+            //const pillar1 = BABYLON.Mesh.CreateCylinder("cylinder", 3, 3, 3, 20, 1, this.world.scene);
+            pillar1.scaling = pillarSize;
+            pillar1.position = center.add(new BABYLON.Vector3(0, pillarSize.y/2, 0));
+            this.world.materialFactory.applyMaterial(pillar1);
 
 
 
-        const billboardMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
-        billboardMesh.scaling = new BABYLON.Vector3(width,height, 1);
-        billboardMesh.position = center.add(new BABYLON.Vector3(0, billboardMesh.scaling.y/2+pillarSize.y, 0));
-        this.world.materialFactory.applyMaterial(billboardMesh,"itnetwork_summer_2017");
+            const billboardMesh = BABYLON.Mesh.CreateBox("box", 1, this.world.scene);
+            billboardMesh.scaling = new BABYLON.Vector3(width,height, 1);
+            billboardMesh.position = center.add(new BABYLON.Vector3(0, billboardMesh.scaling.y/2+pillarSize.y, 0));
+            this.world.materialFactory.applyMaterial(billboardMesh,"itnetwork_summer_2017");
 
-        const billboardLinkArea = {
-            position:{
-                x:-10,y:-10
-            },
-            size:{
-                x:10,y:10
-            },
-            title: '',
-            url: 'https://www.itnetwork.cz/letni-programatorska-soutez-2017',
-        };
-        this.world.uiDataModel.linkAreas.push(billboardLinkArea);
-
-        const updater = _.throttle(()=>{
-
-            if(billboardMesh.isDisposed()){
-                //this.world.uiDataModel.linkAreas = this.world.uiDataModel.linkAreas.filter((linkArea)=>linkArea!==billboardLinkArea);
-                this.world.uiDataModel.linkAreas[0].position.x = -10;
-                this.world.uiDataModel.linkAreas[0].position.y = -10;
-                this.world.uiDataModel.linkAreas[0].size.x = 10;
-                this.world.uiDataModel.linkAreas[0].size.y = 10;
-                    this.world.scene.unregisterAfterRender(updater);
-                console.log(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.world.uiDataModel.linkAreas);
-                return;
-            }
-
-            const canvas = this.world.scene.getEngine().getRenderingCanvas() as HTMLCanvasElement;
-            const corners = [
-                billboardMesh.position.add(billboardMesh.scaling.scale(0.5)),
-                billboardMesh.position.add(billboardMesh.scaling.scale(-.5))
-            ].map((corner)=>BABYLON.Vector3.Project(
-                corner,
-                BABYLON.Matrix.Identity(),
-                this.world.scene.getTransformMatrix(),
-                this.world.scene.activeCamera.viewport.toGlobal(canvas.clientWidth, canvas.clientHeight)
-            ));
-            for(let axis of ['x','y']){
-                this.world.uiDataModel.linkAreas[0].position[axis] = (corners[0][axis] + corners[1][axis]) / 2;
-                this.world.uiDataModel.linkAreas[0].size[axis] = Math.abs(corners[0][axis] - corners[1][axis]);
+            const billboardLinkArea = {
+                position:{
+                    x:-10,y:-10
+                },
+                size:{
+                    x:10,y:10
+                },
+                title: '',
+                url: 'https://www.itnetwork.cz/letni-programatorska-soutez-2017',
             };
+            this.world.uiDataModel.linkAreas.push(billboardLinkArea);
+
+            const updater = _.throttle(()=>{
+
+                if(billboardMesh.isDisposed()){
+                    //this.world.uiDataModel.linkAreas = this.world.uiDataModel.linkAreas.filter((linkArea)=>linkArea!==billboardLinkArea);
+                    this.world.uiDataModel.linkAreas[0].position.x = -10;
+                    this.world.uiDataModel.linkAreas[0].position.y = -10;
+                    this.world.uiDataModel.linkAreas[0].size.x = 10;
+                    this.world.uiDataModel.linkAreas[0].size.y = 10;
+                        this.world.scene.unregisterAfterRender(updater);
+                    console.log(`Stop updating link area "${billboardLinkArea.url}".`,billboardLinkArea,billboardMesh,this.world.uiDataModel.linkAreas);
+                    return;
+                }
+
+                const canvas = this.world.scene.getEngine().getRenderingCanvas() as HTMLCanvasElement;
+                const corners = [
+                    billboardMesh.position.add(billboardMesh.scaling.scale(0.5)),
+                    billboardMesh.position.add(billboardMesh.scaling.scale(-.5))
+                ].map((corner)=>BABYLON.Vector3.Project(
+                    corner,
+                    BABYLON.Matrix.Identity(),
+                    this.world.scene.getTransformMatrix(),
+                    this.world.scene.activeCamera.viewport.toGlobal(canvas.clientWidth, canvas.clientHeight)
+                ));
+                for(let axis of ['x','y']){
+                    this.world.uiDataModel.linkAreas[0].position[axis] = (corners[0][axis] + corners[1][axis]) / 2;
+                    this.world.uiDataModel.linkAreas[0].size[axis] = Math.abs(corners[0][axis] - corners[1][axis]);
+                };
 
 
-        },1000);
+            },1000);
 
 
-        this.world.scene.registerAfterRender(updater);*/
+            this.world.scene.registerAfterRender(updater);
+        }
+        /**/
         //----------------------------------
 
 
@@ -98,12 +102,12 @@ export default class WorldGenerator{
 
 
         //----------------------------------Building
-        /*
+        /*/
         //const towers = 1;
-        const floors = 8;
+        const floors = 5;
         const size = new BABYLON.Vector3(30,15,30);
-        const pillsInFloor = 3;
-        const pillsThick = 0.3;
+        const pillsInFloor = 2;
+        const pillsThick = 0.2;
 
 
         const center = new BABYLON.Vector3(
@@ -117,7 +121,7 @@ export default class WorldGenerator{
 
             new Box(
                 this.world,
-                'stone-plain',
+                'DamagedConcrete',
                 new BABYLON.Vector3(size.x, 1, size.z),
                 center.add(new BABYLON.Vector3(0, floor * 10 + 9.5, 0))
             );
@@ -132,7 +136,7 @@ export default class WorldGenerator{
 
                         new Box(
                             this.world,
-                            'stone-plain',
+                            'DamagedConcrete',
                             new BABYLON.Vector3(
                                 size.x / pillsInFloor * pillsThick,
                                 9,
@@ -151,29 +155,32 @@ export default class WorldGenerator{
 
 
         }
-        */
+        /**/
         //----------------------------------
 
 
 
 
         //----------------------------------Domino
-        /*for (let i = 0; i < 7; i++) {
+        /*/
+        for (let i = 0; i < 7; i++) {
 
-            new BoxBrick(
+            new Box(
                 this.world,
-                'stone-plain',
+                'SloppyBricks',
                 new BABYLON.Vector3(2,40,10),
-                new BABYLON.Vector3(i*25+50, 15, 100)
+                new BABYLON.Vector3(i*25+50, 20, 100)
             );
-        }*/
+        }
+        /**/
         //----------------------------------
 
 
 
 
         //----------------------------------Domino Jenga
-        /*{
+        /*/
+        {
             const center = new BABYLON.Vector3(-40, 0, 100);
             const blockSize = new BABYLON.Vector3(2.5,1.5,7.5);
 
@@ -199,7 +206,8 @@ export default class WorldGenerator{
                     this.world.materialFactory.applyMaterial(mesh1, 'wood-fence');
                 }
             }
-        }*/
+        }
+        /**/
         //----------------------------------
 
 
@@ -227,116 +235,56 @@ export default class WorldGenerator{
 
         //----------------------------------
         const FLOOR1 = `
-+:::+:::+:::+:::+:::+:::+::::::::
-::::::::::::::::::::::::::::::::|
-+:::+:::+:::+:::+:::+:::+::::::::
-:::::        
-::::+        
-:::::        
-+:::+:::+:::+
-:::::::::::::
-+:::+:::+:::+
-:::::::::::::
-+:::+:::+:::+
-:::::        
-:::::        
-:::::       
-+:::+        
++:::+:::+:::+:::+:::+:::+:::+:::+
+:::::::::::::::::::::::::::::::::
++:::+:::+:::+:::+:::+:::+:::+:::+
+:::::                       :::::
++:::+                       +:::+
+:::::                       :::::
++:::+                       +:::+
+:::::                       :::::
++:::+                       +:::+
+:::::                       :::::
++:::+                       +:::+
+:::::                       :::::
++:::+:::+:::+:::+:::+:::+:::+:::+
+:::::::::::::::::::::::::::::::::
++:::+:::+:::+:::+:::+:::+:::+:::+
 `;
-        FLOOR1;
 
 
-        const FLOOR2 = `
-|-------------------------------|
+const FLOOR2 = `
+---------------------------------
 |:::::::::::::::::::::::::::::::|
-|:::|---------------------------|
-|:::|        
-|:::|        
-|:::|        
-|:::|--------
-|:::::::::::|
-|:::+:::+:::|
-|:::::::::::|
-|:::|--------
-|:::|        
-:::::        
-:::::       
------        
+|:::+:::+:::+:::+:::+:::+:::+:::|
+|::::                       ::::|
+|:::+                       +:::|
+|::::                       ::::|
+|:::+                       +:::|
+|::::                       ::::|
+|:::+                       +:::|
+|::::                       ::::|
+|:::+                       +:::|
+|::::                       ::::|
+|:::+:::+:::+:::+:::+:::+:::+:::|
+|:::::::::::::::::::::::::::::::|
+---------------------------------
 `;
-        FLOOR2;
-
-
-
-        const FLOOR3 = `
-:        
-         
-         
-         
-         
-         
----------
-|:::::::|
-|:::::::|
-|:::::::| 
---------- 
-`;
-        FLOOR3;
-
-
-        const FLOOR4 = `
-+        
-         
-         
-         
-         
-         
-+:::+:::+
-:::::::::
-+:::+:::+
-:::::::::
-+:::+:::+
-`;
-        FLOOR4;
-
-
-const FLOOR_ATRIUM = `
-        +:::+:::+:::+:::+:::+:::+:::+:::+
-        ::::::::::::::::::::::::::::::::|
-        +:::+:::+:::+:::+:::+:::+:::+:::+
-        :::::                           |
-        ::::+                           |
-        :::::                           |
-        ::::+                           |
-        :::::                           |
-        ::::+                           |
-        :::::                           |
-        ::::+                           |
-        :::::                           |
-        ::::+                           |
-        +:::+:::+:::+:::+:::+:::+:::+:::+
-        ::::::::::::::::::::::::::::::::|
-        +:::+:::+:::+:::+:::+:::+:::+:::+
-        `;
-
+    
 
 
         const BUILDING1 = GridBuilding.Building.fromFloorStrings([
-            //FLOOR1,
-            //FLOOR2,
-            //FLOOR2,
-            //FLOOR3,
-            //FLOOR3,
-            //FLOOR3,
-            FLOOR_ATRIUM,
+            FLOOR2,
+            FLOOR2
         ]);
 
         const building = new Building(
             BUILDING1,
-            BABYLON.Vector3.Zero(),
+            new BABYLON.Vector3(0,0,0),
             this.world
         );
 
-        console.log(building.toString());
+        //console.log(building.toString());
         //----------------------------------
 
     }
