@@ -21,7 +21,7 @@ export default class Bounce extends AbstractSpellOnMeshes{
     }*/
     finish(){
         super.finish();
-        this.firstTargetBrick.linearVelocity = new BABYLON.Vector3(0,10000/this.firstTargetBrick.volume,0);
+        this.firstTargetBrick.linearVelocity = new BABYLON.Vector3(0,100000/this.firstTargetBrick.volume,0);
     }
 
 }

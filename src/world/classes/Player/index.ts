@@ -47,20 +47,57 @@ export default class Player{
             //console.log( controller);
 
 
+
+            //------------------text
+            const labelMesh = BABYLON.Mesh.CreatePlane("label", 0.2, world.scene, false);
+            labelMesh.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+            const labelMaterial = new BABYLON.StandardMaterial("label", world.scene);
+            labelMesh.material = labelMaterial;
+            labelMesh.position = new BABYLON.Vector3(0, 0.1, 0);
+            labelMesh.scaling.y = 0.4;
+            labelMesh.parent = controller.mesh;
+        
+            const labelTexture = new BABYLON.DynamicTexture("dynamic texture", 512, world.scene, true);
+            labelMaterial.diffuseTexture = labelTexture;
+            labelMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+            labelMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
+            labelMaterial.backFaceCulling = false;
+        
+            //labelTexture.getContext().clearRect(0, 140, 512, 512);
+            //text: string, x: number, y: number, font: string, color: string, clearColor: string
+           
+
+            const updateLabel = (label:string)=>{
+                labelTexture.drawText(label, 0, 140, "normal 80px sans-serif", "#555555",'#ffffff');
+            }
+
+            //todo nice labels
+            //const ctx = labelTexture.getContext();
+            //ctx.fillText('ahoj',0,0);
+            //ctx.clearRect(0, 140, 512, 512);
+            //labelTexture.update();
+
+            //------------------
+
+
+            const playerSpells = setPlayerSpells(this,{updateLabel});//todo better
+         
+
+
             let lastPicked:IPickingInfo|null = null;
             this.vrHelper.onNewMeshPicked.add((pickingInfo) => {
                 console.log(controller.position);
                 lastPicked = this.world.convertPickingInfo(pickingInfo,controller.devicePosition);//todo optimize
             });
 
-
-            const MIN_INTERVAL = 150;
+            /*
+            //const MIN_INTERVAL = 150;
 
             let lastFired = performance.now();
             const fireSpell = (intensity:number)=>{
 
                 let duration = 1000*(1-intensity);
-                duration = Math.max(duration,MIN_INTERVAL);
+                //duration = Math.max(duration,MIN_INTERVAL);
 
                 //console.log('fire');
                 if(lastFired+duration>performance.now()){
@@ -68,37 +105,53 @@ export default class Player{
                 }
                 lastFired = performance.now();
 
-                controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(intensity,50));//todo as type use GamepadHapticActuator
+                controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(intensity,20));//todo as type use GamepadHapticActuator
 
-                try {
-                    spellAddTarget(lastPicked as any);//todo why any?
-                } catch (error) {
-                    //todo catch only SpellError extended from Error
-                    this.world.uiDataModel.sendMessage(error.message as string);
-                }
+
             }
 
             //todo separate this abstraction
-            let fullPressed = false;
+            /*let fullPressed = false;
             const emulateFullPress = ()=>{
                 if(fullPressed){
                     fireSpell(1);
                 }
                 requestAnimationFrame(emulateFullPress);
             }
-            emulateFullPress();
+            emulateFullPress();*/
 
             controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-                console.log('onTriggerStateChangedObservable', gamepadButton);
+                //console.log('onTriggerStateChangedObservable', gamepadButton);
+
+
+                if(gamepadButton.value>0.1){
+
+                    controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(gamepadButton.value*0.8,40));//todo as type use GamepadHapticActuator
+
+
+                }
+
 
                 if(gamepadButton.value===1){
-                    fullPressed = true;
-                }else
-                if(gamepadButton.value>0.1){
-                    fireSpell(gamepadButton.value);
-                }else{
-                    fullPressed = false;
+                    //fullPressed = true;
+
+
+                    controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(gamepadButton.value,150));//todo as type use GamepadHapticActuator
+
+
+                    try {
+                        playerSpells.addTarget(lastPicked as any);//todo why any?
+                    } catch (error) {
+                        //todo catch only SpellError extended from Error
+                        this.world.uiDataModel.sendMessage(error.message as string);
+                    }
+
+                
+
+
                 }
+
+                
             });
 
             controller.onMainButtonStateChangedObservable.add((gamepadButton) => {
@@ -114,9 +167,50 @@ export default class Player{
                 //console.log('onPadStateChangedObservable', gamepadButton);
             });
 
+
+            let lastDirection = 0;
+            controller.onPadValuesChangedObservable.add((gamepadButton) => {
+                if(gamepadButton.x<-.5){
+                    if(lastDirection !== -1){
+                        playerSpells.neighbourSpell(-1);
+                        lastDirection = -1;
+                    }
+
+                }else
+                if(gamepadButton.x>.5){
+                    if(lastDirection !== 1){
+                        playerSpells.neighbourSpell(1);
+                        lastDirection = 1;
+                    }
+                }else{
+                    lastDirection = 0;
+                }
+            });
+
+            /*let lastY = 0;
+            let lastDirection = 0;
+            let lastDirectionCounter = 0;
             controller.onPadValuesChangedObservable.add((gamepadButton) => {
                 //console.log('onPadValuesChangedObservable', gamepadButton);
-            });
+
+                const direction = Math.sign(lastY - gamepadButton.y) as 1|-1;
+                lastY = gamepadButton.y;
+                
+
+                if(direction===lastDirection){
+                    lastDirectionCounter++;
+                    //console.log(lastDirectionCounter);
+                    if(lastDirectionCounter>5){
+                        lastDirectionCounter = 0;
+                        playerSpells.neighbourSpell(direction);
+                    }
+
+                }else{
+                    lastDirectionCounter = 0;
+                    lastDirection = direction;
+                }
+
+            });*/
         });
         
 
@@ -138,8 +232,7 @@ export default class Player{
         stepSound.setVolume(2);//todo to global sound config
         this._playStepSound = _.throttle(()=>stepSound.play(),400, {leading:true,trailing:false});
 
-        const spellAddTarget = setPlayerSpells(this);
-     
+
 
 
     }

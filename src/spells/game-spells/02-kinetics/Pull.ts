@@ -4,6 +4,6 @@ import AbstractDirectionSpell from './AbstractDirectionSpell';
 
 export default class Pull extends AbstractDirectionSpell{
     get scale():number{
-        return -3000;
+        return 3000;
     }
 }

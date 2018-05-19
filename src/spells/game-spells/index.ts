@@ -26,23 +26,23 @@ import supergravity from './07-gravity/Supergravity';
 
 
 export default {
-    subjective: {
+    /*subjective: {
         teleport,
         fly
-    },
+    },*/
     kinetics: {
         push,
         pull,
-        bounce,
+        //bounce,
         spin,
         //dekinetize,
     },
     create: {
         duplicate,
-        pillar,
-        wall,
+        //pillar,
+        //wall,
         //prick,
-        plate,
+        //plate,
         //bridge,
     },
     hide: {
@@ -57,13 +57,13 @@ export default {
         chop,
         desintegrate
     },
-    environment: {
+    /*environment: {
         meteorite,
         perseids
-    },
+    },*/
     gravity: {
         nogravity,
         antigravity,
-        supergravity
+        //supergravity
     }
 };

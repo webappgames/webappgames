@@ -21,7 +21,7 @@ export default class Spin extends AbstractSpellOnMeshes{
     finish(){
         super.finish();
         //todo add Angular velocity
-        this.firstTargetBrick.angularVelocity = new BABYLON.Vector3(0,1000/this.firstTargetBrick.volume,0);
+        this.firstTargetBrick.angularVelocity = new BABYLON.Vector3(0,10000/this.firstTargetBrick.volume,0);
     }
 
 }

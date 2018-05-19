@@ -3,8 +3,8 @@ import AbstractSpellOnMeshes from '../../classes/AbstractSpellOnMeshes';
 export default class Pull extends AbstractSpellOnMeshes{
 
     public EFFECT_COLORS = {
-        color1: '#0700ff',
-        color2: '#8000ff'
+        color1: '#00ffff',
+        color2: '#0100ff'
     };
 
     get price():number{

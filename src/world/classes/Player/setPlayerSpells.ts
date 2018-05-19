@@ -6,8 +6,12 @@ import * as _ from "lodash";
 import IPickingInfo from '../../../interfaces/IPickingInfoPicked';
 
 export default function setPlayerSpells(
-    player:Player
-):(pick: IPickingInfo)=>void{
+    player:Player,
+    options: {updateLabel:(label:string)=>void}
+):{
+    addTarget: (pick: IPickingInfo)=>void,
+    neighbourSpell: (direction:1|-1)=>void
+}{
 
 
     
@@ -29,6 +33,8 @@ export default function setPlayerSpells(
 
     let spell:AbstractSpell;
     const createNewSpell = ()=>{
+
+        options.updateLabel(player.world.uiDataModel.currentSpellId);
 
         if(!(spell||{released:true}/*todo better*/).released) {
             spell.release();
@@ -77,7 +83,14 @@ export default function setPlayerSpells(
     player.world.canvasElement.addEventListener("wheel", onWheel, false);
 
 
-    return (pick: IPickingInfo)=>{
-        spell.addTarget(pick);
+    return {
+        addTarget: (pick: IPickingInfo)=>{
+            spell.addTarget(pick);
+        },
+        neighbourSpell: (direction)=>{
+            //console.log('neighbourSpell',direction);
+            player.world.uiDataModel.currentSpellId = neighbourSpell(player.world.uiDataModel.currentSpellId,direction);
+            createNewSpell();
+        }
     }
 }
