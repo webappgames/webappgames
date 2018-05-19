@@ -1,7 +1,7 @@
 import * as BABYLON from 'babylonjs';
 import World from '../World';
 //import createCamera from './createCamera';
-import setPlayerMouseLock from './setPlayerMouseLock';
+//import setPlayerMouseLock from './setPlayerMouseLock';
 import setPlayerMovement from './setPlayerMovement';
 import setPlayerSpells from './setPlayerSpells';
 import {PLAYER} from '../../../config';
@@ -49,23 +49,50 @@ export default class Player{
         
         this.vrHelper.onControllerMeshLoadedObservable.add((controller)=>{
 
-            console.log( controller);
+            //console.log( controller);
+
+            let lastFired = performance.now();
+            const fireSpell = (intensity:number)=>{
+
+                let duration = 1000*(1-intensity);
+                duration = Math.max(duration,100);
+
+                //console.log('fire');
+                if(lastFired+duration>performance.now()){
+                    return;
+                }
+                lastFired = performance.now();
+
+                controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(intensity,50));//todo as type use GamepadHapticActuator
+
+                try {
+                    spellAddTarget(lastPicked as any);//todo why any?
+                } catch (error) {
+                    //todo catch only SpellError extended from Error
+                    this.world.uiDataModel.sendMessage(error.message as string);
+                }
+            }
+
+            //todo separate this abstraction
+            let fullPressed = false;
+            const emulateFullPress = ()=>{
+                if(fullPressed){
+                    fireSpell(1);
+                }
+                requestAnimationFrame(emulateFullPress);
+            }
+            emulateFullPress();
 
             controller.onTriggerStateChangedObservable.add((gamepadButton) => {
-                //console.log('onTriggerStateChangedObservable', gamepadButton);
-
-                //controller.browserGamepad.hapticActuators.forEach((hapticActuator: any)=>hapticActuator.pulse(gamepadButton.value,1000));//todo as type use GamepadHapticActuator
-
+                console.log('onTriggerStateChangedObservable', gamepadButton);
 
                 if(gamepadButton.value===1){
-
-                    try {
-                        spellAddTarget(lastPicked as any);//todo why any?
-                    } catch (error) {
-                        //todo catch only SpellError extended from Error
-                        this.world.uiDataModel.sendMessage(error.message as string);
-                    }
-           
+                    fullPressed = true;
+                }else
+                if(gamepadButton.value>0.1){
+                    fireSpell(gamepadButton.value);
+                }else{
+                    fullPressed = false;
                 }
             });
 

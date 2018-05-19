@@ -1,4 +1,4 @@
-import UIDataModel from '../../../ui/UIDataModel';
+/*import UIDataModel from '../../../ui/UIDataModel';
 import * as BABYLON from 'babylonjs';
 
 export default function setPlayerMouseLock(
@@ -62,4 +62,4 @@ export default function setPlayerMouseLock(
 
     }
 
-}
+}*/
