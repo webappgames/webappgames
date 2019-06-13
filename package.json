@@ -13,7 +13,6 @@
     "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx,css}\"",
     "prettier-watch": "onchange --initial \"**/*.{ts,tsx,css}\" -- npm run prettier"
   },
-
   "dependencies": {
     "babylonjs": "^3.0.1-alpha",
     "downloadjs": "^1.4.7",
@@ -42,5 +41,4 @@
     "onchange": "^5.0.2",
     "prettier": "^1.13.7"
   }
-
 }
