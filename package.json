@@ -1,17 +1,20 @@
 {
   "name": "babylon-react-app",
   "version": "0.1.0",
-  "homepage": "http://misc.pavolhejny.com/barcamp",
+  "homepage": "http://webappgames.github.io/webappgames",
   "private": false,
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx,css}\"",
+    "prettier-watch": "onchange --initial \"**/*.{ts,tsx,css}\" -- npm run prettier"
+  },
+
   "dependencies": {
-    "@types/downloadjs": "^1.4.0",
-    "@types/jest": "^20.0.7",
-    "@types/lodash": "^4.14.86",
-    "@types/node": "^8.0.53",
-    "@types/react": "^15.6.7",
-    "@types/react-dom": "^15.5.6",
-    "@types/xmlbuilder": "0.0.31",
-    "@types/xmldom": "^0.1.29",
     "babylonjs": "^3.0.1-alpha",
     "downloadjs": "^1.4.7",
     "gh-pages": "^1.1.0",
@@ -27,12 +30,17 @@
     "xmlbuilder": "^9.0.4",
     "xmldom": "^0.1.27"
   },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+  "devDependencies": {
+    "@types/downloadjs": "^1.4.0",
+    "@types/jest": "^20.0.7",
+    "@types/lodash": "^4.14.86",
+    "@types/node": "^8.0.53",
+    "@types/react": "^15.6.7",
+    "@types/react-dom": "^15.5.6",
+    "@types/xmlbuilder": "0.0.31",
+    "@types/xmldom": "^0.1.29",
+    "onchange": "^5.0.2",
+    "prettier": "^1.13.7"
   }
+
 }
